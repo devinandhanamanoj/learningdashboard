@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LearnDash · Add Course</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+  <style>
+    /* custom teal-navy palette & subtle touches matching index.html */
+    body {
+      background: #F0FDFA;
+      color: #0F172A;
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    }
+    .sidebar-bg {
+      background: #0F766E;
+    }
+    .sidebar-text {
+      color: #e2f0f0;
+    }
+    .sidebar-text:hover {
+      background: #0d6b63;
+      color: white;
+    }
+    .card-shadow {
+      box-shadow: 0 4px 12px rgba(15, 23, 42, 0.04), 0 1px 2px rgba(0,0,0,0.02);
+    }
+    .nav-search input {
+      background: white;
+      border: 1px solid #d1e0e0;
+      border-radius: 40px;
+      padding: 0.5rem 1rem 0.5rem 2.8rem;
+      width: 240px;
+      font-size: 0.9rem;
+    }
+    .nav-search i {
+      position: absolute;
+      left: 1rem;
+      top: 0.7rem;
+      color: #64748B;
+    }
+    /* mobile drawer */
+    .drawer-overlay {
+      background: rgba(15, 23, 42, 0.4);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- mobile overlay -->
+  <div id="drawerOverlay" class="fixed inset-0 z-40 drawer-overlay hidden md:hidden"></div>
+
+  <!-- SIDEBAR (desktop) + mobile drawer -->
+  <aside id="sidebar" class="fixed top-0 left-0 h-full w-64 sidebar-bg text-white z-50 flex flex-col transition-transform duration-300 -translate-x-full md:translate-x-0">
+    <div class="p-5 text-2xl font-bold tracking-tight flex items-center gap-2 border-b border-[#2a8a82]">
+      <i class="fas fa-graduation-cap text-[#38BDF8]"></i> LearnDash
+    </div>
+    <nav class="flex-1 px-3 py-6 space-y-1 overflow-y-auto">
+      <a href="index.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg sidebar-text hover:bg-[#0d6b63]"><i class="fas fa-tachometer-alt w-5"></i> Dashboard</a>
+      <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg sidebar-text hover:bg-[#0d6b63]"><i class="fas fa-user-graduate w-5"></i> Students</a>
+      <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg sidebar-text hover:bg-[#0d6b63]"><i class="fas fa-chalkboard-teacher w-5"></i> Instructors</a>
+      <a href="courses.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg sidebar-text bg-[#0d6b63]"><i class="fas fa-book-open w-5"></i> Courses</a>
+      <a href="assignments.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg sidebar-text hover:bg-[#0d6b63]"><i class="fas fa-tasks w-5"></i> Assignments</a>
+      <a href="analytics.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg sidebar-text hover:bg-[#0d6b63]"><i class="fas fa-chart-line w-5"></i> Analytics</a>
+      <a href="payment.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg sidebar-text hover:bg-[#0d6b63]"><i class="fas fa-credit-card w-5"></i> Payments</a>
+      <a href="reviews.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg sidebar-text hover:bg-[#0d6b63]"><i class="fas fa-star w-5"></i> Reviews</a>
+      <a href="notifications.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg sidebar-text hover:bg-[#0d6b63]"><i class="fas fa-bell w-5"></i> Notifications</a>
+      <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg sidebar-text hover:bg-[#0d6b63]"><i class="fas fa-cog w-5"></i> Settings</a>
+      <hr class="border-[#2a8a82] my-4" />
+      <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg sidebar-text hover:bg-[#0d6b63]"><i class="fas fa-sign-out-alt w-5"></i> Logout</a>
+    </nav>
+    <div class="p-4 text-xs text-[#b0d6d0] border-t border-[#2a8a82]">v2.0 · edu admin</div>
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <div class="md:ml-64 min-h-screen flex flex-col">
+
+    <!-- TOP NAVBAR -->
+    <header class="bg-white/80 backdrop-blur-sm border-b border-[#dce8e6] sticky top-0 z-30 px-4 sm:px-6 py-3 flex items-center justify-between flex-wrap gap-2">
+      <div class="flex items-center gap-3">
+        <button id="hamburgerBtn" class="md:hidden text-[#0F766E] text-xl"><i class="fas fa-bars"></i></button>
+        <div class="nav-search relative hidden sm:block">
+          <i class="fas fa-search"></i>
+          <input type="text" placeholder="Search students, courses..." class="focus:outline-none focus:ring-2 focus:ring-[#14B8A6] transition" />
+        </div>
+      </div>
+      <div class="flex items-center gap-3 sm:gap-4">
+        <i class="fas fa-search text-[#64748B] sm:hidden"></i>
+        <i class="fas fa-bell text-[#64748B] text-lg hover:text-[#0F766E] cursor-pointer"></i>
+        <i class="fas fa-envelope text-[#64748B] text-lg hover:text-[#0F766E] cursor-pointer"></i>
+        <div class="flex items-center gap-2 border-l pl-3 border-[#dce8e6]">
+          <img src="https://ui-avatars.com/api/?name=Admin&background=0F766E&color=fff&size=32" alt="admin" class="w-8 h-8 rounded-full" />
+          <span class="hidden sm:inline font-medium text-sm text-[#0F172A]">Admin <i class="fas fa-chevron-down ml-1 text-[#64748B] text-xs"></i></span>
+        </div>
+      </div>
+    </header>
+
+    <!-- PAGE BODY -->
+    <main class="flex-1 p-4 sm:p-6 space-y-6">
+
+      <!-- BACK LINK -->
+      <a href="courses.html" class="inline-flex items-center gap-2 text-[#0F766E] hover:underline font-medium text-sm">
+        <i class="fas fa-arrow-left"></i> Back to Courses
+      </a>
+
+      <!-- HEADING -->
+      <div>
+        <h1 class="text-2xl font-bold text-[#0F172A]">Add New Course</h1>
+        <p class="text-[#64748B] text-sm">Create a new course for your learning platform.</p>
+      </div>
+
+      <!-- FORM CARD -->
+      <form id="addCourseForm" class="bg-white p-5 sm:p-6 rounded-2xl card-shadow border border-[#e6f0ed] max-w-4xl space-y-6">
+        
+        <div class="border-b border-[#e6f0ed] pb-4">
+          <h2 class="text-base font-semibold text-[#0F172A] flex items-center gap-2">
+            <i class="fas fa-book text-[#0F766E]"></i> Course Information
+          </h2>
+          <p class="text-xs text-[#64748B]">Enter the basic information about the course.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+          <!-- Course Name -->
+          <div class="md:col-span-2">
+            <label for="courseName" class="block text-xs font-semibold text-[#0F172A] mb-1">
+              Course Name <span class="text-red-500">*</span>
+            </label>
+            <input type="text" id="courseName" name="courseName" placeholder="e.g. MERN Stack Development" required class="w-full text-sm border border-[#d1e0e0] rounded-lg p-2.5 outline-none focus:border-[#14B8A6] focus:ring-1 focus:ring-[#14B8A6]" />
+          </div>
+
+          <!-- Category -->
+          <div>
+            <label for="courseCategory" class="block text-xs font-semibold text-[#0F172A] mb-1">
+              Category <span class="text-red-500">*</span>
+            </label>
+            <select id="courseCategory" name="category" required class="w-full text-sm border border-[#d1e0e0] rounded-lg p-2.5 outline-none bg-white focus:border-[#14B8A6] focus:ring-1 focus:ring-[#14B8A6]">
+              <option value="">Select Category</option>
+              <option>Web Development</option>
+              <option>Programming</option>
+              <option>Data Science</option>
+              <option>UI/UX Design</option>
+              <option>Business</option>
+              <option>Marketing</option>
+            </select>
+          </div>
+
+          <!-- Instructor -->
+          <div>
+            <label for="instructor" class="block text-xs font-semibold text-[#0F172A] mb-1">
+              Instructor <span class="text-red-500">*</span>
+            </label>
+            <select id="instructor" name="instructor" required class="w-full text-sm border border-[#d1e0e0] rounded-lg p-2.5 outline-none bg-white focus:border-[#14B8A6] focus:ring-1 focus:ring-[#14B8A6]">
+              <option value="">Select Instructor</option>
+              <option>John Mathew</option>
+              <option>Sarah Thomas</option>
+              <option>David Joseph</option>
+              <option>Anjali Kumar</option>
+            </select>
+          </div>
+
+          <!-- Price -->
+          <div>
+            <label for="price" class="block text-xs font-semibold text-[#0F172A] mb-1">
+              Course Price (₹) <span class="text-red-500">*</span>
+            </label>
+            <input type="number" id="price" name="price" placeholder="4999" min="0" required class="w-full text-sm border border-[#d1e0e0] rounded-lg p-2.5 outline-none focus:border-[#14B8A6] focus:ring-1 focus:ring-[#14B8A6]" />
+          </div>
+
+          <!-- Duration -->
+          <div>
+            <label for="duration" class="block text-xs font-semibold text-[#0F172A] mb-1">
+              Course Duration <span class="text-red-500">*</span>
+            </label>
+            <input type="text" id="duration" name="duration" placeholder="e.g. 6 Months" required class="w-full text-sm border border-[#d1e0e0] rounded-lg p-2.5 outline-none focus:border-[#14B8A6] focus:ring-1 focus:ring-[#14B8A6]" />
+          </div>
+
+          <!-- Student Count -->
+          <div>
+            <label for="students" class="block text-xs font-semibold text-[#0F172A] mb-1">Initial Student Count</label>
+            <input type="number" id="students" name="students" value="0" min="0" class="w-full text-sm border border-[#d1e0e0] rounded-lg p-2.5 outline-none focus:border-[#14B8A6] focus:ring-1 focus:ring-[#14B8A6]" />
+          </div>
+
+          <!-- Rating -->
+          <div>
+            <label for="rating" class="block text-xs font-semibold text-[#0F172A] mb-1">Rating</label>
+            <input type="number" id="rating" name="rating" placeholder="4.8" min="0" max="5" step="0.1" value="0" class="w-full text-sm border border-[#d1e0e0] rounded-lg p-2.5 outline-none focus:border-[#14B8A6] focus:ring-1 focus:ring-[#14B8A6]" />
+          </div>
+
+          <!-- Course Image -->
+          <div class="md:col-span-2">
+            <label for="courseImage" class="block text-xs font-semibold text-[#0F172A] mb-1">Course Image</label>
+            <input type="file" id="courseImage" name="image" accept="image/*" class="w-full text-sm border border-[#d1e0e0] rounded-lg p-2.5 bg-white outline-none focus:border-[#14B8A6]" />
+            <span class="text-[11px] text-[#64748B] mt-1 block">Recommended image size: 1200 × 700px</span>
+          </div>
+
+          <!-- Description -->
+          <div class="md:col-span-2">
+            <label for="description" class="block text-xs font-semibold text-[#0F172A] mb-1">
+              Course Description <span class="text-red-500">*</span>
+            </label>
+            <textarea id="description" name="description" rows="4" placeholder="Write a short description about the course..." required class="w-full text-sm border border-[#d1e0e0] rounded-lg p-2.5 outline-none focus:border-[#14B8A6] focus:ring-1 focus:ring-[#14B8A6]"></textarea>
+          </div>
+
+          <!-- Status -->
+          <div class="md:col-span-2">
+            <label class="block text-xs font-semibold text-[#0F172A] mb-2">Course Status</label>
+            <div class="flex flex-wrap gap-6 text-sm text-[#0F172A]">
+              <label class="inline-flex items-center gap-2 cursor-pointer">
+                <input type="radio" name="status" value="Active" checked class="accent-[#0F766E]" /> Active
+              </label>
+              <label class="inline-flex items-center gap-2 cursor-pointer">
+                <input type="radio" name="status" value="Draft" class="accent-[#0F766E]" /> Draft
+              </label>
+              <label class="inline-flex items-center gap-2 cursor-pointer">
+                <input type="radio" name="status" value="Inactive" class="accent-[#0F766E]" /> Inactive
+              </label>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- BUTTONS -->
+        <div class="flex flex-col sm:flex-row justify-end gap-3 pt-4 border-t border-[#e6f0ed]">
+          <a href="courses.html" class="px-5 py-2 text-center rounded-full border border-[#0F766E] text-[#0F766E] text-sm font-medium hover:bg-[#e6f7f5] transition">Cancel</a>
+          <button type="submit" class="px-5 py-2 rounded-full bg-[#0F766E] text-white text-sm font-medium hover:bg-[#0d6b63] transition flex items-center justify-center gap-2">
+            <i class="fas fa-plus"></i> Add Course
+          </button>
+        </div>
+
+      </form>
+
+    </main>
+  </div>
+
+  <!-- JavaScript for Drawer & Form -->
+  <script>
+    (function() {
+      const sidebar = document.getElementById('sidebar');
+      const overlay = document.getElementById('drawerOverlay');
+      const hamBtn = document.getElementById('hamburgerBtn');
+      let drawerOpen = false;
+
+      function toggleDrawer() {
+        drawerOpen = !drawerOpen;
+        if (drawerOpen) {
+          sidebar.classList.remove('-translate-x-full');
+          overlay.classList.remove('hidden');
+        } else {
+          sidebar.classList.add('-translate-x-full');
+          overlay.classList.add('hidden');
+        }
+      }
+      hamBtn.addEventListener('click', toggleDrawer);
+      overlay.addEventListener('click', toggleDrawer);
+
+      window.addEventListener('resize', function() {
+        if (window.innerWidth >= 768 && drawerOpen) {
+          sidebar.classList.remove('-translate-x-full');
+          overlay.classList.add('hidden');
+          drawerOpen = false;
+        }
+      });
+
+      const addCourseForm = document.getElementById("addCourseForm");
+      addCourseForm.addEventListener("submit", function (event) {
+        event.preventDefault();
+        alert("Course added successfully!");
+        window.location.href = "courses.html";
+      });
+    })();
+  </script>
+</body>
+</html>
