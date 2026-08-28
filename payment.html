@@ -1,575 +1,217 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>LearnDash · Payments</title>
-
-  <!-- Tailwind + Font Awesome -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
-
-  <style>
-    body {
-      background: #F0FDFA;
-      color: #0F172A;
-      font-family: 'Inter', system-ui, -apple-system, sans-serif;
-    }
-    .sidebar-bg { background: #0F766E; }
-    .sidebar-text { color: #e2f0f0; }
-    .sidebar-text:hover { background: #0d6b63; color: white; }
-    .card-shadow { box-shadow: 0 4px 12px rgba(15,23,42,0.04), 0 1px 2px rgba(0,0,0,0.02); }
-    .stat-icon { background: #e6f7f5; color: #0F766E; }
-    .nav-search input {
-      background: white;
-      border: 1px solid #d1e0e0;
-      border-radius: 40px;
-      padding: 0.5rem 1rem 0.5rem 2.8rem;
-      width: 240px;
-      font-size: 0.9rem;
-    }
-    .nav-search i { position: absolute; left: 1rem; top: 0.7rem; color: #64748B; }
-    .badge-status {
-      background: #e6f7f5;
-      color: #0F766E;
-      font-weight: 500;
-      padding: 0.2rem 0.8rem;
-      border-radius: 40px;
-      font-size: 0.7rem;
-    }
-    .badge-success { background: #dcfce7; color: #16a34a; }
-    .badge-warning { background: #fef3c7; color: #b45309; }
-    .badge-danger { background: #fee2e2; color: #dc2626; }
-    .table-wrap { overflow-x: auto; }
-    .filter-bar {
-      background: white;
-      border-radius: 16px;
-      border: 1px solid #e6f0ed;
-      padding: 1rem 1.25rem;
-      box-shadow: 0 1px 4px rgba(0,0,0,0.02);
-      display: flex;
-      flex-wrap: wrap;
-      align-items: flex-end;
-      gap: 0.75rem 1.5rem;
-    }
-    .filter-group {
-      display: flex;
-      flex-direction: column;
-      gap: 0.15rem;
-      flex: 1 0 140px;
-      min-width: 120px;
-    }
-    .filter-group label {
-      font-size: 0.7rem;
-      font-weight: 500;
-      color: #64748B;
-      text-transform: uppercase;
-      letter-spacing: 0.03em;
-    }
-    .filter-group select, .filter-group input {
-      padding: 0.3rem 0.6rem;
-      border: 1px solid #dce8e6;
-      border-radius: 8px;
-      font-size: 0.8rem;
-      background: white;
-      color: #0F172A;
-      transition: all 0.15s;
-      font-family: inherit;
-      width: 100%;
-    }
-    .filter-group select:focus, .filter-group input:focus {
-      outline: none;
-      border-color: #14B8A6;
-      box-shadow: 0 0 0 3px rgba(20,184,166,0.12);
-    }
-    .filter-actions { display: flex; gap: 0.4rem; flex-wrap: wrap; align-items: center; }
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.4rem;
-      padding: 0.3rem 1rem;
-      border-radius: 40px;
-      font-size: 0.8rem;
-      font-weight: 500;
-      border: none;
-      cursor: pointer;
-      transition: all 0.15s;
-      font-family: inherit;
-    }
-    .btn-primary { background: #0F766E; color: white; }
-    .btn-primary:hover { background: #0d6b63; box-shadow: 0 2px 8px rgba(15,118,110,0.2); }
-    .btn-outline { background: transparent; color: #0F766E; border: 1px solid #0F766E; }
-    .btn-outline:hover { background: #e6f7f5; }
-    .btn-ghost { background: transparent; color: #64748B; }
-    .btn-ghost:hover { background: #f5fafa; color: #0F172A; }
-    .btn-sm { padding: 0.2rem 0.7rem; font-size: 0.7rem; }
-    .btn-success { background: #16A34A; color: white; }
-    .btn-success:hover { background: #15803d; }
-
-    .stat-card {
-      background: white;
-      border-radius: 16px;
-      box-shadow: 0 4px 12px rgba(15,23,42,0.04), 0 1px 2px rgba(0,0,0,0.02);
-      border: 1px solid #e6f0ed;
-      padding: 1.25rem 1.5rem;
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-    }
-    .stat-card .stat-info .label { color: #64748B; font-size: 0.875rem; }
-    .stat-card .stat-info .value { font-size: 1.5rem; font-weight: 700; color: #0F172A; margin-top: 0.25rem; }
-    .stat-card .stat-info .trend { font-size: 0.75rem; display: inline-flex; align-items: center; gap: 0.25rem; margin-top: 0.25rem; }
-    .stat-card .stat-info .trend.up { color: #16A34A; }
-    .stat-card .stat-info .trend.down { color: #dc2626; }
-    .stat-card .stat-icon {
-      background: #e6f7f5;
-      color: #0F766E;
-      width: 2.75rem;
-      height: 2.75rem;
-      border-radius: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.4rem;
-      flex-shrink: 0;
-    }
-
-    /* mobile drawer */
-    #mobileDrawer { transition: transform 0.25s ease; }
-    #mobileDrawer.hidden-drawer { transform: translateX(-100%); }
-    #mobileDrawer:not(.hidden-drawer) { transform: translateX(0); }
-    .drawer-overlay { background: rgba(15,23,42,0.4); }
-
-    @media (max-width: 768px) {
-      .nav-search input { width: 140px; }
-      .filter-bar { flex-direction: column; align-items: stretch; }
-      .filter-actions { justify-content: flex-end; }
-    }
-    @media (max-width: 480px) {
-      .nav-search input { width: 100px; padding: 0.3rem 0.8rem 0.3rem 2rem; font-size: 0.7rem; }
-      .nav-search i { left: 0.6rem; top: 0.5rem; font-size: 0.7rem; }
-      .stat-card .stat-info .value { font-size: 1.2rem; }
-    }
-  </style>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>EduNova · Payments</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <style>
+        body { background: #F0FDFA; color: #0F172A; font-family: 'Inter', system-ui, sans-serif; }
+        .sidebar-bg { background: #0F766E; }
+        .sidebar-text { color: #e2f0f0; }
+        .sidebar-text:hover { background: #0d6b63; color: white; }
+        .sidebar-text.active { background: #0d6b63; color: white; }
+        .card-shadow { box-shadow: 0 4px 12px rgba(15,23,42,0.04), 0 1px 2px rgba(0,0,0,0.02); }
+        .stat-icon { background: #e6f7f5; color: #0F766E; }
+        .nav-search input {
+            background: white; border: 1px solid #d1e0e0; border-radius: 40px;
+            padding: 0.5rem 1rem 0.5rem 2.8rem; width: 240px; font-size: 0.9rem;
+        }
+        .nav-search i { position: absolute; left: 1rem; top: 0.7rem; color: #64748B; }
+        .badge-status { background: #e6f7f5; color: #0F766E; font-weight: 500; padding: 0.2rem 0.8rem; border-radius: 40px; font-size: 0.7rem; }
+        .badge-success { background: #dcfce7; color: #16a34a; }
+        .badge-warning { background: #fef3c7; color: #b45309; }
+        .badge-danger { background: #fee2e2; color: #dc2626; }
+        .badge-approved { background: #dcfce7; color: #16a34a; }
+        .badge-pending { background: #fef3c7; color: #b45309; }
+        .table-wrap { overflow-x: auto; }
+        .drawer-overlay { background: rgba(15,23,42,0.4); }
+        .filter-bar {
+            background: white; border-radius: 16px; border: 1px solid #e6f0ed;
+            padding: 1rem 1.25rem; display: flex; flex-wrap: wrap; align-items: flex-end; gap: 0.75rem 1.5rem;
+        }
+        .filter-group { display: flex; flex-direction: column; gap: 0.15rem; flex: 1 0 140px; min-width: 120px; }
+        .filter-group label { font-size: 0.7rem; font-weight: 500; color: #64748B; text-transform: uppercase; }
+        .filter-group select, .filter-group input {
+            padding: 0.3rem 0.6rem; border: 1px solid #dce8e6; border-radius: 8px;
+            font-size: 0.8rem; background: white; color: #0F172A; width: 100%;
+        }
+        .filter-group select:focus, .filter-group input:focus { outline: none; border-color: #14B8A6; box-shadow: 0 0 0 3px rgba(20,184,166,0.12); }
+        .filter-actions { display: flex; gap: 0.4rem; flex-wrap: wrap; align-items: center; }
+        .btn { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.3rem 1rem; border-radius: 40px; font-size: 0.8rem; font-weight: 500; border: none; cursor: pointer; transition: all 0.15s; font-family: inherit; }
+        .btn-primary { background: #0F766E; color: white; }
+        .btn-primary:hover { background: #0d6b63; box-shadow: 0 2px 8px rgba(15,118,110,0.2); }
+        .btn-outline { background: transparent; color: #0F766E; border: 1px solid #0F766E; }
+        .btn-outline:hover { background: #e6f7f5; }
+        .btn-ghost { background: transparent; color: #64748B; }
+        .btn-ghost:hover { background: #f5fafa; color: #0F172A; }
+        .btn-sm { padding: 0.2rem 0.7rem; font-size: 0.7rem; }
+        .stat-card {
+            background: white; border-radius: 16px; box-shadow: 0 4px 12px rgba(15,23,42,0.04), 0 1px 2px rgba(0,0,0,0.02);
+            border: 1px solid #e6f0ed; padding: 1.25rem 1.5rem; display: flex; align-items: flex-start; justify-content: space-between;
+        }
+        .stat-card .stat-info .label { color: #64748B; font-size: 0.875rem; }
+        .stat-card .stat-info .value { font-size: 1.5rem; font-weight: 700; color: #0F172A; margin-top: 0.25rem; }
+        .stat-card .stat-info .trend { font-size: 0.75rem; display: inline-flex; align-items: center; gap: 0.25rem; margin-top: 0.25rem; }
+        .stat-card .stat-info .trend.up { color: #16A34A; }
+        .stat-card .stat-info .trend.down { color: #dc2626; }
+        .stat-card .stat-icon { background: #e6f7f5; color: #0F766E; width: 2.75rem; height: 2.75rem; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; flex-shrink: 0; }
+        @media (max-width: 768px) { .nav-search input { width: 140px; } .filter-bar { flex-direction: column; align-items: stretch; } .filter-actions { justify-content: flex-end; } }
+        @media (max-width: 480px) { .nav-search input { width: 100px; padding: 0.3rem 0.8rem 0.3rem 2rem; font-size: 0.7rem; } .nav-search i { left: 0.6rem; top: 0.5rem; font-size: 0.7rem; } .stat-card .stat-info .value { font-size: 1.2rem; } }
+    </style>
 </head>
 <body>
+    <div id="drawerOverlay" class="fixed inset-0 z-40 drawer-overlay hidden md:hidden"></div>
 
-  <!-- mobile overlay -->
-  <div id="drawerOverlay" class="fixed inset-0 z-40 drawer-overlay hidden md:hidden"></div>
+    <!-- SIDEBAR -->
+    <aside id="sidebar" class="fixed top-0 left-0 h-full w-64 sidebar-bg text-white z-50 flex flex-col transition-transform duration-300 -translate-x-full md:translate-x-0">
+        <div class="p-5 text-2xl font-bold tracking-tight flex items-center gap-2 border-b border-[#2a8a82]">
+            <i class="fas fa-graduation-cap text-[#38BDF8]"></i> EduNova
+        </div>
+        <nav class="flex-1 px-3 py-6 space-y-1 overflow-y-auto">
+            <a href="./index.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg sidebar-text"><i class="fas fa-tachometer-alt w-5"></i> Dashboard</a>
+            <a href="./students.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg sidebar-text"><i class="fas fa-user-graduate w-5"></i> Students</a>
+            <a href="./instructors.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg sidebar-text"><i class="fas fa-chalkboard-teacher w-5"></i> Instructors</a>
+            <a href="./courses.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg sidebar-text"><i class="fas fa-book-open w-5"></i> Courses</a>
+            <a href="./assignments.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg sidebar-text"><i class="fas fa-tasks w-5"></i> Assignments</a>
+            <a href="./analytics.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg sidebar-text"><i class="fas fa-chart-line w-5"></i> Analytics</a>
+            <a href="./payment.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg sidebar-text active"><i class="fas fa-credit-card w-5"></i> Payments</a>
+            <a href="./reviews.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg sidebar-text"><i class="fas fa-star w-5"></i> Reviews</a>
+            <a href="./notifications.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg sidebar-text"><i class="fas fa-bell w-5"></i> Notifications</a>
+            <hr class="border-[#2a8a82] my-4" />
+            <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg sidebar-text"><i class="fas fa-cog w-5"></i> Settings</a>
+            <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg sidebar-text"><i class="fas fa-sign-out-alt w-5"></i> Logout</a>
+        </nav>
+        <div class="p-4 text-xs text-[#b0d6d0] border-t border-[#2a8a82]">v2.0 · EduNova</div>
+    </aside>
 
-  <!-- ==================== SIDEBAR ==================== -->
-  <aside id="sidebar" class="fixed top-0 left-0 h-full w-64 sidebar-bg text-white z-50 flex flex-col transition-transform duration-300 -translate-x-full md:translate-x-0">
-    <div class="p-5 text-2xl font-bold tracking-tight flex items-center gap-2 border-b border-[#2a8a82]">
-      <i class="fas fa-graduation-cap text-[#38BDF8]"></i> LearnDash
+    <!-- MAIN -->
+    <div class="md:ml-64 min-h-screen flex flex-col">
+        <header class="bg-white/80 backdrop-blur-sm border-b border-[#dce8e6] sticky top-0 z-30 px-4 sm:px-6 py-3 flex items-center justify-between flex-wrap gap-2">
+            <div class="flex items-center gap-3">
+                <button id="hamburgerBtn" class="md:hidden text-[#0F766E] text-xl"><i class="fas fa-bars"></i></button>
+                <div class="nav-search relative hidden sm:block">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Search payments..." class="focus:outline-none focus:ring-2 focus:ring-[#14B8A6] transition" />
+                </div>
+            </div>
+            <div class="flex items-center gap-3 sm:gap-4">
+                <i class="fas fa-search text-[#64748B] sm:hidden"></i>
+                <i class="fas fa-bell text-[#64748B] text-lg hover:text-[#0F766E] cursor-pointer relative">
+                    <span class="absolute -top-1 -right-1 bg-[#DC2626] text-white text-[10px] rounded-full w-4 h-4 flex items-center justify-center">12</span>
+                </i>
+                <i class="fas fa-envelope text-[#64748B] text-lg hover:text-[#0F766E] cursor-pointer"></i>
+                <div class="flex items-center gap-2 border-l pl-3 border-[#dce8e6]">
+                    <img src="https://ui-avatars.com/api/?name=Admin&background=0F766E&color=fff&size=32" alt="admin" class="w-8 h-8 rounded-full" />
+                    <span class="hidden sm:inline font-medium text-sm text-[#0F172A]">Admin <i class="fas fa-chevron-down ml-1 text-[#64748B] text-xs"></i></span>
+                </div>
+            </div>
+        </header>
+
+        <main class="flex-1 p-4 sm:p-6 space-y-6">
+            <div class="flex flex-wrap items-center justify-between gap-2">
+                <div><h1 class="text-2xl font-bold text-[#0F172A] flex items-center gap-2"><i class="fas fa-credit-card text-[#0F766E]"></i> Payments</h1><p class="text-[#64748B] text-sm">Manage all transactions in INR (₹)</p></div>
+                <div class="flex gap-2">
+                    <button class="btn btn-primary btn-sm"><i class="fas fa-plus-circle"></i> New Payment</button>
+                    <button class="btn btn-outline btn-sm"><i class="fas fa-file-invoice"></i> Report</button>
+                </div>
+            </div>
+
+            <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div class="stat-card"><div class="stat-info"><div class="label">Total Revenue</div><div class="value">₹8,42,500</div><div class="trend up"><i class="fas fa-arrow-up"></i> 12.8%</div></div><div class="stat-icon"><i class="fas fa-rupee-sign"></i></div></div>
+                <div class="stat-card"><div class="stat-info"><div class="label">Transactions</div><div class="value">1,284</div><div class="trend up"><i class="fas fa-arrow-up"></i> 8.3%</div></div><div class="stat-icon"><i class="fas fa-exchange-alt"></i></div></div>
+                <div class="stat-card"><div class="stat-info"><div class="label">Pending</div><div class="value">₹1,28,400</div><div class="trend down"><i class="fas fa-arrow-up"></i> 5.2%</div></div><div class="stat-icon"><i class="fas fa-clock text-[#F59E0B]"></i></div></div>
+                <div class="stat-card"><div class="stat-info"><div class="label">This Month</div><div class="value">₹1,94,200</div><div class="trend up"><i class="fas fa-arrow-up"></i> 18.6%</div></div><div class="stat-icon"><i class="fas fa-calendar-alt"></i></div></div>
+            </section>
+
+            <div class="filter-bar">
+                <div class="filter-group"><label><i class="fas fa-calendar-alt"></i> From</label><input type="date" value="2026-08-01" /></div>
+                <div class="filter-group"><label><i class="fas fa-calendar-alt"></i> To</label><input type="date" value="2026-08-28" /></div>
+                <div class="filter-group"><label><i class="fas fa-flag"></i> Status</label><select><option>All</option><option>Completed</option><option>Pending</option><option>Failed</option></select></div>
+                <div class="filter-group" style="flex:0 0 auto; min-width:auto;"><label>&nbsp;</label><div class="filter-actions"><button class="btn btn-primary btn-sm"><i class="fas fa-filter"></i> Apply</button><button class="btn btn-ghost btn-sm"><i class="fas fa-undo"></i> Reset</button></div></div>
+            </div>
+
+            <!-- 1:3 ratio: New Payment + Recent Transactions -->
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                <div class="bg-white rounded-2xl card-shadow border border-[#e6f0ed] p-5 md:col-span-1">
+                    <h3 class="font-semibold text-[#0F172A] flex items-center gap-2 mb-4"><i class="fas fa-plus-circle text-[#0F766E]"></i> New Payment</h3>
+                    <form class="space-y-3">
+                        <div><label class="text-xs font-medium text-[#64748B] block mb-1">Student</label><select class="w-full border border-[#dce8e6] rounded-lg px-3 py-2 text-sm"><option>Select Student</option><option>John Doe</option><option>Jane Smith</option></select></div>
+                        <div><label class="text-xs font-medium text-[#64748B] block mb-1">Course</label><select class="w-full border border-[#dce8e6] rounded-lg px-3 py-2 text-sm"><option>Select Course</option><option>Web Development</option><option>Data Science</option></select></div>
+                        <div><label class="text-xs font-medium text-[#64748B] block mb-1">Amount (₹)</label><input type="number" placeholder="0.00" class="w-full border border-[#dce8e6] rounded-lg px-3 py-2 text-sm" /></div>
+                        <div><label class="text-xs font-medium text-[#64748B] block mb-1">Method</label><select class="w-full border border-[#dce8e6] rounded-lg px-3 py-2 text-sm"><option>Credit Card</option><option>UPI</option><option>Net Banking</option></select></div>
+                        <button type="submit" class="w-full btn btn-primary py-2.5"><i class="fas fa-check-circle"></i> Process Payment</button>
+                    </form>
+                </div>
+
+                <div class="bg-white rounded-2xl card-shadow border border-[#e6f0ed] p-5 md:col-span-3">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="font-semibold text-[#0F172A] flex items-center gap-2"><i class="fas fa-history text-[#0F766E]"></i> Recent Transactions</h3>
+                        <button class="btn btn-ghost btn-sm text-[#0F766E]">View All <i class="fas fa-arrow-right ml-1"></i></button>
+                    </div>
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between p-3 bg-[#f8fbfa] rounded-xl">
+                            <div class="flex items-center gap-3"><div class="w-10 h-10 rounded-full bg-[#e6f7f5] flex items-center justify-center text-[#0F766E]"><i class="fas fa-user-graduate"></i></div><div><p class="font-medium text-sm">John Doe</p><p class="text-xs text-[#64748B]">Web Dev · Aug 28</p></div></div>
+                            <div class="text-right"><p class="font-bold text-sm">₹5,999</p><span class="badge-status badge-success text-xs">Completed</span></div>
+                        </div>
+                        <div class="flex items-center justify-between p-3 bg-[#f8fbfa] rounded-xl">
+                            <div class="flex items-center gap-3"><div class="w-10 h-10 rounded-full bg-[#e6f7f5] flex items-center justify-center text-[#0F766E]"><i class="fas fa-user-graduate"></i></div><div><p class="font-medium text-sm">Jane Smith</p><p class="text-xs text-[#64748B]">Data Sci · Aug 27</p></div></div>
+                            <div class="text-right"><p class="font-bold text-sm">₹8,499</p><span class="badge-status badge-warning text-xs">Pending</span></div>
+                        </div>
+                        <div class="flex items-center justify-between p-3 bg-[#f8fbfa] rounded-xl">
+                            <div class="flex items-center gap-3"><div class="w-10 h-10 rounded-full bg-[#e6f7f5] flex items-center justify-center text-[#0F766E]"><i class="fas fa-user-graduate"></i></div><div><p class="font-medium text-sm">Mike Johnson</p><p class="text-xs text-[#64748B]">UI/UX · Aug 26</p></div></div>
+                            <div class="text-right"><p class="font-bold text-sm">₹4,999</p><span class="badge-status badge-success text-xs">Completed</span></div>
+                        </div>
+                    </div>
+                    <div class="flex justify-between items-center mt-4 pt-3 border-t border-[#e6f0ed] text-xs text-[#64748B]">
+                        <span>Showing 3 of 128</span>
+                        <div class="flex gap-1"><button class="px-2 py-1 border rounded">Prev</button><button class="px-2 py-1 border rounded bg-[#0F766E] text-white">1</button><button class="px-2 py-1 border rounded">Next</button></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Payment History Table -->
+            <div class="bg-white rounded-2xl card-shadow border border-[#e6f0ed] p-5">
+                <div class="flex flex-wrap items-center justify-between gap-2 mb-4">
+                    <h3 class="font-semibold text-[#0F172A] flex items-center gap-2"><i class="fas fa-table text-[#0F766E]"></i> Payment History</h3>
+                    <button class="btn btn-primary btn-sm"><i class="fas fa-download"></i> Export</button>
+                </div>
+                <div class="table-wrap">
+                    <table class="w-full text-sm">
+                        <thead class="text-[#64748B] border-b border-[#e6f0ed]"><tr><th class="py-2 text-left">ID</th><th class="py-2 text-left">Student</th><th class="py-2 text-left">Course</th><th class="py-2 text-left">Amount</th><th class="py-2 text-left">Status</th><th class="py-2 text-left">Date</th></tr></thead>
+                        <tbody>
+                            <tr class="border-b border-[#f0f7f5]"><td class="py-2 font-mono text-xs">#INV-001</td><td>John Doe</td><td>Web Dev</td><td>₹5,999</td><td><span class="badge-status badge-approved">Completed</span></td><td>Aug 28</td></tr>
+                            <tr class="border-b border-[#f0f7f5]"><td class="py-2 font-mono text-xs">#INV-002</td><td>Jane Smith</td><td>Data Sci</td><td>₹8,499</td><td><span class="badge-status badge-pending">Pending</span></td><td>Aug 27</td></tr>
+                            <tr><td class="py-2 font-mono text-xs">#INV-003</td><td>Mike Johnson</td><td>UI/UX</td><td>₹4,999</td><td><span class="badge-status badge-approved">Completed</span></td><td>Aug 26</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
     </div>
-    <nav class="flex-1 px-3 py-6 space-y-1 overflow-y-auto">
-      <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg sidebar-text hover:bg-[#0d6b63]"><i class="fas fa-tachometer-alt w-5"></i> Dashboard</a>
-      <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg sidebar-text hover:bg-[#0d6b63]"><i class="fas fa-user-graduate w-5"></i> Students</a>
-      <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg sidebar-text hover:bg-[#0d6b63]"><i class="fas fa-chalkboard-teacher w-5"></i> Instructors</a>
-      <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg sidebar-text hover:bg-[#0d6b63]"><i class="fas fa-book-open w-5"></i> Courses</a>
-      <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg sidebar-text hover:bg-[#0d6b63]"><i class="fas fa-tasks w-5"></i> Assignments</a>
-      <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg sidebar-text hover:bg-[#0d6b63]"><i class="fas fa-chart-line w-5"></i> Analytics</a>
-      <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg sidebar-text bg-[#0d6b63]"><i class="fas fa-credit-card w-5"></i> Payments</a>
-      <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg sidebar-text hover:bg-[#0d6b63]"><i class="fas fa-star w-5"></i> Reviews</a>
-      <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg sidebar-text hover:bg-[#0d6b63]"><i class="fas fa-bell w-5"></i> Notifications</a>
-      <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg sidebar-text hover:bg-[#0d6b63]"><i class="fas fa-cog w-5"></i> Settings</a>
-      <hr class="border-[#2a8a82] my-4" />
-      <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg sidebar-text hover:bg-[#0d6b63]"><i class="fas fa-sign-out-alt w-5"></i> Logout</a>
-    </nav>
-    <div class="p-4 text-xs text-[#b0d6d0] border-t border-[#2a8a82]">v2.0 · edu admin</div>
-  </aside>
 
-  <!-- ==================== MAIN CONTENT ==================== -->
-  <div class="md:ml-64 min-h-screen flex flex-col">
-
-    <!-- TOP NAVBAR -->
-    <header class="bg-white/80 backdrop-blur-sm border-b border-[#dce8e6] sticky top-0 z-30 px-4 sm:px-6 py-3 flex items-center justify-between flex-wrap gap-2">
-      <div class="flex items-center gap-3">
-        <button id="hamburgerBtn" class="md:hidden text-[#0F766E] text-xl"><i class="fas fa-bars"></i></button>
-        <div class="nav-search relative hidden sm:block">
-          <i class="fas fa-search"></i>
-          <input type="text" placeholder="Search payments..." class="focus:outline-none focus:ring-2 focus:ring-[#14B8A6] transition" />
-        </div>
-      </div>
-      <div class="flex items-center gap-3 sm:gap-4">
-        <i class="fas fa-search text-[#64748B] sm:hidden"></i>
-        <i class="fas fa-bell text-[#64748B] text-lg hover:text-[#0F766E] cursor-pointer"></i>
-        <i class="fas fa-envelope text-[#64748B] text-lg hover:text-[#0F766E] cursor-pointer"></i>
-        <div class="flex items-center gap-2 border-l pl-3 border-[#dce8e6]">
-          <img src="https://ui-avatars.com/api/?name=Admin&background=0F766E&color=fff&size=32" alt="admin" class="w-8 h-8 rounded-full" />
-          <span class="hidden sm:inline font-medium text-sm text-[#0F172A]">Admin <i class="fas fa-chevron-down ml-1 text-[#64748B] text-xs"></i></span>
-        </div>
-      </div>
-    </header>
-
-    <!-- PAGE CONTENT -->
-    <main class="flex-1 p-4 sm:p-6 space-y-6">
-
-      <!-- PAGE HEADER -->
-      <div class="flex flex-wrap items-center justify-between gap-2">
-        <div>
-          <h1 class="text-2xl font-bold text-[#0F172A] flex items-center gap-2">
-            <i class="fas fa-credit-card text-[#0F766E]"></i> Payments
-          </h1>
-          <p class="text-[#64748B] text-sm">Manage all financial transactions in INR (₹)</p>
-        </div>
-        <div class="flex gap-2">
-          <button class="btn btn-primary btn-sm"><i class="fas fa-plus-circle"></i> New Payment</button>
-          <button class="btn btn-outline btn-sm"><i class="fas fa-file-invoice"></i> Generate Report</button>
-        </div>
-      </div>
-
-      <!-- STAT CARDS -->
-      <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div class="stat-card">
-          <div class="stat-info">
-            <div class="label">Total Revenue</div>
-            <div class="value">₹8,42,500</div>
-            <div class="trend up"><i class="fas fa-arrow-up"></i> +12.8%</div>
-          </div>
-          <div class="stat-icon"><i class="fas fa-rupee-sign"></i></div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-info">
-            <div class="label">Total Transactions</div>
-            <div class="value">1,284</div>
-            <div class="trend up"><i class="fas fa-arrow-up"></i> +8.3%</div>
-          </div>
-          <div class="stat-icon"><i class="fas fa-exchange-alt"></i></div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-info">
-            <div class="label">Pending Payments</div>
-            <div class="value">₹1,28,400</div>
-            <div class="trend down"><i class="fas fa-arrow-up"></i> +5.2%</div>
-          </div>
-          <div class="stat-icon"><i class="fas fa-clock text-[#F59E0B]"></i></div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-info">
-            <div class="label">This Month</div>
-            <div class="value">₹1,94,200</div>
-            <div class="trend up"><i class="fas fa-arrow-up"></i> +18.6%</div>
-          </div>
-          <div class="stat-icon"><i class="fas fa-calendar-alt text-[#14B8A6]"></i></div>
-        </div>
-      </section>
-
-      <!-- FILTER BAR -->
-      <div class="filter-bar">
-        <div class="filter-group">
-          <label><i class="fas fa-calendar-alt"></i> Date From</label>
-          <input type="date" value="2026-08-01" />
-        </div>
-        <div class="filter-group">
-          <label><i class="fas fa-calendar-alt"></i> Date To</label>
-          <input type="date" value="2026-08-28" />
-        </div>
-        <div class="filter-group">
-          <label><i class="fas fa-flag"></i> Status</label>
-          <select>
-            <option>All Status</option>
-            <option>Completed</option>
-            <option>Pending</option>
-            <option>Failed</option>
-            <option>Refunded</option>
-          </select>
-        </div>
-        <div class="filter-group">
-          <label><i class="fas fa-tag"></i> Type</label>
-          <select>
-            <option>All Types</option>
-            <option>Course Fee</option>
-            <option>Subscription</option>
-            <option>Refund</option>
-          </select>
-        </div>
-        <div class="filter-group" style="flex:0 0 auto; min-width:auto;">
-          <label>&nbsp;</label>
-          <div class="filter-actions">
-            <button class="btn btn-primary btn-sm"><i class="fas fa-filter"></i> Apply</button>
-            <button class="btn btn-ghost btn-sm"><i class="fas fa-undo"></i> Reset</button>
-          </div>
-        </div>
-      </div>
-
-      <!-- ====== NEW PAYMENT + RECENT TRANSACTIONS (1:3 ratio) ====== -->
-      <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <!-- NEW PAYMENT CARD (1 part) -->
-        <div class="bg-white rounded-2xl card-shadow border border-[#e6f0ed] p-5 md:col-span-1">
-          <h3 class="font-semibold text-[#0F172A] flex items-center gap-2 mb-4">
-            <i class="fas fa-plus-circle text-[#0F766E]"></i> New Payment
-          </h3>
-          <form class="space-y-3">
-            <div>
-              <label class="text-xs font-medium text-[#64748B] block mb-1">Student</label>
-              <select class="w-full border border-[#dce8e6] rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#14B8A6]">
-                <option>Select Student</option>
-                <option>John Doe</option>
-                <option>Jane Smith</option>
-                <option>Mike Johnson</option>
-                <option>Sarah Lee</option>
-              </select>
-            </div>
-            <div>
-              <label class="text-xs font-medium text-[#64748B] block mb-1">Course</label>
-              <select class="w-full border border-[#dce8e6] rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#14B8A6]">
-                <option>Select Course</option>
-                <option>Web Development</option>
-                <option>Data Science</option>
-                <option>UI/UX Design</option>
-                <option>Python Programming</option>
-              </select>
-            </div>
-            <div>
-              <label class="text-xs font-medium text-[#64748B] block mb-1">Amount (₹)</label>
-              <input type="number" placeholder="0.00" class="w-full border border-[#dce8e6] rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#14B8A6]" />
-            </div>
-            <div>
-              <label class="text-xs font-medium text-[#64748B] block mb-1">Payment Method</label>
-              <select class="w-full border border-[#dce8e6] rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#14B8A6]">
-                <option>Credit Card</option>
-                <option>Debit Card</option>
-                <option>UPI</option>
-                <option>Net Banking</option>
-                <option>Wallet</option>
-              </select>
-            </div>
-            <button type="submit" class="w-full btn btn-primary py-2.5"><i class="fas fa-check-circle"></i> Process Payment</button>
-          </form>
-        </div>
-
-        <!-- RECENT TRANSACTIONS (3 parts) -->
-        <div class="bg-white rounded-2xl card-shadow border border-[#e6f0ed] p-5 md:col-span-3">
-          <div class="flex items-center justify-between mb-4">
-            <h3 class="font-semibold text-[#0F172A] flex items-center gap-2">
-              <i class="fas fa-history text-[#0F766E]"></i> Recent Transactions
-            </h3>
-            <button class="btn btn-ghost btn-sm text-[#0F766E]">View All <i class="fas fa-arrow-right ml-1"></i></button>
-          </div>
-
-          <!-- Transaction List -->
-          <div class="space-y-3">
-            <div class="flex items-center justify-between p-3 bg-[#f8fbfa] rounded-xl">
-              <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-full bg-[#e6f7f5] flex items-center justify-center text-[#0F766E]">
-                  <i class="fas fa-user-graduate"></i>
-                </div>
-                <div>
-                  <p class="font-medium text-sm">John Doe</p>
-                  <p class="text-xs text-[#64748B]">Web Development · Aug 28, 2026</p>
-                </div>
-              </div>
-              <div class="text-right">
-                <p class="font-bold text-sm">₹5,999</p>
-                <span class="badge-status badge-success text-xs">Completed</span>
-              </div>
-            </div>
-
-            <div class="flex items-center justify-between p-3 bg-[#f8fbfa] rounded-xl">
-              <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-full bg-[#e6f7f5] flex items-center justify-center text-[#0F766E]">
-                  <i class="fas fa-user-graduate"></i>
-                </div>
-                <div>
-                  <p class="font-medium text-sm">Jane Smith</p>
-                  <p class="text-xs text-[#64748B]">Data Science · Aug 27, 2026</p>
-                </div>
-              </div>
-              <div class="text-right">
-                <p class="font-bold text-sm">₹8,499</p>
-                <span class="badge-status badge-warning text-xs">Pending</span>
-              </div>
-            </div>
-
-            <div class="flex items-center justify-between p-3 bg-[#f8fbfa] rounded-xl">
-              <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-full bg-[#e6f7f5] flex items-center justify-center text-[#0F766E]">
-                  <i class="fas fa-user-graduate"></i>
-                </div>
-                <div>
-                  <p class="font-medium text-sm">Mike Johnson</p>
-                  <p class="text-xs text-[#64748B]">UI/UX Design · Aug 26, 2026</p>
-                </div>
-              </div>
-              <div class="text-right">
-                <p class="font-bold text-sm">₹4,999</p>
-                <span class="badge-status badge-success text-xs">Completed</span>
-              </div>
-            </div>
-
-            <div class="flex items-center justify-between p-3 bg-[#f8fbfa] rounded-xl">
-              <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-full bg-[#e6f7f5] flex items-center justify-center text-[#0F766E]">
-                  <i class="fas fa-user-graduate"></i>
-                </div>
-                <div>
-                  <p class="font-medium text-sm">Sarah Lee</p>
-                  <p class="text-xs text-[#64748B]">Python Programming · Aug 25, 2026</p>
-                </div>
-              </div>
-              <div class="text-right">
-                <p class="font-bold text-sm">₹3,499</p>
-                <span class="badge-status badge-danger text-xs">Failed</span>
-              </div>
-            </div>
-
-            <div class="flex items-center justify-between p-3 bg-[#f8fbfa] rounded-xl">
-              <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-full bg-[#e6f7f5] flex items-center justify-center text-[#0F766E]">
-                  <i class="fas fa-user-graduate"></i>
-                </div>
-                <div>
-                  <p class="font-medium text-sm">Alex Chen</p>
-                  <p class="text-xs text-[#64748B]">Cloud Architecture · Aug 24, 2026</p>
-                </div>
-              </div>
-              <div class="text-right">
-                <p class="font-bold text-sm">₹6,999</p>
-                <span class="badge-status badge-success text-xs">Completed</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- Pagination for transactions -->
-          <div class="flex justify-between items-center mt-4 pt-3 border-t border-[#e6f0ed] text-xs text-[#64748B]">
-            <span>Showing 5 of 128 transactions</span>
-            <div class="flex gap-1">
-              <button class="px-2 py-1 border rounded">Prev</button>
-              <button class="px-2 py-1 border rounded bg-[#0F766E] text-white">1</button>
-              <button class="px-2 py-1 border rounded">2</button>
-              <button class="px-2 py-1 border rounded">3</button>
-              <button class="px-2 py-1 border rounded">Next</button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- PAYMENT SUMMARY TABLE (full width) -->
-      <div class="bg-white rounded-2xl card-shadow border border-[#e6f0ed] p-5">
-        <div class="flex flex-wrap items-center justify-between gap-2 mb-4">
-          <h3 class="font-semibold text-[#0F172A] flex items-center gap-2">
-            <i class="fas fa-table text-[#0F766E]"></i> Payment History
-          </h3>
-          <div class="flex gap-2">
-            <input type="text" placeholder="Search transactions..." class="text-sm border rounded-full px-3 py-1 border-[#d1e0e0] focus:ring-1 focus:ring-[#14B8A6] outline-none" />
-            <button class="btn btn-primary btn-sm"><i class="fas fa-download"></i> Export</button>
-          </div>
-        </div>
-
-        <div class="table-wrap">
-          <table class="w-full text-sm">
-            <thead class="text-[#64748B] border-b border-[#e6f0ed]">
-              <tr>
-                <th class="py-2 text-left">Transaction ID</th>
-                <th class="py-2 text-left">Student</th>
-                <th class="py-2 text-left">Course</th>
-                <th class="py-2 text-left">Amount (₹)</th>
-                <th class="py-2 text-left">Date</th>
-                <th class="py-2 text-left">Status</th>
-                <th class="py-2 text-left">Method</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr class="border-b border-[#f0f7f5]">
-                <td class="py-3 font-mono text-xs">#INV-2026-001</td>
-                <td>John Doe</td>
-                <td>Web Development</td>
-                <td class="font-medium">₹5,999</td>
-                <td>Aug 28, 2026</td>
-                <td><span class="badge-status badge-success text-xs">Completed</span></td>
-                <td><i class="fas fa-credit-card text-[#64748B]"></i> Card</td>
-              </tr>
-              <tr class="border-b border-[#f0f7f5]">
-                <td class="py-3 font-mono text-xs">#INV-2026-002</td>
-                <td>Jane Smith</td>
-                <td>Data Science</td>
-                <td class="font-medium">₹8,499</td>
-                <td>Aug 27, 2026</td>
-                <td><span class="badge-status badge-warning text-xs">Pending</span></td>
-                <td><i class="fas fa-mobile-alt text-[#64748B]"></i> UPI</td>
-              </tr>
-              <tr class="border-b border-[#f0f7f5]">
-                <td class="py-3 font-mono text-xs">#INV-2026-003</td>
-                <td>Mike Johnson</td>
-                <td>UI/UX Design</td>
-                <td class="font-medium">₹4,999</td>
-                <td>Aug 26, 2026</td>
-                <td><span class="badge-status badge-success text-xs">Completed</span></td>
-                <td><i class="fas fa-university text-[#64748B]"></i> Bank</td>
-              </tr>
-              <tr class="border-b border-[#f0f7f5]">
-                <td class="py-3 font-mono text-xs">#INV-2026-004</td>
-                <td>Sarah Lee</td>
-                <td>Python Programming</td>
-                <td class="font-medium">₹3,499</td>
-                <td>Aug 25, 2026</td>
-                <td><span class="badge-status badge-danger text-xs">Failed</span></td>
-                <td><i class="fas fa-credit-card text-[#64748B]"></i> Card</td>
-              </tr>
-              <tr>
-                <td class="py-3 font-mono text-xs">#INV-2026-005</td>
-                <td>Alex Chen</td>
-                <td>Cloud Architecture</td>
-                <td class="font-medium">₹6,999</td>
-                <td>Aug 24, 2026</td>
-                <td><span class="badge-status badge-success text-xs">Completed</span></td>
-                <td><i class="fas fa-wallet text-[#64748B]"></i> Wallet</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-
-        <div class="flex justify-between items-center mt-4 text-xs text-[#64748B]">
-          <span>Showing 1-5 of 128 transactions</span>
-          <div class="flex gap-1">
-            <button class="px-2 py-1 border rounded">Prev</button>
-            <button class="px-2 py-1 border rounded bg-[#0F766E] text-white">1</button>
-            <button class="px-2 py-1 border rounded">2</button>
-            <button class="px-2 py-1 border rounded">3</button>
-            <button class="px-2 py-1 border rounded">Next</button>
-          </div>
-        </div>
-      </div>
-
-      <!-- FOOTER -->
-      <div class="text-center text-xs text-[#64748B] py-2">
-        &copy; 2026 LearnDash · Payment Management · All amounts in INR (₹)
-      </div>
-
-    </main>
-  </div>
-
-  <!-- ==================== SCRIPTS ==================== -->
-  <script>
-    (function() {
-      const sidebar = document.getElementById('sidebar');
-      const overlay = document.getElementById('drawerOverlay');
-      const hamBtn = document.getElementById('hamburgerBtn');
-      let drawerOpen = false;
-
-      function toggleDrawer() {
-        drawerOpen = !drawerOpen;
-        if (drawerOpen) {
-          sidebar.classList.remove('-translate-x-full');
-          overlay.classList.remove('hidden');
-        } else {
-          sidebar.classList.add('-translate-x-full');
-          overlay.classList.add('hidden');
-        }
-      }
-      if (hamBtn) hamBtn.addEventListener('click', toggleDrawer);
-      if (overlay) overlay.addEventListener('click', toggleDrawer);
-
-      window.addEventListener('resize', function() {
-        if (window.innerWidth >= 768 && drawerOpen) {
-          sidebar.classList.remove('-translate-x-full');
-          overlay.classList.add('hidden');
-          drawerOpen = false;
-        }
-      });
-    })();
-  </script>
-
+    <script>
+        (function() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('drawerOverlay');
+            const hamBtn = document.getElementById('hamburgerBtn');
+            let drawerOpen = false;
+            function toggleDrawer() {
+                drawerOpen = !drawerOpen;
+                if (drawerOpen) { sidebar.classList.remove('-translate-x-full'); overlay.classList.remove('hidden'); }
+                else { sidebar.classList.add('-translate-x-full'); overlay.classList.add('hidden'); }
+            }
+            if (hamBtn) hamBtn.addEventListener('click', toggleDrawer);
+            if (overlay) overlay.addEventListener('click', toggleDrawer);
+            window.addEventListener('resize', function() {
+                if (window.innerWidth >= 768 && drawerOpen) {
+                    sidebar.classList.remove('-translate-x-full');
+                    overlay.classList.add('hidden');
+                    drawerOpen = false;
+                }
+            });
+        })();
+    </script>
 </body>
 </html>
