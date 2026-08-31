@@ -1,0 +1,1042 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
+    <title>EduNova · Settings</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <style>
+        /* ===== ROOT VARIABLES ===== */
+        :root {
+            --primary: #0F766E;
+            --primary-dark: #0d6b63;
+            --primary-light: #e6f7f5;
+            --secondary: #14B8A6;
+            --accent: #38BDF8;
+            --bg: #F0FDFA;
+            --card: #FFFFFF;
+            --text: #0F172A;
+            --muted: #64748B;
+            --border: #dce8e6;
+            --border-light: #e6f0ed;
+            --success: #16A34A;
+            --warning: #F59E0B;
+            --danger: #DC2626;
+            --shadow: 0 4px 12px rgba(15,23,42,0.04), 0 1px 2px rgba(0,0,0,0.02);
+            --radius: 16px;
+            --radius-sm: 8px;
+            --radius-full: 9999px;
+            --transition: 0.2s ease;
+        }
+
+        /* ===== BASE ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            overflow-x: hidden;
+        }
+
+        /* ===== SIDEBAR ===== */
+        .sidebar-bg {
+            background: var(--primary);
+        }
+        .sidebar-text {
+            color: #e2f0f0;
+            transition: all var(--transition);
+        }
+        .sidebar-text:hover,
+        .sidebar-text.active {
+            background: var(--primary-dark);
+            color: white;
+        }
+
+        /* ===== CARDS ===== */
+        .card-shadow {
+            box-shadow: var(--shadow);
+        }
+
+        /* ===== NAV SEARCH ===== */
+        .nav-search {
+            position: relative;
+        }
+        .nav-search input {
+            background: white;
+            border: 1px solid #d1e0e0;
+            border-radius: var(--radius-full);
+            padding: 0.5rem 1rem 0.5rem 2.8rem;
+            width: 240px;
+            font-size: 0.9rem;
+            transition: all var(--transition);
+            outline: none;
+        }
+        .nav-search input:focus {
+            border-color: var(--secondary);
+            box-shadow: 0 0 0 3px rgba(20, 184, 166, 0.15);
+        }
+        .nav-search i {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--muted);
+            pointer-events: none;
+        }
+
+        /* ===== BADGES ===== */
+        .badge-status {
+            background: var(--primary-light);
+            color: var(--primary);
+            font-weight: 500;
+            padding: 0.2rem 0.8rem;
+            border-radius: var(--radius-full);
+            font-size: 0.7rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+            white-space: nowrap;
+        }
+
+        /* ===== MOBILE DRAWER ===== */
+        .drawer-overlay {
+            background: rgba(15, 23, 42, 0.4);
+            backdrop-filter: blur(2px);
+            -webkit-backdrop-filter: blur(2px);
+            transition: opacity 0.25s ease;
+        }
+        .drawer-overlay.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        /* ===== BUTTONS ===== */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            padding: 0.3rem 1rem;
+            border-radius: var(--radius-full);
+            font-size: 0.8rem;
+            font-weight: 500;
+            border: none;
+            cursor: pointer;
+            transition: all 0.15s;
+            font-family: inherit;
+            text-decoration: none;
+            touch-action: manipulation;
+        }
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            box-shadow: 0 2px 8px rgba(15, 118, 110, 0.2);
+        }
+        .btn-outline {
+            background: transparent;
+            color: var(--primary);
+            border: 1px solid var(--primary);
+        }
+        .btn-outline:hover {
+            background: var(--primary-light);
+        }
+        .btn-ghost {
+            background: transparent;
+            color: var(--muted);
+        }
+        .btn-ghost:hover {
+            background: #f5fafa;
+            color: var(--text);
+        }
+        .btn-sm {
+            padding: 0.2rem 0.7rem;
+            font-size: 0.7rem;
+        }
+        .btn-success {
+            background: var(--success);
+            color: white;
+        }
+        .btn-success:hover {
+            background: #15803d;
+        }
+        .btn-danger {
+            background: var(--danger);
+            color: white;
+        }
+        .btn-danger:hover {
+            background: #b91c1c;
+        }
+        .touch-target {
+            min-height: 44px;
+            min-width: 44px;
+        }
+
+        /* ===== SETTINGS SECTIONS ===== */
+        .settings-card {
+            background: white;
+            border-radius: var(--radius);
+            border: 1px solid var(--border-light);
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+            transition: all var(--transition);
+        }
+        .settings-card:hover {
+            box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
+        }
+        .settings-card .section-title {
+            font-weight: 600;
+            font-size: 1rem;
+            color: var(--text);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid var(--border-light);
+        }
+        .settings-card .section-title i {
+            color: var(--primary);
+            width: 1.25rem;
+        }
+
+        .setting-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid var(--border-light);
+        }
+        .setting-item:last-child {
+            border-bottom: none;
+        }
+        .setting-item .setting-label {
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--text);
+        }
+        .setting-item .setting-desc {
+            font-size: 0.75rem;
+            color: var(--muted);
+            margin-top: 0.1rem;
+        }
+        .setting-item .setting-control {
+            flex-shrink: 0;
+            margin-left: 1rem;
+        }
+
+        /* Toggle Switch */
+        .toggle {
+            position: relative;
+            display: inline-block;
+            width: 44px;
+            height: 24px;
+            flex-shrink: 0;
+        }
+        .toggle input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        .toggle .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: #d1e0e0;
+            transition: var(--transition);
+            border-radius: 34px;
+        }
+        .toggle .slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            bottom: 3px;
+            background: white;
+            transition: var(--transition);
+            border-radius: 50%;
+        }
+        .toggle input:checked+.slider {
+            background: var(--primary);
+        }
+        .toggle input:checked+.slider:before {
+            transform: translateX(20px);
+        }
+
+        /* Form inputs */
+        .form-input {
+            width: 100%;
+            padding: 0.5rem 0.75rem;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            font-size: 0.875rem;
+            font-family: inherit;
+            color: var(--text);
+            background: white;
+            transition: all 0.15s;
+            outline: none;
+        }
+        .form-input:focus {
+            border-color: var(--secondary);
+            box-shadow: 0 0 0 3px rgba(20, 184, 166, 0.12);
+        }
+        .form-input:disabled {
+            background: #f5fafa;
+            cursor: not-allowed;
+        }
+        .form-label {
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: var(--text);
+            display: block;
+            margin-bottom: 0.25rem;
+        }
+        .form-hint {
+            font-size: 0.7rem;
+            color: var(--muted);
+            margin-top: 0.25rem;
+        }
+
+        /* ===== SIDEBAR SCROLL ===== */
+        .sidebar-scroll {
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+        .sidebar-scroll::-webkit-scrollbar {
+            width: 4px;
+        }
+        .sidebar-scroll::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .sidebar-scroll::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 4px;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 1024px) {
+            .nav-search input {
+                width: 180px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-search input {
+                width: 140px;
+                padding: 0.4rem 0.8rem 0.4rem 2.2rem;
+                font-size: 0.8rem;
+            }
+            .nav-search i {
+                left: 0.7rem;
+                font-size: 0.8rem;
+            }
+            .settings-card {
+                padding: 1rem;
+            }
+            .setting-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.5rem;
+            }
+            .setting-item .setting-control {
+                margin-left: 0;
+                width: 100%;
+            }
+            .setting-item .setting-control .form-input {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .nav-search input {
+                width: 100px;
+                padding: 0.3rem 0.6rem 0.3rem 1.8rem;
+                font-size: 0.7rem;
+            }
+            .nav-search i {
+                left: 0.5rem;
+                font-size: 0.7rem;
+            }
+            .settings-card {
+                padding: 0.75rem;
+            }
+            .settings-card .section-title {
+                font-size: 0.9rem;
+            }
+            .setting-item .setting-label {
+                font-size: 0.8rem;
+            }
+            .setting-item .setting-desc {
+                font-size: 0.65rem;
+            }
+            .btn {
+                font-size: 0.7rem;
+                padding: 0.2rem 0.6rem;
+            }
+            .btn-sm {
+                font-size: 0.6rem;
+                padding: 0.15rem 0.5rem;
+            }
+            .p-5 {
+                padding: 0.75rem;
+            }
+            .p-4 {
+                padding: 0.5rem;
+            }
+            .text-2xl {
+                font-size: 1.15rem;
+            }
+            .gap-4 {
+                gap: 0.5rem;
+            }
+            .space-y-6>*+* {
+                margin-top: 0.75rem;
+            }
+            .toggle {
+                width: 38px;
+                height: 20px;
+            }
+            .toggle .slider:before {
+                height: 14px;
+                width: 14px;
+                left: 3px;
+                bottom: 3px;
+            }
+            .toggle input:checked+.slider:before {
+                transform: translateX(18px);
+            }
+        }
+
+        @media (max-width: 360px) {
+            .nav-search input {
+                width: 80px;
+                padding: 0.25rem 0.4rem 0.25rem 1.4rem;
+                font-size: 0.6rem;
+            }
+            .nav-search i {
+                left: 0.3rem;
+                font-size: 0.6rem;
+            }
+        }
+
+        /* ===== ANIMATION ===== */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(12px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .fade-in {
+            animation: fadeInUp 0.3s ease forwards;
+        }
+        .fade-in-d1 {
+            animation-delay: 0.05s;
+        }
+        .fade-in-d2 {
+            animation-delay: 0.1s;
+        }
+        .fade-in-d3 {
+            animation-delay: 0.15s;
+        }
+        .fade-in-d4 {
+            animation-delay: 0.2s;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== MOBILE OVERLAY ===== -->
+    <div id="drawerOverlay" class="fixed inset-0 z-40 drawer-overlay hidden md:hidden" aria-hidden="true"></div>
+
+    <!-- ===== SIDEBAR ===== -->
+    <aside id="sidebar" class="fixed top-0 left-0 h-full w-64 sidebar-bg text-white z-50 flex flex-col transition-transform duration-300 ease-in-out -translate-x-full md:translate-x-0 shadow-xl" aria-label="Main navigation">
+        <div class="p-4 sm:p-5 text-xl sm:text-2xl font-bold tracking-tight flex items-center gap-2 border-b border-[#2a8a82] flex-shrink-0">
+            <i class="fas fa-graduation-cap text-[#38BDF8]"></i>
+            <span>EduNova</span>
+        </div>
+        <nav class="flex-1 px-2 sm:px-3 py-4 space-y-0.5 sidebar-scroll" role="navigation">
+            <a href="./index.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg sidebar-text touch-target"><i class="fas fa-tachometer-alt w-5"></i> Dashboard</a>
+            <a href="./students.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg sidebar-text touch-target"><i class="fas fa-user-graduate w-5"></i> Students</a>
+            <a href="./instructors.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg sidebar-text touch-target"><i class="fas fa-chalkboard-teacher w-5"></i> Instructors</a>
+            <a href="./courses.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg sidebar-text touch-target"><i class="fas fa-book-open w-5"></i> Courses</a>
+            <a href="./assignments.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg sidebar-text touch-target"><i class="fas fa-tasks w-5"></i> Assignments</a>
+            <a href="./analytics.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg sidebar-text touch-target"><i class="fas fa-chart-line w-5"></i> Analytics</a>
+            <a href="./payment.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg sidebar-text touch-target"><i class="fas fa-credit-card w-5"></i> Payments</a>
+            <a href="./reviews.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg sidebar-text touch-target"><i class="fas fa-star w-5"></i> Reviews</a>
+            <a href="./notifications.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg sidebar-text touch-target"><i class="fas fa-bell w-5"></i> Notifications</a>
+            <hr class="border-[#2a8a82] my-3" />
+            <a href="./settings.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg sidebar-text active touch-target"><i class="fas fa-cog w-5"></i> Settings</a>
+            <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg sidebar-text touch-target"><i class="fas fa-sign-out-alt w-5"></i> Logout</a>
+        </nav>
+        <div class="p-3 sm:p-4 text-xs text-[#b0d6d0] border-t border-[#2a8a82] flex-shrink-0">
+            v2.0 · EduNova
+        </div>
+    </aside>
+
+    <!-- ===== MAIN CONTENT ===== -->
+    <div class="md:ml-64 min-h-screen flex flex-col">
+
+        <!-- ===== TOP NAVBAR ===== -->
+        <header class="bg-white/80 backdrop-blur-sm border-b border-[#dce8e6] sticky top-0 z-30 px-3 sm:px-6 py-2 sm:py-3 flex items-center justify-between flex-wrap gap-1 sm:gap-2" role="banner">
+            <div class="flex items-center gap-2 sm:gap-3">
+                <button id="hamburgerBtn" class="md:hidden text-[#0F766E] text-xl touch-target flex items-center justify-center" aria-label="Toggle sidebar" aria-expanded="false">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <div class="nav-search relative hidden sm:block">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Search settings..." class="focus:outline-none focus:ring-2 focus:ring-[#14B8A6] transition" aria-label="Search" />
+                </div>
+            </div>
+            <div class="flex items-center gap-2 sm:gap-4">
+                <button class="sm:hidden text-[#64748B] touch-target flex items-center justify-center" aria-label="Search">
+                    <i class="fas fa-search"></i>
+                </button>
+                <button class="text-[#64748B] text-lg hover:text-[#0F766E] touch-target flex items-center justify-center relative" aria-label="Notifications">
+                    <i class="fas fa-bell"></i>
+                    <span class="absolute -top-0.5 -right-0.5 bg-[#DC2626] text-white text-[10px] rounded-full w-4 h-4 flex items-center justify-center">12</span>
+                </button>
+                <button class="text-[#64748B] text-lg hover:text-[#0F766E] touch-target hidden xs:flex items-center justify-center" aria-label="Messages">
+                    <i class="fas fa-envelope"></i>
+                </button>
+                <div class="flex items-center gap-1 sm:gap-2 border-l pl-2 sm:pl-3 border-[#dce8e6]">
+                    <img src="https://ui-avatars.com/api/?name=Admin&background=0F766E&color=fff&size=32" alt="Admin avatar" class="w-7 h-7 sm:w-8 sm:h-8 rounded-full" />
+                    <span class="hidden sm:inline font-medium text-sm text-[#0F172A]">Admin <i class="fas fa-chevron-down ml-1 text-[#64748B] text-xs"></i></span>
+                </div>
+            </div>
+        </header>
+
+        <!-- ===== PAGE CONTENT ===== -->
+        <main class="flex-1 p-3 sm:p-6 space-y-4 sm:space-y-6" role="main">
+
+            <!-- ===== PAGE HEADER ===== -->
+            <div class="flex flex-wrap items-center justify-between gap-2 fade-in">
+                <div>
+                    <h1 class="text-xl sm:text-2xl font-bold text-[#0F172A] flex items-center gap-2">
+                        <i class="fas fa-cog text-[#0F766E]"></i> Settings
+                    </h1>
+                    <p class="text-sm sm:text-base text-[#64748B]">Manage your account preferences and platform settings</p>
+                </div>
+                <button class="btn btn-primary btn-sm touch-target"><i class="fas fa-save"></i> Save All Changes</button>
+            </div>
+
+            <!-- ===== SETTINGS GRID ===== -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
+
+                <!-- ===== PROFILE SETTINGS ===== -->
+                <div class="settings-card fade-in">
+                    <div class="section-title">
+                        <i class="fas fa-user-circle"></i> Profile Settings
+                    </div>
+
+                    <div class="setting-item">
+                        <div>
+                            <div class="setting-label">Full Name</div>
+                            <div class="setting-desc">Your display name on the platform</div>
+                        </div>
+                        <div class="setting-control w-full sm:w-48">
+                            <input type="text" value="Admin User" class="form-input" />
+                        </div>
+                    </div>
+
+                    <div class="setting-item">
+                        <div>
+                            <div class="setting-label">Email Address</div>
+                            <div class="setting-desc">Used for login and notifications</div>
+                        </div>
+                        <div class="setting-control w-full sm:w-48">
+                            <input type="email" value="admin@edunova.com" class="form-input" />
+                        </div>
+                    </div>
+
+                    <div class="setting-item">
+                        <div>
+                            <div class="setting-label">Phone Number</div>
+                            <div class="setting-desc">For account recovery and updates</div>
+                        </div>
+                        <div class="setting-control w-full sm:w-48">
+                            <input type="tel" value="+91 98765 43210" class="form-input" />
+                        </div>
+                    </div>
+
+                    <div class="setting-item">
+                        <div>
+                            <div class="setting-label">Role</div>
+                            <div class="setting-desc">Your access level</div>
+                        </div>
+                        <div class="setting-control w-full sm:w-48">
+                            <input type="text" value="Super Admin" class="form-input" disabled />
+                        </div>
+                    </div>
+
+                    <div class="mt-3 flex justify-end">
+                        <button class="btn btn-primary btn-sm touch-target"><i class="fas fa-user-edit"></i> Update Profile</button>
+                    </div>
+                </div>
+
+                <!-- ===== SECURITY SETTINGS ===== -->
+                <div class="settings-card fade-in fade-in-d1">
+                    <div class="section-title">
+                        <i class="fas fa-shield-alt"></i> Security
+                    </div>
+
+                    <div class="setting-item">
+                        <div>
+                            <div class="setting-label">Current Password</div>
+                            <div class="setting-desc">Enter your current password</div>
+                        </div>
+                        <div class="setting-control w-full sm:w-48">
+                            <input type="password" value="••••••••" class="form-input" />
+                        </div>
+                    </div>
+
+                    <div class="setting-item">
+                        <div>
+                            <div class="setting-label">New Password</div>
+                            <div class="setting-desc">Must be at least 8 characters</div>
+                        </div>
+                        <div class="setting-control w-full sm:w-48">
+                            <input type="password" placeholder="Enter new password" class="form-input" />
+                        </div>
+                    </div>
+
+                    <div class="setting-item">
+                        <div>
+                            <div class="setting-label">Confirm Password</div>
+                            <div class="setting-desc">Re-enter your new password</div>
+                        </div>
+                        <div class="setting-control w-full sm:w-48">
+                            <input type="password" placeholder="Confirm new password" class="form-input" />
+                        </div>
+                    </div>
+
+                    <div class="setting-item">
+                        <div>
+                            <div class="setting-label">Two-Factor Authentication</div>
+                            <div class="setting-desc">Add an extra layer of security</div>
+                        </div>
+                        <div class="setting-control">
+                            <label class="toggle">
+                                <input type="checkbox" checked />
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="mt-3 flex justify-end">
+                        <button class="btn btn-primary btn-sm touch-target"><i class="fas fa-key"></i> Change Password</button>
+                    </div>
+                </div>
+
+                <!-- ===== NOTIFICATION PREFERENCES ===== -->
+                <div class="settings-card fade-in fade-in-d2">
+                    <div class="section-title">
+                        <i class="fas fa-bell"></i> Notification Preferences
+                    </div>
+
+                    <div class="setting-item">
+                        <div>
+                            <div class="setting-label">Email Notifications</div>
+                            <div class="setting-desc">Receive updates via email</div>
+                        </div>
+                        <div class="setting-control">
+                            <label class="toggle">
+                                <input type="checkbox" checked />
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="setting-item">
+                        <div>
+                            <div class="setting-label">Push Notifications</div>
+                            <div class="setting-desc">Receive real-time alerts in browser</div>
+                        </div>
+                        <div class="setting-control">
+                            <label class="toggle">
+                                <input type="checkbox" checked />
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="setting-item">
+                        <div>
+                            <div class="setting-label">Course Updates</div>
+                            <div class="setting-desc">New courses and content updates</div>
+                        </div>
+                        <div class="setting-control">
+                            <label class="toggle">
+                                <input type="checkbox" />
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="setting-item">
+                        <div>
+                            <div class="setting-label">Student Activity</div>
+                            <div class="setting-desc">Enrollments and progress reports</div>
+                        </div>
+                        <div class="setting-control">
+                            <label class="toggle">
+                                <input type="checkbox" checked />
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="setting-item">
+                        <div>
+                            <div class="setting-label">Payment Alerts</div>
+                            <div class="setting-desc">Transaction and invoice notifications</div>
+                        </div>
+                        <div class="setting-control">
+                            <label class="toggle">
+                                <input type="checkbox" checked />
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="mt-3 flex justify-end">
+                        <button class="btn btn-primary btn-sm touch-target"><i class="fas fa-save"></i> Save Preferences</button>
+                    </div>
+                </div>
+
+                <!-- ===== APPEARANCE ===== -->
+                <div class="settings-card fade-in fade-in-d3">
+                    <div class="section-title">
+                        <i class="fas fa-palette"></i> Appearance
+                    </div>
+
+                    <div class="setting-item">
+                        <div>
+                            <div class="setting-label">Theme Mode</div>
+                            <div class="setting-desc">Choose between light and dark mode</div>
+                        </div>
+                        <div class="setting-control w-full sm:w-48">
+                            <select class="form-input">
+                                <option>Light</option>
+                                <option>Dark</option>
+                                <option>System Default</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="setting-item">
+                        <div>
+                            <div class="setting-label">Sidebar Collapsed</div>
+                            <div class="setting-desc">Minimize sidebar for more space</div>
+                        </div>
+                        <div class="setting-control">
+                            <label class="toggle">
+                                <input type="checkbox" />
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="setting-item">
+                        <div>
+                            <div class="setting-label">Compact View</div>
+                            <div class="setting-desc">Reduce spacing for more content</div>
+                        </div>
+                        <div class="setting-control">
+                            <label class="toggle">
+                                <input type="checkbox" />
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="setting-item">
+                        <div>
+                            <div class="setting-label">Language</div>
+                            <div class="setting-desc">Select your preferred language</div>
+                        </div>
+                        <div class="setting-control w-full sm:w-48">
+                            <select class="form-input">
+                                <option>English (US)</option>
+                                <option>English (UK)</option>
+                                <option>Hindi</option>
+                                <option>Spanish</option>
+                                <option>French</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="mt-3 flex justify-end">
+                        <button class="btn btn-primary btn-sm touch-target"><i class="fas fa-save"></i> Apply Changes</button>
+                    </div>
+                </div>
+
+                <!-- ===== SYSTEM SETTINGS ===== -->
+                <div class="settings-card fade-in fade-in-d4 lg:col-span-2">
+                    <div class="section-title">
+                        <i class="fas fa-server"></i> System Settings
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <div class="setting-item">
+                                <div>
+                                    <div class="setting-label">Platform Name</div>
+                                    <div class="setting-desc">Display name for your platform</div>
+                                </div>
+                                <div class="setting-control w-full sm:w-48">
+                                    <input type="text" value="EduNova" class="form-input" />
+                                </div>
+                            </div>
+
+                            <div class="setting-item">
+                                <div>
+                                    <div class="setting-label">Time Zone</div>
+                                    <div class="setting-desc">Default time zone for the platform</div>
+                                </div>
+                                <div class="setting-control w-full sm:w-48">
+                                    <select class="form-input">
+                                        <option>UTC+5:30 (India)</option>
+                                        <option>UTC+0 (GMT)</option>
+                                        <option>UTC-5 (EST)</option>
+                                        <option>UTC-8 (PST)</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <div class="setting-item">
+                                <div>
+                                    <div class="setting-label">Currency</div>
+                                    <div class="setting-desc">Default currency for payments</div>
+                                </div>
+                                <div class="setting-control w-full sm:w-48">
+                                    <select class="form-input">
+                                        <option>₹ INR</option>
+                                        <option>$ USD</option>
+                                        <option>€ EUR</option>
+                                        <option>£ GBP</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="setting-item">
+                                <div>
+                                    <div class="setting-label">Date Format</div>
+                                    <div class="setting-desc">Default date display format</div>
+                                </div>
+                                <div class="setting-control w-full sm:w-48">
+                                    <select class="form-input">
+                                        <option>DD/MM/YYYY</option>
+                                        <option>MM/DD/YYYY</option>
+                                        <option>YYYY-MM-DD</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-3 flex flex-wrap gap-3 justify-end">
+                        <button class="btn btn-primary btn-sm touch-target"><i class="fas fa-save"></i> Save System Settings</button>
+                        <button class="btn btn-outline btn-sm touch-target"><i class="fas fa-undo"></i> Reset to Defaults</button>
+                    </div>
+                </div>
+
+                <!-- ===== DANGER ZONE ===== -->
+                <div class="settings-card fade-in fade-in-d4 border-2 border-red-200 bg-red-50 lg:col-span-2">
+                    <div class="section-title text-red-700">
+                        <i class="fas fa-exclamation-triangle"></i> Danger Zone
+                    </div>
+
+                    <div class="setting-item border-b border-red-200">
+                        <div>
+                            <div class="setting-label text-red-700">Clear All Data</div>
+                            <div class="setting-desc">Permanently remove all platform data. This action cannot be undone.</div>
+                        </div>
+                        <div class="setting-control">
+                            <button class="btn btn-danger btn-sm touch-target"><i class="fas fa-trash"></i> Clear Data</button>
+                        </div>
+                    </div>
+
+                    <div class="setting-item border-b border-red-200">
+                        <div>
+                            <div class="setting-label text-red-700">Export All Data</div>
+                            <div class="setting-desc">Download a complete backup of all platform data</div>
+                        </div>
+                        <div class="setting-control">
+                            <button class="btn btn-primary btn-sm touch-target"><i class="fas fa-download"></i> Export</button>
+                        </div>
+                    </div>
+
+                    <div class="setting-item">
+                        <div>
+                            <div class="setting-label text-red-700">Delete Account</div>
+                            <div class="setting-desc">Permanently delete your admin account and all associated data</div>
+                        </div>
+                        <div class="setting-control">
+                            <button class="btn btn-danger btn-sm touch-target"><i class="fas fa-user-times"></i> Delete Account</button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- ===== SAVE ALL BUTTON (sticky on mobile) ===== -->
+            <div class="fixed bottom-0 left-0 right-0 md:relative bg-white/95 backdrop-blur-sm border-t border-[#dce8e6] p-3 md:p-0 md:border-0 md:bg-transparent z-20 md:z-auto md:mt-4 flex justify-end gap-2">
+                <button class="btn btn-ghost btn-sm touch-target hidden md:inline-flex"><i class="fas fa-times"></i> Cancel</button>
+                <button class="btn btn-primary btn-sm touch-target w-full md:w-auto"><i class="fas fa-save"></i> Save All Changes</button>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- ===== SCRIPTS ===== -->
+    <script>
+        (function() {
+            'use strict';
+
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('drawerOverlay');
+            const hamBtn = document.getElementById('hamburgerBtn');
+            let drawerOpen = false;
+
+            function toggleDrawer() {
+                drawerOpen = !drawerOpen;
+                if (drawerOpen) {
+                    sidebar.classList.remove('-translate-x-full');
+                    overlay.classList.remove('hidden');
+                    hamBtn.setAttribute('aria-expanded', 'true');
+                    document.body.style.overflow = 'hidden';
+                } else {
+                    sidebar.classList.add('-translate-x-full');
+                    overlay.classList.add('hidden');
+                    hamBtn.setAttribute('aria-expanded', 'false');
+                    document.body.style.overflow = '';
+                }
+            }
+
+            if (hamBtn) {
+                hamBtn.addEventListener('click', toggleDrawer);
+            }
+
+            if (overlay) {
+                overlay.addEventListener('click', toggleDrawer);
+            }
+
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && drawerOpen) {
+                    toggleDrawer();
+                }
+            });
+
+            window.addEventListener('resize', function() {
+                if (window.innerWidth >= 768 && drawerOpen) {
+                    sidebar.classList.remove('-translate-x-full');
+                    overlay.classList.add('hidden');
+                    hamBtn.setAttribute('aria-expanded', 'false');
+                    document.body.style.overflow = '';
+                    drawerOpen = false;
+                }
+            });
+
+            let touchStartX = 0;
+            let touchEndX = 0;
+
+            document.addEventListener('touchstart', function(e) {
+                touchStartX = e.changedTouches[0].screenX;
+            }, { passive: true });
+
+            document.addEventListener('touchend', function(e) {
+                touchEndX = e.changedTouches[0].screenX;
+                const diff = touchStartX - touchEndX;
+                if (diff > 50 && drawerOpen) {
+                    toggleDrawer();
+                }
+            }, { passive: true });
+
+            // Toggle switch click handlers
+            document.querySelectorAll('.toggle input[type="checkbox"]').forEach(function(checkbox) {
+                checkbox.addEventListener('change', function() {
+                    // You can add additional logic here if needed
+                    console.log('Toggle changed:', this.checked);
+                });
+            });
+
+            // Save buttons - demo feedback
+            document.querySelectorAll('.btn-primary .fa-save, .btn-primary .fa-user-edit, .btn-primary .fa-key, .btn-primary .fa-save, .btn-primary .fa-save, .btn-primary .fa-save').forEach(function(btn) {
+                if (btn.closest('.btn')) {
+                    btn.closest('.btn').addEventListener('click', function(e) {
+                        e.preventDefault();
+                        const original = this.innerHTML;
+                        this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
+                        this.disabled = true;
+                        setTimeout(() => {
+                            this.innerHTML = original;
+                            this.disabled = false;
+                            // Show a subtle feedback
+                            this.style.background = '#16A34A';
+                            setTimeout(() => {
+                                this.style.background = '';
+                            }, 1000);
+                        }, 800);
+                    });
+                }
+            });
+
+            // Danger zone buttons
+            document.querySelectorAll('.btn-danger').forEach(function(btn) {
+                btn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    if (confirm('⚠️ Are you sure you want to perform this action? This cannot be undone.')) {
+                        const original = this.innerHTML;
+                        this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+                        this.disabled = true;
+                        setTimeout(() => {
+                            this.innerHTML = original;
+                            this.disabled = false;
+                            alert('Action completed successfully.');
+                        }, 1000);
+                    }
+                });
+            });
+
+            // Save All Changes button
+            document.querySelectorAll('.btn-primary .fa-save').forEach(function(btn) {
+                if (btn.closest('.btn') && btn.closest('.btn').textContent.trim().includes('Save All')) {
+                    btn.closest('.btn').addEventListener('click', function(e) {
+                        e.preventDefault();
+                        const original = this.innerHTML;
+                        this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving All...';
+                        this.disabled = true;
+                        setTimeout(() => {
+                            this.innerHTML = original;
+                            this.disabled = false;
+                            alert('✅ All settings saved successfully!');
+                        }, 1200);
+                    });
+                }
+            });
+
+        })();
+    </script>
+
+</body>
+</html>
