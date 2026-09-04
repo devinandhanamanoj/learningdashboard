@@ -1,3951 +1,811 @@
-
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>EduNova · Students</title>
-
-    <!-- Common CSS -->
-    <link rel="stylesheet" href="style.css">
-
-    <!-- Font Awesome -->
-    <link rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-
-    <!-- Tailwind -->
     <script src="https://cdn.tailwindcss.com"></script>
-
-    <!-- Flowbite -->
-    <link href="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.css"
-          rel="stylesheet">
-
-    <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script>
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
     <style>
-
-        /* =====================================================
-           COMMON INDEX PAGE LAYOUT
-           ===================================================== */
-
-        body {
-            background: #F0FDFA;
-            color: #0F172A;
-            font-family: 'Inter', system-ui, sans-serif;
-        }
-
-        .sidebar-bg {
-            background: #0F766E;
-        }
-
-        .sidebar-text {
-            color: #e2f0f0;
-        }
-
-        .sidebar-text:hover {
-            background: #0d6b63;
-            color: white;
-        }
-
-        .sidebar-text.active {
-            background: #0d6b63;
-            color: white;
-        }
-
-        .drawer-overlay {
-            background: rgba(15,23,42,0.4);
-        }
-
+        body { background: #F0FDFA; color: #0F172A; font-family: 'Inter', system-ui, sans-serif; }
+        .sidebar-bg { background: #0F766E; }
+        .sidebar-text { color: #e2f0f0; }
+        .sidebar-text:hover { background: #0d6b63; color: white; }
+        .sidebar-text.active { background: #0d6b63; color: white; }
+        .card-shadow { box-shadow: 0 4px 12px rgba(15,23,42,0.04), 0 1px 2px rgba(0,0,0,0.02); }
+        .stat-icon { background: #e6f7f5; color: #0F766E; }
         .nav-search input {
-            background: white;
-            border: 1px solid #d1e0e0;
-            border-radius: 40px;
-            padding: 0.5rem 1rem 0.5rem 2.8rem;
-            width: 240px;
-            font-size: 0.9rem;
+            background: white; border: 1px solid #d1e0e0; border-radius: 40px;
+            padding: 0.5rem 1rem 0.5rem 2.8rem; width: 240px; font-size: 0.9rem;
         }
-
-        .nav-search i {
-            position: absolute;
-            left: 1rem;
-            top: 0.7rem;
-            color: #64748B;
+        .nav-search i { position: absolute; left: 1rem; top: 0.7rem; color: #64748B; }
+        .badge-status { background: #e6f7f5; color: #0F766E; font-weight: 500; padding: 0.2rem 0.8rem; border-radius: 40px; font-size: 0.7rem; }
+        .drawer-overlay { background: rgba(15,23,42,0.4); }
+        .btn { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.3rem 1rem; border-radius: 40px; font-size: 0.8rem; font-weight: 500; border: none; cursor: pointer; transition: all 0.15s; font-family: inherit; }
+        .btn-primary { background: #0F766E; color: white; }
+        .btn-primary:hover { background: #0d6b63; box-shadow: 0 2px 8px rgba(15,118,110,0.2); }
+        .btn-outline { background: transparent; color: #0F766E; border: 1px solid #0F766E; }
+        .btn-outline:hover { background: #e6f7f5; }
+        .btn-ghost { background: transparent; color: #64748B; }
+        .btn-ghost:hover { background: #f5fafa; color: #0F172A; }
+        .btn-sm { padding: 0.2rem 0.7rem; font-size: 0.7rem; }
+        .btn-success { background: #16A34A; color: white; }
+        .btn-success:hover { background: #15803d; }
+        .btn-danger { background: #dc2626; color: white; }
+        .btn-danger:hover { background: #b91c1c; }
+        .filter-bar {
+            background: white; border-radius: 16px; border: 1px solid #e6f0ed;
+            padding: 1rem 1.25rem; display: flex; flex-wrap: wrap; align-items: flex-end; gap: 0.75rem 1.5rem;
         }
-
-        @media (max-width: 768px) {
-
-            .nav-search input {
-                width: 140px;
-            }
-
+        .filter-group { display: flex; flex-direction: column; gap: 0.15rem; flex: 1 0 140px; min-width: 120px; }
+        .filter-group label { font-size: 0.7rem; font-weight: 500; color: #64748B; text-transform: uppercase; }
+        .filter-group select, .filter-group input {
+            padding: 0.3rem 0.6rem; border: 1px solid #dce8e6; border-radius: 8px;
+            font-size: 0.8rem; background: white; color: #0F172A; width: 100%;
         }
-
-        @media (max-width: 480px) {
-
-            .nav-search input {
-                width: 100px;
-                padding: 0.3rem 0.8rem 0.3rem 2rem;
-                font-size: 0.7rem;
-            }
-
-            .nav-search i {
-                left: 0.6rem;
-                top: 0.5rem;
-                font-size: 0.7rem;
-            }
-
+        .filter-group select:focus, .filter-group input:focus { outline: none; border-color: #14B8A6; box-shadow: 0 0 0 3px rgba(20,184,166,0.12); }
+        .filter-actions { display: flex; gap: 0.4rem; flex-wrap: wrap; align-items: center; }
+        .stat-card {
+            background: white; border-radius: 16px; box-shadow: 0 4px 12px rgba(15,23,42,0.04), 0 1px 2px rgba(0,0,0,0.02);
+            border: 1px solid #e6f0ed; padding: 1.25rem 1.5rem; display: flex; align-items: flex-start; justify-content: space-between;
+            transition: all 0.3s ease;
         }
-
-
-        /* =====================================================
-           STUDENT PAGE
-           ===================================================== */
-
-        .student-name {
-            display: flex;
-            align-items: center;
-            gap: 10px;
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(15,23,42,0.08);
         }
-
-
+        .stat-card .stat-info .label { color: #64748B; font-size: 0.875rem; }
+        .stat-card .stat-info .value { font-size: 1.5rem; font-weight: 700; color: #0F172A; margin-top: 0.25rem; }
+        .stat-card .stat-info .trend { font-size: 0.75rem; display: inline-flex; align-items: center; gap: 0.25rem; margin-top: 0.25rem; }
+        .stat-card .stat-info .trend.up { color: #16A34A; }
+        .stat-card .stat-info .trend.down { color: #dc2626; }
+        .stat-card .stat-icon { background: #e6f7f5; color: #0F766E; width: 2.75rem; height: 2.75rem; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; flex-shrink: 0; transition: all 0.3s ease; }
+        .stat-card .stat-icon:hover { transform: scale(1.1) rotate(5deg); background: #d4f0ed; }
+        .table-wrap { overflow-x: auto; }
+        .student-name { display: flex; align-items: center; gap: 10px; }
         .avatar {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: var(--primary-light);
-            color: var(--primary);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 600;
-            flex-shrink: 0;
+            width: 36px; height: 36px; border-radius: 50%; background: #e6f7f5;
+            color: #0F766E; display: flex; align-items: center; justify-content: center;
+            font-weight: 600; font-size: 0.75rem; flex-shrink: 0;
+            transition: all 0.3s ease;
+        }
+        .avatar:hover { transform: scale(1.1); }
+        .badge-active { background: #dcfce7; color: #15803d; display: inline-block; padding: 0.15rem 0.6rem; border-radius: 999px; font-size: 0.65rem; font-weight: 600; }
+        .status-inactive { display: inline-block; background: #fee2e2; color: #dc2626; padding: 0.15rem 0.6rem; border-radius: 999px; font-size: 0.65rem; font-weight: 600; }
+        .course-draft { display: inline-block; background: #fef3c7; color: #b45309; padding: 0.15rem 0.6rem; border-radius: 999px; font-size: 0.65rem; font-weight: 600; }
+        .table-actions { display: flex; gap: 0.5rem; align-items: center; }
+        .table-actions a { color: #64748B; transition: all 0.3s ease; display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; border-radius: 8px; }
+        .table-actions a:hover { color: #0F766E; background: #e6f7f5; transform: scale(1.1); }
+        .table-actions a.danger:hover { color: #dc2626; background: #fee2e2; }
+        .progress-wrapper { width: 110px; }
+        .progress-info { display: flex; justify-content: flex-end; margin-bottom: 3px; font-size: 12px; font-weight: 600; color: #334155; }
+        .progress-bar { width: 100%; height: 5px; background: #e2e8f0; border-radius: 10px; overflow: hidden; }
+        .progress-fill { height: 100%; background: #0d9488; border-radius: 10px; transition: width 0.8s ease; }
+        table { width: 100%; border-collapse: collapse; font-size: 0.8rem; }
+        thead { background: #f8fbfa; border-bottom: 1px solid #e6f0ed; }
+        th { text-align: left; padding: 0.6rem 0.75rem; font-weight: 600; color: #64748B; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.03em; }
+        td { padding: 0.6rem 0.75rem; border-bottom: 1px solid #f0f7f5; vertical-align: middle; }
+        tr { transition: all 0.3s ease; }
+        tr:hover { background: #f8fbfa; transform: scale(1.01); }
+        .card { background: white; border-radius: 16px; box-shadow: 0 4px 12px rgba(15,23,42,0.04), 0 1px 2px rgba(0,0,0,0.02); border: 1px solid #e6f0ed; padding: 1.25rem; transition: all 0.3s ease; }
+        .card:hover { box-shadow: 0 8px 24px rgba(15,23,42,0.06); }
+        .card-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem; }
+        .card-title { font-weight: 600; color: #0F172A; font-size: 0.9rem; display: flex; align-items: center; gap: 0.5rem; }
+        .card-title i { color: #0F766E; }
+        .text-muted { color: #64748B; font-size: 0.75rem; }
+        .form-control { width: 100%; padding: 0.4rem 0.75rem; border: 1px solid #dce8e6; border-radius: 8px; font-size: 0.8rem; background: white; color: #0F172A; transition: all 0.3s ease; font-family: inherit; }
+        .form-control:focus { outline: none; border-color: #14B8A6; box-shadow: 0 0 0 3px rgba(20,184,166,0.12); transform: scale(1.02); }
+        .form-control:hover { border-color: #14B8A6; }
+        .flex-between { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem; }
+        .modal-overlay { background: rgba(15,23,42,0.4); backdrop-filter: blur(2px); animation: fadeIn 0.3s ease; }
+        .modal-content { background: white; border-radius: 16px; width: 100%; max-width: 500px; max-height: 90vh; overflow-y: auto; animation: scaleIn 0.3s ease; }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; padding: 1.25rem 1.5rem; border-bottom: 1px solid #e6f0ed; }
+        .modal-header h3 { font-size: 1.1rem; font-weight: 600; color: #0F172A; }
+        .modal-body { padding: 1.5rem; }
+        .modal-footer { padding: 1rem 1.5rem; border-top: 1px solid #e6f0ed; display: flex; justify-content: flex-end; gap: 0.5rem; }
+
+        /* ===== ANIMATIONS ===== */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeInRight {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        @keyframes fadeInLeft {
+            from { opacity: 0; transform: translateX(20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        @keyframes scaleIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
 
-
-        /* =====================================================
-           PAGINATION
-           ===================================================== */
-
-        #pagination {
-            display: flex;
-            align-items: center;
-            gap: 5px;
+        .animate-fadeInUp {
+            animation: fadeInUp 0.6s ease forwards;
+        }
+        .animate-fadeInRight {
+            animation: fadeInRight 0.6s ease forwards;
+        }
+        .animate-fadeInLeft {
+            animation: fadeInLeft 0.6s ease forwards;
+        }
+        .animate-scaleIn {
+            animation: scaleIn 0.5s ease forwards;
+        }
+        .animate-slideDown {
+            animation: slideDown 0.4s ease forwards;
+        }
+        .animate-pulse {
+            animation: pulse 2s ease-in-out infinite;
         }
 
+        .delay-1 { animation-delay: 0.05s; }
+        .delay-2 { animation-delay: 0.1s; }
+        .delay-3 { animation-delay: 0.15s; }
+        .delay-4 { animation-delay: 0.2s; }
+        .delay-5 { animation-delay: 0.25s; }
+        .delay-6 { animation-delay: 0.3s; }
+        .delay-7 { animation-delay: 0.35s; }
+        .delay-8 { animation-delay: 0.4s; }
+        .delay-9 { animation-delay: 0.45s; }
+        .delay-10 { animation-delay: 0.5s; }
 
-        #pagination button:disabled {
-            opacity: 1;
-            background-color: #1e293b;
-            color: white;
-            cursor: not-allowed;
-        }
-
-
-        /* =====================================================
-           PROGRESS
-           ===================================================== */
-
-        .progress-wrapper {
-            width: 110px;
-        }
-
-        .progress-info {
-            display: flex;
-            justify-content: flex-end;
-            margin-bottom: 5px;
-            font-size: 13px;
-            font-weight: 600;
-            color: #334155;
-        }
-
-        .progress-bar {
-            width: 100%;
-            height: 6px;
-            background: #e2e8f0;
-            border-radius: 10px;
-            overflow: hidden;
-        }
-
-        .progress-fill {
-            height: 100%;
-            background: #0d9488;
-            border-radius: 10px;
-            transition: width 0.3s ease;
-        }
-
-
-        /* =====================================================
-           ACTIVE
-           ===================================================== */
-
-        .badge-active {
-            background-color: #dcfce7 !important;
-            color: #15803d !important;
-            display: inline-block;
-            padding: 4px 10px;
-            border-radius: 999px;
-            font-size: 12px;
-            font-weight: 600;
-        }
-
-
-        /* =====================================================
-           INACTIVE
-           ===================================================== */
-
-        .status.inactive {
-            display: inline-block;
-            background-color: #fee2e2;
-            color: #dc2626;
-            padding: 4px 10px;
-            border-radius: 999px;
-            font-size: 12px;
-            font-weight: 600;
-        }
-
-
-        /* =====================================================
-           COURSE DRAFT
-           ===================================================== */
-
-        .course-draft {
-            display: inline-block;
-            background-color: #fef3c7;
-            color: #b45309;
-            padding: 4px 10px;
-            border-radius: 999px;
-            font-size: 12px;
-            font-weight: 600;
-        }
-
-
-        /* =====================================================
-           MODALS
-           ===================================================== */
-
-        #addStudentModal,
-        #viewStudentModal,
-        #editStudentModal {
-            backdrop-filter: blur(2px);
-        }
-
-
-        /* =====================================================
-           TABLE
-           ===================================================== */
-
-        .table-container {
-            overflow-x: auto;
-        }
-
-
-        /* =====================================================
-           DROPDOWNS
-           ===================================================== */
-
-        #course,
-        #editCourse,
-        #editStatus,
-        #courseFilter,
-        #statusFilter {
-
-            appearance: none !important;
-            -webkit-appearance: none !important;
-            -moz-appearance: none !important;
-
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 20 20'%3E%3Cpath fill='%2364748b' d='M5 7l5 5 5-5z'/%3E%3C/svg%3E") !important;
-
-            background-repeat: no-repeat !important;
-            background-position: right 12px center !important;
-            background-size: 16px !important;
-
-            padding-right: 40px !important;
-            cursor: pointer;
-        }
-
+        @media (max-width: 768px) { .nav-search input { width: 140px; } .filter-bar { flex-direction: column; align-items: stretch; } .filter-actions { justify-content: flex-end; } .table-actions { gap: 0.3rem; } .table-actions a { font-size: 0.8rem; } }
+        @media (max-width: 480px) { .nav-search input { width: 100px; padding: 0.3rem 0.8rem 0.3rem 2rem; font-size: 0.7rem; } .nav-search i { left: 0.6rem; top: 0.5rem; font-size: 0.7rem; } .stat-card .stat-info .value { font-size: 1.2rem; } .card { padding: 0.75rem; } .modal-content { margin: 0.5rem; } }
     </style>
-
 </head>
-
-
 <body>
 
-    <!-- =====================================================
-         MOBILE SIDEBAR OVERLAY
-         ===================================================== -->
+    <div id="drawerOverlay" class="fixed inset-0 z-40 drawer-overlay hidden md:hidden"></div>
 
-    <div id="drawerOverlay"
-         class="fixed inset-0 z-40 drawer-overlay hidden md:hidden">
-    </div>
-
-
-    <!-- =====================================================
-         SIDEBAR
-         ===================================================== -->
-
-    <aside id="sidebar"
-           class="fixed top-0 left-0 h-full w-64 sidebar-bg text-white z-50 flex flex-col transition-transform duration-300 -translate-x-full md:translate-x-0">
-
-        <!-- LOGO -->
-
-        <div class="p-5 text-2xl font-bold tracking-tight flex items-center gap-2 border-b border-[#2a8a82]">
-
-            <i class="fas fa-graduation-cap text-[#38BDF8]"></i>
-
-            LearnDash
-
+    <!-- SIDEBAR -->
+    <aside id="sidebar" class="fixed top-0 left-0 h-full w-64 sidebar-bg text-white z-50 flex flex-col transition-transform duration-300 -translate-x-full md:translate-x-0">
+        <div class="p-5 text-2xl font-bold tracking-tight flex items-center gap-2 border-b border-[#2a8a82] animate-fadeInRight">
+            <i class="fas fa-graduation-cap text-[#38BDF8]"></i> EduNova
         </div>
-
-
-        <!-- NAVIGATION -->
-
         <nav class="flex-1 px-3 py-6 space-y-1 overflow-y-auto">
-
-            <!-- Dashboard -->
-
-            <a href="./index.html"
-               class="flex items-center gap-3 px-3 py-2.5 rounded-lg sidebar-text">
-
-                <i class="fas fa-tachometer-alt w-5"></i>
-
-                Dashboard
-
-            </a>
-
-
-            <!-- Students ACTIVE -->
-
-            <a href="./student.html"
-               class="flex items-center gap-3 px-3 py-2.5 rounded-lg sidebar-text active">
-
-                <i class="fas fa-user-graduate w-5"></i>
-
-                Students
-
-            </a>
-
-
-            <!-- Instructors -->
-
-            <a href="./instructor.html"
-               class="flex items-center gap-3 px-3 py-2.5 rounded-lg sidebar-text">
-
-                <i class="fas fa-chalkboard-teacher w-5"></i>
-
-                Instructors
-
-            </a>
-
-
-            <!-- Courses -->
-
-            <a href="./courses.html"
-               class="flex items-center gap-3 px-3 py-2.5 rounded-lg sidebar-text">
-
-                <i class="fas fa-book-open w-5"></i>
-
-                Courses
-
-            </a>
-
-
-            <!-- Assignments -->
-
-            <a href="./assignments.html"
-               class="flex items-center gap-3 px-3 py-2.5 rounded-lg sidebar-text">
-
-                <i class="fas fa-tasks w-5"></i>
-
-                Assignments
-
-            </a>
-
-
-            <!-- Analytics -->
-
-            <a href="./analytics.html"
-               class="flex items-center gap-3 px-3 py-2.5 rounded-lg sidebar-text">
-
-                <i class="fas fa-chart-line w-5"></i>
-
-                Analytics
-
-            </a>
-
-
-            <!-- Payments -->
-
-            <a href="./payment.html"
-               class="flex items-center gap-3 px-3 py-2.5 rounded-lg sidebar-text">
-
-                <i class="fas fa-credit-card w-5"></i>
-
-                Payments
-
-            </a>
-
-
-            <!-- Reviews -->
-
-            <a href="./reviews.html"
-               class="flex items-center gap-3 px-3 py-2.5 rounded-lg sidebar-text">
-
-                <i class="fas fa-star w-5"></i>
-
-                Reviews
-
-            </a>
-
-
-            <!-- Notifications -->
-
-            <a href="./notifications.html"
-               class="flex items-center gap-3 px-3 py-2.5 rounded-lg sidebar-text">
-
-                <i class="fas fa-bell w-5"></i>
-
-                Notifications
-
-            </a>
-
-
-            <!-- Settings -->
-
-            <a href="./settings.html"
-               class="flex items-center gap-3 px-3 py-2.5 rounded-lg sidebar-text">
-
-                <i class="fas fa-cog w-5"></i>
-
-                Settings
-
-            </a>
-
-
-            <hr class="border-[#2a8a82] my-4">
-
-
-            <!-- Logout -->
-
-            <a href="#"
-               class="flex items-center gap-3 px-3 py-2.5 rounded-lg sidebar-text">
-
-                <i class="fas fa-sign-out-alt w-5"></i>
-
-                Logout
-
-            </a>
-
+            <a href="./index.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg sidebar-text animate-fadeInRight delay-1"><i class="fas fa-tachometer-alt w-5"></i> Dashboard</a>
+            <a href="./student.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg sidebar-text active animate-fadeInRight delay-2"><i class="fas fa-user-graduate w-5"></i> Students</a>
+            <a href="./instructor.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg sidebar-text animate-fadeInRight delay-3"><i class="fas fa-chalkboard-teacher w-5"></i> Instructors</a>
+            <a href="./courses.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg sidebar-text animate-fadeInRight delay-4"><i class="fas fa-book-open w-5"></i> Courses</a>
+            <a href="./assignments.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg sidebar-text animate-fadeInRight delay-5"><i class="fas fa-tasks w-5"></i> Assignments</a>
+            <a href="./analytics.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg sidebar-text animate-fadeInRight delay-6"><i class="fas fa-chart-line w-5"></i> Analytics</a>
+            <a href="./payment.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg sidebar-text animate-fadeInRight delay-7"><i class="fas fa-credit-card w-5"></i> Payments</a>
+            <a href="./reviews.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg sidebar-text animate-fadeInRight delay-8"><i class="fas fa-star w-5"></i> Reviews</a>
+            <a href="./notifications.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg sidebar-text animate-fadeInRight delay-9"><i class="fas fa-bell w-5"></i> Notifications</a>
+            <hr class="border-[#2a8a82] my-4" />
+            <a href="settings.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg sidebar-text animate-fadeInRight delay-10"><i class="fas fa-cog w-5"></i> Settings</a>
+            <a href="./logout.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg sidebar-text animate-fadeInRight delay-10"><i class="fas fa-sign-out-alt w-5"></i> Logout</a>
         </nav>
-
-
-        <!-- VERSION -->
-
-        <div class="p-4 text-xs text-[#b0d6d0] border-t border-[#2a8a82]">
-
-            v2.0 · edu admin
-
-        </div>
-
+        <div class="p-4 text-xs text-[#b0d6d0] border-t border-[#2a8a82] animate-fadeInRight delay-10">v2.0 · EduNova</div>
     </aside>
 
-
-
-    <!-- =====================================================
-         MAIN
-         ===================================================== -->
-
+    <!-- MAIN -->
     <div class="md:ml-64 min-h-screen flex flex-col">
 
-
-        <!-- =================================================
-             TOP NAVBAR
-             ================================================= -->
-
-        <header class="bg-white/80 backdrop-blur-sm border-b border-[#dce8e6] sticky top-0 z-30 px-4 sm:px-6 py-3 flex items-center justify-between flex-wrap gap-2">
-
-
-            <!-- LEFT -->
-
+        <!-- TOP NAVBAR -->
+        <header class="bg-white/80 backdrop-blur-sm border-b border-[#dce8e6] sticky top-0 z-30 px-4 sm:px-6 py-3 flex items-center justify-between flex-wrap gap-2 animate-slideDown">
             <div class="flex items-center gap-3">
-
-                <!-- MOBILE MENU -->
-
-                <button id="hamburgerBtn"
-                        class="md:hidden text-[#0F766E] text-xl">
-
-                    <i class="fas fa-bars"></i>
-
-                </button>
-
-
-                <!-- SEARCH -->
-
+                <button id="hamburgerBtn" class="md:hidden text-[#0F766E] text-xl"><i class="fas fa-bars"></i></button>
                 <div class="nav-search relative hidden sm:block">
-
                     <i class="fas fa-search"></i>
-
-                    <input type="text"
-                           placeholder="Search..."
-                           class="focus:outline-none focus:ring-2 focus:ring-[#14B8A6] transition">
-
+                    <input type="text" placeholder="Search students..." class="focus:outline-none focus:ring-2 focus:ring-[#14B8A6] transition" />
                 </div>
-
             </div>
-
-
-            <!-- RIGHT -->
-
             <div class="flex items-center gap-3 sm:gap-4">
-
-
-                <!-- MOBILE SEARCH ICON -->
-
                 <i class="fas fa-search text-[#64748B] sm:hidden"></i>
-
-
-                <!-- NOTIFICATION -->
-
-                <i class="fas fa-bell text-[#64748B] text-lg hover:text-[#0F766E] cursor-pointer relative">
-
-                    <span class="absolute -top-1 -right-1 bg-[#DC2626] text-white text-[10px] rounded-full w-4 h-4 flex items-center justify-center">
-
-                        12
-
-                    </span>
-
+                <i class="fas fa-bell text-[#64748B] text-lg hover:text-[#0F766E] cursor-pointer relative animate-pulse">
+                    <span class="absolute -top-1 -right-1 bg-[#DC2626] text-white text-[10px] rounded-full w-4 h-4 flex items-center justify-center">12</span>
                 </i>
-
-
-                <!-- EMAIL -->
-
                 <i class="fas fa-envelope text-[#64748B] text-lg hover:text-[#0F766E] cursor-pointer"></i>
-
-
-                <!-- ADMIN -->
-
                 <div class="flex items-center gap-2 border-l pl-3 border-[#dce8e6]">
-
-                    <img src="https://ui-avatars.com/api/?name=Admin&background=0F766E&color=fff&size=32"
-                         alt="admin"
-                         class="w-8 h-8 rounded-full">
-
-
-                    <span class="hidden sm:inline font-medium text-sm text-[#0F172A]">
-
-                        Admin
-
-                        <i class="fas fa-chevron-down ml-1 text-[#64748B] text-xs"></i>
-
-                    </span>
-
+                    <img src="https://ui-avatars.com/api/?name=Admin&background=0F766E&color=fff&size=32" alt="admin" class="w-8 h-8 rounded-full hover:scale-110 transition-transform duration-300" />
+                    <span class="hidden sm:inline font-medium text-sm text-[#0F172A]">Admin <i class="fas fa-chevron-down ml-1 text-[#64748B] text-xs"></i></span>
                 </div>
-
             </div>
-
         </header>
 
+        <!-- CONTENT -->
+        <main class="flex-1 p-4 sm:p-6 space-y-6">
 
-
-        <!-- =================================================
-             STUDENT CONTENT
-             ================================================= -->
-
-        <main class="flex-1 p-4 sm:p-6">
-
-
-            <!-- =================================================
-                 HEADING
-                 ================================================= -->
-
-            <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between mb-6">
-
+            <!-- HEADER -->
+            <div class="flex flex-wrap items-center justify-between gap-2 animate-fadeInUp">
                 <div>
-
-                    <h1 class="text-2xl font-semibold text-slate-900">
-
-                        Student Administration
-
+                    <h1 class="text-2xl font-bold text-[#0F172A] flex items-center gap-2">
+                        <i class="fas fa-user-graduate text-[#0F766E]"></i> Students
                     </h1>
-
-
-                    <p class="text-sm text-slate-500 mt-1">
-
-                        Manage and monitor all students
-
-                    </p>
-
+                    <p class="text-[#64748B] text-sm">Manage and monitor all student accounts and progress</p>
                 </div>
-
-
-                <!-- ADD STUDENT -->
-
-                <button
-                    type="button"
-                    id="openAddStudent"
-                    class="bg-teal-600 text-white px-5 py-2.5 rounded-lg hover:bg-teal-700">
-
-                    <i class="fa-solid fa-plus"></i>
-
-                    Add Student
-
-                </button>
-
+                <button id="openAddStudent" class="btn btn-primary btn-sm hover:scale-105 transition-transform duration-300"><i class="fas fa-plus-circle"></i> Add Student</button>
             </div>
 
-
-
-            <!-- =================================================
-                 ADD STUDENT MODAL
-                 ================================================= -->
-
-            <div id="addStudentModal"
-                 class="hidden fixed inset-0 z-50 bg-black/40 items-center justify-center w-full h-full p-4">
-
-                <div class="relative w-full max-w-lg">
-
-                    <div class="relative bg-white rounded-xl shadow-lg">
-
-
-                        <!-- HEADER -->
-
-                        <div class="flex items-center justify-between p-5 border-b border-slate-200">
-
-                            <div>
-
-                                <h3 class="text-lg font-semibold text-slate-900">
-
-                                    Add New Student
-
-                                </h3>
-
-
-                                <p class="text-sm text-slate-500 mt-1">
-
-                                    Enter student information
-
-                                </p>
-
-                            </div>
-
-
-                            <button
-                                type="button"
-                                id="closeAddStudent"
-                                class="text-slate-400 hover:text-slate-700">
-
-                                <i class="fa-solid fa-xmark text-lg"></i>
-
-                            </button>
-
-                        </div>
-
-
-                        <!-- BODY -->
-
-                        <div class="p-5">
-
-                            <div class="space-y-4">
-
-
-                                <!-- NAME -->
-
-                                <div>
-
-                                    <label class="block mb-2 text-sm font-medium text-slate-700">
-
-                                        Student Name
-
-                                    </label>
-
-
-                                    <input
-                                        type="text"
-                                        id="studentName"
-                                        placeholder="Enter student name"
-                                        class="w-full px-3 py-2.5 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-teal-500">
-
-                                </div>
-
-
-                                <!-- EMAIL -->
-
-                                <div>
-
-                                    <label class="block mb-2 text-sm font-medium text-slate-700">
-
-                                        Email
-
-                                    </label>
-
-
-                                    <input
-                                        type="email"
-                                        id="studentEmail"
-                                        placeholder="Enter email address"
-                                        class="w-full px-3 py-2.5 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-teal-500">
-
-                                </div>
-
-
-                                <!-- PHONE -->
-
-                                <div>
-
-                                    <label class="block mb-2 text-sm font-medium text-slate-700">
-
-                                        Phone Number
-
-                                    </label>
-
-
-                                    <input
-                                        type="tel"
-                                        id="studentphno"
-                                        placeholder="Enter phone number"
-                                        maxlength="10"
-                                        class="w-full px-3 py-2.5 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-teal-500">
-
-                                </div>
-
-
-                                <!-- COURSE -->
-
-                                <div>
-
-                                    <label class="block mb-2 text-sm font-medium text-slate-700">
-
-                                        Course
-
-                                    </label>
-
-
-                                    <select
-                                        id="course"
-                                        class="w-full px-3 py-2.5 border border-slate-300 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-teal-500">
-
-                                        <option value="">
-                                            Select course
-                                        </option>
-
-                                        <option value="MERN Stack">
-                                            MERN Stack
-                                        </option>
-
-                                        <option value="Python">
-                                            Python
-                                        </option>
-
-                                        <option value="SQL & Database">
-                                            SQL & Database
-                                        </option>
-
-                                        <option value="JavaScript">
-                                            JavaScript
-                                        </option>
-
-                                        <option value="React.js">
-                                            React.js
-                                        </option>
-
-                                        <option value="UI/UX Design">
-                                            UI/UX Design
-                                        </option>
-
-                                    </select>
-
-                                </div>
-
-
-                                <!-- BUTTONS -->
-
-                                <div class="flex justify-end gap-3 pt-3">
-
-                                    <button
-                                        type="button"
-                                        id="cancelAddStudent"
-                                        class="px-4 py-2.5 text-sm font-medium text-slate-600 bg-slate-100 rounded-lg hover:bg-slate-200">
-
-                                        Cancel
-
-                                    </button>
-
-
-                                    <button
-                                        type="button"
-                                        id="addStudentBtn"
-                                        class="px-4 py-2.5 text-sm font-medium text-white bg-teal-600 rounded-lg hover:bg-teal-700">
-
-                                        <i class="fa-solid fa-plus mr-1"></i>
-
-                                        Add Student
-
-                                    </button>
-
-                                </div>
-
-                            </div>
-
-                        </div>
-
-                    </div>
-
+            <!-- STAT CARDS -->
+            <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div class="stat-card animate-fadeInUp delay-1">
+                    <div class="stat-info"><div class="label">Total Students</div><div class="value">30</div><div class="trend up"><i class="fas fa-arrow-up"></i> 12.8%</div></div>
+                    <div class="stat-icon"><i class="fas fa-user-graduate"></i></div>
                 </div>
-
-            </div>
-
-
-
-            <!-- =================================================
-                 VIEW MODAL
-                 ================================================= -->
-
-            <div id="viewStudentModal"
-                 class="hidden fixed inset-0 z-50 bg-black/40 items-center justify-center p-4">
-
-                <div class="bg-white rounded-xl shadow-lg w-full max-w-lg">
-
-                    <div class="flex justify-between items-center p-5 border-b">
-
-                        <h3 class="text-lg font-semibold">
-
-                            Student Details
-
-                        </h3>
-
-
-                        <button
-                            type="button"
-                            id="closeViewModal"
-                            class="text-slate-500 hover:text-slate-800">
-
-                            <i class="fa-solid fa-xmark text-lg"></i>
-
-                        </button>
-
-                    </div>
-
-
-                    <div id="viewStudentContent"
-                         class="p-5 space-y-3">
-
-                    </div>
-
+                <div class="stat-card animate-fadeInUp delay-2">
+                    <div class="stat-info"><div class="label">Active</div><div class="value">25</div><div class="trend up"><i class="fas fa-arrow-up"></i> 5.2%</div></div>
+                    <div class="stat-icon"><i class="fas fa-check-circle text-[#16A34A]"></i></div>
                 </div>
-
-            </div>
-
-
-
-            <!-- =================================================
-                 EDIT MODAL
-                 ================================================= -->
-
-            <div id="editStudentModal"
-                 class="hidden fixed inset-0 z-50 bg-black/40 items-center justify-center p-4">
-
-                <div class="bg-white rounded-xl shadow-lg w-full max-w-lg">
-
-                    <div class="flex justify-between items-center p-5 border-b">
-
-                        <h3 class="text-lg font-semibold">
-
-                            Edit Student
-
-                        </h3>
-
-
-                        <button
-                            type="button"
-                            id="closeEditModal"
-                            class="text-slate-500 hover:text-slate-800">
-
-                            <i class="fa-solid fa-xmark text-lg"></i>
-
-                        </button>
-
-                    </div>
-
-
-                    <div class="p-5 space-y-4">
-
-
-                        <!-- NAME -->
-
-                        <div>
-
-                            <label class="block mb-2 text-sm font-medium">
-
-                                Student Name
-
-                            </label>
-
-
-                            <input
-                                type="text"
-                                id="editName"
-                                class="w-full px-3 py-2.5 border rounded-lg">
-
-                        </div>
-
-
-                        <!-- EMAIL -->
-
-                        <div>
-
-                            <label class="block mb-2 text-sm font-medium">
-
-                                Email
-
-                            </label>
-
-
-                            <input
-                                type="email"
-                                id="editEmail"
-                                class="w-full px-3 py-2.5 border rounded-lg">
-
-                        </div>
-
-
-                        <!-- PHONE -->
-
-                        <div>
-
-                            <label class="block mb-2 text-sm font-medium">
-
-                                Phone
-
-                            </label>
-
-
-                            <input
-                                type="text"
-                                id="editPhone"
-                                maxlength="10"
-                                class="w-full px-3 py-2.5 border rounded-lg">
-
-                        </div>
-
-
-                        <!-- COURSE -->
-
-                        <div>
-
-                            <label class="block mb-2 text-sm font-medium">
-
-                                Course
-
-                            </label>
-
-
-                            <select
-                                id="editCourse"
-                                class="w-full px-3 py-2.5 border rounded-lg">
-
-                                <option value="MERN Stack">
-                                    MERN Stack
-                                </option>
-
-                                <option value="Python">
-                                    Python
-                                </option>
-
-                                <option value="SQL & Database">
-                                    SQL & Database
-                                </option>
-
-                                <option value="JavaScript">
-                                    JavaScript
-                                </option>
-
-                                <option value="React.js">
-                                    React.js
-                                </option>
-
-                                <option value="UI/UX Design">
-                                    UI/UX Design
-                                </option>
-
-                            </select>
-
-                        </div>
-
-
-                        <!-- PROGRESS -->
-
-                        <div>
-
-                            <label class="block mb-2 text-sm font-medium">
-
-                                Progress (%)
-
-                            </label>
-
-
-                            <input
-                                type="number"
-                                id="editProgress"
-                                min="0"
-                                max="100"
-                                class="w-full px-3 py-2.5 border rounded-lg">
-
-                        </div>
-
-
-                        <!-- STATUS -->
-
-                        <div>
-
-                            <label class="block mb-2 text-sm font-medium">
-
-                                Status
-
-                            </label>
-
-
-                            <select
-                                id="editStatus"
-                                class="w-full px-3 py-2.5 border rounded-lg">
-
-                                <option value="Active">
-                                    Active
-                                </option>
-
-                                <option value="Inactive">
-                                    Inactive
-                                </option>
-
-                            </select>
-
-                        </div>
-
-
-                        <!-- BUTTONS -->
-
-                        <div class="flex justify-end gap-3 pt-3">
-
-                            <button
-                                type="button"
-                                id="cancelEdit"
-                                class="px-4 py-2.5 bg-slate-100 rounded-lg">
-
-                                Cancel
-
-                            </button>
-
-
-                            <button
-                                type="button"
-                                id="saveEdit"
-                                class="px-4 py-2.5 bg-teal-600 text-white rounded-lg hover:bg-teal-700">
-
-                                <i class="fa-solid fa-check mr-1"></i>
-
-                                Save Changes
-
-                            </button>
-
-                        </div>
-
-                    </div>
-
+                <div class="stat-card animate-fadeInUp delay-3">
+                    <div class="stat-info"><div class="label">New This Month</div><div class="value">8</div><div class="trend up"><i class="fas fa-arrow-up"></i> 8.7%</div></div>
+                    <div class="stat-icon"><i class="fas fa-user-plus"></i></div>
                 </div>
-
-            </div>
-
-
-
-            <!-- =================================================
-                 FILTERS
-                 ================================================= -->
-
-            <section>
-
-                <div class="card mb-6">
-
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-
-
-                        <!-- SEARCH -->
-
-                        <div class="relative">
-
-                            <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
-
-
-                            <input
-                                type="text"
-                                id="studentSearch"
-                                placeholder="Search by name or email..."
-                                class="form-control pl-10">
-
-                        </div>
-
-
-                        <!-- COURSE -->
-
-                        <select
-                            id="courseFilter"
-                            class="form-control">
-
-                            <option value="">
-                                All Courses
-                            </option>
-
-                            <option value="MERN Stack">
-                                MERN Stack
-                            </option>
-
-                            <option value="Python">
-                                Python
-                            </option>
-
-                            <option value="SQL & Database">
-                                SQL & Database
-                            </option>
-
-                            <option value="JavaScript">
-                                JavaScript
-                            </option>
-
-                            <option value="React.js">
-                                React.js
-                            </option>
-
-                            <option value="UI/UX Design">
-                                UI/UX Design
-                            </option>
-
-                        </select>
-
-
-                        <!-- STATUS -->
-
-                        <select
-                            id="statusFilter"
-                            class="form-control">
-
-                            <option value="">
-                                All Status
-                            </option>
-
-                            <option value="active">
-                                Active
-                            </option>
-
-                            <option value="inactive">
-                                Inactive
-                            </option>
-
-                        </select>
-
-                    </div>
-
+                <div class="stat-card animate-fadeInUp delay-4">
+                    <div class="stat-info"><div class="label">Inactive</div><div class="value">5</div><div class="trend down"><i class="fas fa-arrow-down"></i> 2.1%</div></div>
+                    <div class="stat-icon"><i class="fas fa-user-slash text-[#64748B]"></i></div>
                 </div>
-
             </section>
 
-
-
-            <!-- =================================================
-                 STUDENT LIST
-                 ================================================= -->
-
-            <section>
-
-                <div class="card">
-
-
-                    <!-- HEADER -->
-
-                    <div class="card-header">
-
-                        <div class="card-title">
-
-                            <i class="fa-solid fa-users"></i>
-
-                            Students List
-
-                        </div>
-
-
-                        <span class="text-muted"
-                              id="totalStudents">
-
-                            30 Students
-
-                        </span>
-
+            <!-- FILTERS -->
+            <div class="filter-bar animate-fadeInUp delay-3">
+                <div class="filter-group">
+                    <label><i class="fas fa-search"></i> Search</label>
+                    <input type="text" id="studentSearch" placeholder="Name or email..." class="form-control" />
+                </div>
+                <div class="filter-group">
+                    <label><i class="fas fa-book"></i> Course</label>
+                    <select id="courseFilter" class="form-control">
+                        <option value="">All Courses</option>
+                        <option value="MERN Stack">MERN Stack</option>
+                        <option value="Python">Python</option>
+                        <option value="SQL & Database">SQL & Database</option>
+                        <option value="JavaScript">JavaScript</option>
+                        <option value="React.js">React.js</option>
+                        <option value="UI/UX Design">UI/UX Design</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label><i class="fas fa-flag"></i> Status</label>
+                    <select id="statusFilter" class="form-control">
+                        <option value="">All Status</option>
+                        <option value="active">Active</option>
+                        <option value="inactive">Inactive</option>
+                    </select>
+                </div>
+                <div class="filter-group" style="flex:0 0 auto; min-width:auto;">
+                    <label>&nbsp;</label>
+                    <div class="filter-actions">
+                        <button class="btn btn-primary btn-sm hover:scale-105 transition-transform duration-300" onclick="resetFilters()"><i class="fas fa-undo"></i> Reset</button>
                     </div>
-
-
-                    <!-- TABLE -->
-
-                    <div class="table-container">
-
-                        <table>
-
-                            <thead>
-
-                                <tr>
-
-                                    <th>ID</th>
-
-                                    <th>Student</th>
-
-                                    <th>Email</th>
-
-                                    <th>Course</th>
-
-                                    <th>Progress</th>
-
-                                    <th>Status</th>
-
-                                    <th>Joined Date</th>
-
-                                    <th>Actions</th>
-
-                                </tr>
-
-                            </thead>
-
-
-                            <tbody id="studentTableBody">
-
-                                <!-- 30 STUDENTS -->
-
-                                <tr data-phone="9876543210">
-
-                                    <td>#ST001</td>
-
-                                    <td>
-                                        <div class="student-name">
-                                            <div class="avatar">AS</div>
-                                            <strong>Arjun Suresh</strong>
-                                        </div>
-                                    </td>
-
-                                    <td>arjun@gmail.com</td>
-
-                                    <td>MERN Stack</td>
-
-                                    <td>
-                                        <div class="progress-wrapper">
-                                            <div class="progress-info">
-                                                <span>91%</span>
-                                            </div>
-                                            <div class="progress-bar">
-                                                <div class="progress-fill" style="width:91%;"></div>
-                                            </div>
-                                        </div>
-                                    </td>
-
-                                    <td>
-                                        <span class="badge badge-active">
-                                            Active
-                                        </span>
-                                    </td>
-
-                                    <td>02 Aug 2026</td>
-
-                                    <td class="table-actions">
-                                        <a href="#" class="view-btn">
-                                            <i class="fa-regular fa-eye"></i>
-                                        </a>
-
-                                        <a href="#" class="edit-btn">
-                                            <i class="fa-solid fa-pen"></i>
-                                        </a>
-
-                                        <a href="#" class="delete-btn danger">
-                                            <i class="fa-solid fa-trash"></i>
-                                        </a>
-                                    </td>
-
-                                </tr>
-
-
-                                <tr data-phone="9876543211">
-
-                                    <td>#ST002</td>
-
-                                    <td>
-                                        <div class="student-name">
-                                            <div class="avatar">AN</div>
-                                            <strong>Ananya Nair</strong>
-                                        </div>
-                                    </td>
-
-                                    <td>ananya@gmail.com</td>
-                                    <td>Python</td>
-
-                                    <td>
-                                        <div class="progress-wrapper">
-                                            <div class="progress-info">
-                                                <span>87%</span>
-                                            </div>
-                                            <div class="progress-bar">
-                                                <div class="progress-fill" style="width:87%;"></div>
-                                            </div>
-                                        </div>
-                                    </td>
-
-                                    <td>
-                                        <span class="badge badge-active">Active</span>
-                                    </td>
-
-                                    <td>03 Aug 2026</td>
-
-                                    <td class="table-actions">
-                                        <a href="#" class="view-btn"><i class="fa-regular fa-eye"></i></a>
-                                        <a href="#" class="edit-btn"><i class="fa-solid fa-pen"></i></a>
-                                        <a href="#" class="delete-btn danger"><i class="fa-solid fa-trash"></i></a>
-                                    </td>
-
-                                </tr>
-
-
-                                <tr data-phone="9876543212">
-
-                                    <td>#ST003</td>
-
-                                    <td>
-                                        <div class="student-name">
-                                            <div class="avatar">RK</div>
-                                            <strong>Rahul Kumar</strong>
-                                        </div>
-                                    </td>
-
-                                    <td>rahul@gmail.com</td>
-                                    <td>Data Science</td>
-
-                                    <td>
-                                        <div class="progress-wrapper">
-                                            <div class="progress-info"><span>78%</span></div>
-                                            <div class="progress-bar">
-                                                <div class="progress-fill" style="width:78%;"></div>
-                                            </div>
-                                        </div>
-                                    </td>
-
-                                    <td><span class="badge badge-active">Active</span></td>
-
-                                    <td>04 Aug 2026</td>
-
-                                    <td class="table-actions">
-                                        <a href="#" class="view-btn"><i class="fa-regular fa-eye"></i></a>
-                                        <a href="#" class="edit-btn"><i class="fa-solid fa-pen"></i></a>
-                                        <a href="#" class="delete-btn danger"><i class="fa-solid fa-trash"></i></a>
-                                    </td>
-
-                                </tr>
-
-
-                                <tr data-phone="9876543213">
-
-                                    <td>#ST004</td>
-
-                                    <td>
-                                        <div class="student-name">
-                                            <div class="avatar">PM</div>
-                                            <strong>Priya Menon</strong>
-                                        </div>
-                                    </td>
-
-                                    <td>priya@gmail.com</td>
-                                    <td>JavaScript</td>
-
-                                    <td>
-                                        <div class="progress-wrapper">
-                                            <div class="progress-info"><span>85%</span></div>
-                                            <div class="progress-bar">
-                                                <div class="progress-fill" style="width:85%;"></div>
-                                            </div>
-                                        </div>
-                                    </td>
-
-                                    <td><span class="badge badge-active">Active</span></td>
-
-                                    <td>05 Aug 2026</td>
-
-                                    <td class="table-actions">
-                                        <a href="#" class="view-btn"><i class="fa-regular fa-eye"></i></a>
-                                        <a href="#" class="edit-btn"><i class="fa-solid fa-pen"></i></a>
-                                        <a href="#" class="delete-btn danger"><i class="fa-solid fa-trash"></i></a>
-                                    </td>
-
-                                </tr>
-
-
-                                <tr data-phone="9876543214">
-
-                                    <td>#ST005</td>
-
-                                    <td>
-                                        <div class="student-name">
-                                            <div class="avatar">MS</div>
-                                            <strong>Meera Suresh</strong>
-                                        </div>
-                                    </td>
-
-                                    <td>meera@gmail.com</td>
-                                    <td>React.js</td>
-
-                                    <td>
-                                        <div class="progress-wrapper">
-                                            <div class="progress-info"><span>91%</span></div>
-                                            <div class="progress-bar">
-                                                <div class="progress-fill" style="width:91%;"></div>
-                                            </div>
-                                        </div>
-                                    </td>
-
-                                    <td><span class="badge badge-active">Active</span></td>
-
-                                    <td>06 Aug 2026</td>
-
-                                    <td class="table-actions">
-                                        <a href="#" class="view-btn"><i class="fa-regular fa-eye"></i></a>
-                                        <a href="#" class="edit-btn"><i class="fa-solid fa-pen"></i></a>
-                                        <a href="#" class="delete-btn danger"><i class="fa-solid fa-trash"></i></a>
-                                    </td>
-
-                                </tr>
-
-
-                                <tr data-phone="9876543215">
-
-                                    <td>#ST006</td>
-
-                                    <td>
-                                        <div class="student-name">
-                                            <div class="avatar">VS</div>
-                                            <strong>Vishnu S</strong>
-                                        </div>
-                                    </td>
-
-                                    <td>vishnu@gmail.com</td>
-                                    <td>SQL & Database</td>
-
-                                    <td>
-                                        <div class="progress-wrapper">
-                                            <div class="progress-info"><span>73%</span></div>
-                                            <div class="progress-bar">
-                                                <div class="progress-fill" style="width:73%;"></div>
-                                            </div>
-                                        </div>
-                                    </td>
-
-                                    <td><span class="badge badge-active">Active</span></td>
-
-                                    <td>07 Aug 2026</td>
-
-                                    <td class="table-actions">
-                                        <a href="#" class="view-btn"><i class="fa-regular fa-eye"></i></a>
-                                        <a href="#" class="edit-btn"><i class="fa-solid fa-pen"></i></a>
-                                        <a href="#" class="delete-btn danger"><i class="fa-solid fa-trash"></i></a>
-                                    </td>
-
-                                </tr>
-
-
-                                <tr data-phone="9876543216">
-
-                                    <td>#ST007</td>
-
-                                    <td>
-                                        <div class="student-name">
-                                            <div class="avatar">NK</div>
-                                            <strong>Neha Krishnan</strong>
-                                        </div>
-                                    </td>
-
-                                    <td>neha@gmail.com</td>
-                                    <td>Python</td>
-
-                                    <td>
-                                        <div class="progress-wrapper">
-                                            <div class="progress-info"><span>88%</span></div>
-                                            <div class="progress-bar">
-                                                <div class="progress-fill" style="width:88%;"></div>
-                                            </div>
-                                        </div>
-                                    </td>
-
-                                    <td><span class="badge badge-active">Active</span></td>
-
-                                    <td>08 Aug 2026</td>
-
-                                    <td class="table-actions">
-                                        <a href="#" class="view-btn"><i class="fa-regular fa-eye"></i></a>
-                                        <a href="#" class="edit-btn"><i class="fa-solid fa-pen"></i></a>
-                                        <a href="#" class="delete-btn danger"><i class="fa-solid fa-trash"></i></a>
-                                    </td>
-
-                                </tr>
-
-
-                                <tr data-phone="9876543217">
-
-                                    <td>#ST008</td>
-
-                                    <td>
-                                        <div class="student-name">
-                                            <div class="avatar">AD</div>
-                                            <strong>Adithya Das</strong>
-                                        </div>
-                                    </td>
-
-                                    <td>adithya@gmail.com</td>
-                                    <td>UI/UX Design</td>
-
-                                    <td>
-                                        <div class="progress-wrapper">
-                                            <div class="progress-info"><span>69%</span></div>
-                                            <div class="progress-bar">
-                                                <div class="progress-fill" style="width:69%;"></div>
-                                            </div>
-                                        </div>
-                                    </td>
-
-                                    <td>
-                                        <span class="status inactive">Inactive</span>
-                                    </td>
-
-                                    <td>09 Aug 2026</td>
-
-                                    <td class="table-actions">
-                                        <a href="#" class="view-btn"><i class="fa-regular fa-eye"></i></a>
-                                        <a href="#" class="edit-btn"><i class="fa-solid fa-pen"></i></a>
-                                        <a href="#" class="delete-btn danger"><i class="fa-solid fa-trash"></i></a>
-                                    </td>
-
-                                </tr>
-
-
-                                <tr data-phone="9876543218">
-
-                                    <td>#ST009</td>
-
-                                    <td>
-                                        <div class="student-name">
-                                            <div class="avatar">SR</div>
-                                            <strong>Sneha Raj</strong>
-                                        </div>
-                                    </td>
-
-                                    <td>sneha@gmail.com</td>
-                                    <td>React.js</td>
-
-                                    <td>
-                                        <div class="progress-wrapper">
-                                            <div class="progress-info"><span>94%</span></div>
-                                            <div class="progress-bar">
-                                                <div class="progress-fill" style="width:94%;"></div>
-                                            </div>
-                                        </div>
-                                    </td>
-
-                                    <td><span class="badge badge-active">Active</span></td>
-
-                                    <td>10 Aug 2026</td>
-
-                                    <td class="table-actions">
-                                        <a href="#" class="view-btn"><i class="fa-regular fa-eye"></i></a>
-                                        <a href="#" class="edit-btn"><i class="fa-solid fa-pen"></i></a>
-                                        <a href="#" class="delete-btn danger"><i class="fa-solid fa-trash"></i></a>
-                                    </td>
-
-                                </tr>
-
-
-                                <tr data-phone="9876543219">
-
-                                    <td>#ST010</td>
-
-                                    <td>
-                                        <div class="student-name">
-                                            <div class="avatar">AK</div>
-                                            <strong>Arun Kumar</strong>
-                                        </div>
-                                    </td>
-
-                                    <td>arun@gmail.com</td>
-                                    <td>JavaScript</td>
-
-                                    <td>
-                                        <div class="progress-wrapper">
-                                            <div class="progress-info"><span>82%</span></div>
-                                            <div class="progress-bar">
-                                                <div class="progress-fill" style="width:82%;"></div>
-                                            </div>
-                                        </div>
-                                    </td>
-
-                                    <td><span class="badge badge-active">Active</span></td>
-
-                                    <td>11 Aug 2026</td>
-
-                                    <td class="table-actions">
-                                        <a href="#" class="view-btn"><i class="fa-regular fa-eye"></i></a>
-                                        <a href="#" class="edit-btn"><i class="fa-solid fa-pen"></i></a>
-                                        <a href="#" class="delete-btn danger"><i class="fa-solid fa-trash"></i></a>
-                                    </td>
-
-                                </tr>
-
-
-                                <tr data-phone="9876543220">
-
-                                    <td>#ST011</td>
-
-                                    <td>
-                                        <div class="student-name">
-                                            <div class="avatar">RM</div>
-                                            <strong>Riya Menon</strong>
-                                        </div>
-                                    </td>
-
-                                    <td>riya@gmail.com</td>
-                                    <td>MERN Stack</td>
-
-                                    <td>
-                                        <div class="progress-wrapper">
-                                            <div class="progress-info"><span>89%</span></div>
-                                            <div class="progress-bar">
-                                                <div class="progress-fill" style="width:89%;"></div>
-                                            </div>
-                                        </div>
-                                    </td>
-
-                                    <td><span class="badge badge-active">Active</span></td>
-
-                                    <td>12 Aug 2026</td>
-
-                                    <td class="table-actions">
-                                        <a href="#" class="view-btn"><i class="fa-regular fa-eye"></i></a>
-                                        <a href="#" class="edit-btn"><i class="fa-solid fa-pen"></i></a>
-                                        <a href="#" class="delete-btn danger"><i class="fa-solid fa-trash"></i></a>
-                                    </td>
-
-                                </tr>
-
-
-                                <tr data-phone="9876543221">
-
-                                    <td>#ST012</td>
-
-                                    <td>
-                                        <div class="student-name">
-                                            <div class="avatar">JM</div>
-                                            <strong>Jithin Mathew</strong>
-                                        </div>
-                                    </td>
-
-                                    <td>jithin@gmail.com</td>
-                                    <td>SQL & Database</td>
-
-                                    <td>
-                                        <div class="progress-wrapper">
-                                            <div class="progress-info"><span>76%</span></div>
-                                            <div class="progress-bar">
-                                                <div class="progress-fill" style="width:76%;"></div>
-                                            </div>
-                                        </div>
-                                    </td>
-
-                                    <td><span class="status inactive">Inactive</span></td>
-
-                                    <td>13 Aug 2026</td>
-
-                                    <td class="table-actions">
-                                        <a href="#" class="view-btn"><i class="fa-regular fa-eye"></i></a>
-                                        <a href="#" class="edit-btn"><i class="fa-solid fa-pen"></i></a>
-                                        <a href="#" class="delete-btn danger"><i class="fa-solid fa-trash"></i></a>
-                                    </td>
-
-                                </tr>
-
-
-                                <tr data-phone="9876543222">
-
-                                    <td>#ST013</td>
-
-                                    <td>
-                                        <div class="student-name">
-                                            <div class="avatar">FK</div>
-                                            <strong>Fahad Khan</strong>
-                                        </div>
-                                    </td>
-
-                                    <td>fahad@gmail.com</td>
-                                    <td>Python</td>
-
-                                    <td>
-                                        <div class="progress-wrapper">
-                                            <div class="progress-info"><span>92%</span></div>
-                                            <div class="progress-bar">
-                                                <div class="progress-fill" style="width:92%;"></div>
-                                            </div>
-                                        </div>
-                                    </td>
-
-                                    <td><span class="badge badge-active">Active</span></td>
-
-                                    <td>14 Aug 2026</td>
-
-                                    <td class="table-actions">
-                                        <a href="#" class="view-btn"><i class="fa-regular fa-eye"></i></a>
-                                        <a href="#" class="edit-btn"><i class="fa-solid fa-pen"></i></a>
-                                        <a href="#" class="delete-btn danger"><i class="fa-solid fa-trash"></i></a>
-                                    </td>
-
-                                </tr>
-
-
-                                <tr data-phone="9876543223">
-
-                                    <td>#ST014</td>
-
-                                    <td>
-                                        <div class="student-name">
-                                            <div class="avatar">DS</div>
-                                            <strong>Devika S</strong>
-                                        </div>
-                                    </td>
-
-                                    <td>devika@gmail.com</td>
-                                    <td>UI/UX Design</td>
-
-                                    <td>
-                                        <div class="progress-wrapper">
-                                            <div class="progress-info"><span>86%</span></div>
-                                            <div class="progress-bar">
-                                                <div class="progress-fill" style="width:86%;"></div>
-                                            </div>
-                                        </div>
-                                    </td>
-
-                                    <td><span class="badge badge-active">Active</span></td>
-
-                                    <td>15 Aug 2026</td>
-
-                                    <td class="table-actions">
-                                        <a href="#" class="view-btn"><i class="fa-regular fa-eye"></i></a>
-                                        <a href="#" class="edit-btn"><i class="fa-solid fa-pen"></i></a>
-                                        <a href="#" class="delete-btn danger"><i class="fa-solid fa-trash"></i></a>
-                                    </td>
-
-                                </tr>
-
-
-                                <tr data-phone="9876543224">
-
-                                    <td>#ST015</td>
-
-                                    <td>
-                                        <div class="student-name">
-                                            <div class="avatar">NJ</div>
-                                            <strong>Nikhil Jose</strong>
-                                        </div>
-                                    </td>
-
-                                    <td>nikhil@gmail.com</td>
-                                    <td>JavaScript</td>
-
-                                    <td>
-                                        <div class="progress-wrapper">
-                                            <div class="progress-info"><span>71%</span></div>
-                                            <div class="progress-bar">
-                                                <div class="progress-fill" style="width:71%;"></div>
-                                            </div>
-                                        </div>
-                                    </td>
-
-                                    <td><span class="badge badge-active">Active</span></td>
-
-                                    <td>16 Aug 2026</td>
-
-                                    <td class="table-actions">
-                                        <a href="#" class="view-btn"><i class="fa-regular fa-eye"></i></a>
-                                        <a href="#" class="edit-btn"><i class="fa-solid fa-pen"></i></a>
-                                        <a href="#" class="delete-btn danger"><i class="fa-solid fa-trash"></i></a>
-                                    </td>
-
-                                </tr>
-
-
-                                <tr data-phone="9876543225">
-
-                                    <td>#ST016</td>
-
-                                    <td>
-                                        <div class="student-name">
-                                            <div class="avatar">AM</div>
-                                            <strong>Akhil Mohan</strong>
-                                        </div>
-                                    </td>
-
-                                    <td>akhil@gmail.com</td>
-                                    <td>MERN Stack</td>
-
-                                    <td>
-                                        <div class="progress-wrapper">
-                                            <div class="progress-info"><span>84%</span></div>
-                                            <div class="progress-bar">
-                                                <div class="progress-fill" style="width:84%;"></div>
-                                            </div>
-                                        </div>
-                                    </td>
-
-                                    <td><span class="badge badge-active">Active</span></td>
-
-                                    <td>17 Aug 2026</td>
-
-                                    <td class="table-actions">
-                                        <a href="#" class="view-btn"><i class="fa-regular fa-eye"></i></a>
-                                        <a href="#" class="edit-btn"><i class="fa-solid fa-pen"></i></a>
-                                        <a href="#" class="delete-btn danger"><i class="fa-solid fa-trash"></i></a>
-                                    </td>
-
-                                </tr>
-
-
-                                <tr data-phone="9876543226">
-
-                                    <td>#ST017</td>
-
-                                    <td>
-                                        <div class="student-name">
-                                            <div class="avatar">SR</div>
-                                            <strong>Sara Rahman</strong>
-                                        </div>
-                                    </td>
-
-                                    <td>sara@gmail.com</td>
-                                    <td>React.js</td>
-
-                                    <td>
-                                        <div class="progress-wrapper">
-                                            <div class="progress-info"><span>90%</span></div>
-                                            <div class="progress-bar">
-                                                <div class="progress-fill" style="width:90%;"></div>
-                                            </div>
-                                        </div>
-                                    </td>
-
-                                    <td><span class="badge badge-active">Active</span></td>
-
-                                    <td>18 Aug 2026</td>
-
-                                    <td class="table-actions">
-                                        <a href="#" class="view-btn"><i class="fa-regular fa-eye"></i></a>
-                                        <a href="#" class="edit-btn"><i class="fa-solid fa-pen"></i></a>
-                                        <a href="#" class="delete-btn danger"><i class="fa-solid fa-trash"></i></a>
-                                    </td>
-
-                                </tr>
-
-
-                                <tr data-phone="9876543227">
-
-                                    <td>#ST018</td>
-
-                                    <td>
-                                        <div class="student-name">
-                                            <div class="avatar">GV</div>
-                                            <strong>Gokul V</strong>
-                                        </div>
-                                    </td>
-
-                                    <td>gokul@gmail.com</td>
-                                    <td>Python</td>
-
-                                    <td>
-                                        <div class="progress-wrapper">
-                                            <div class="progress-info"><span>67%</span></div>
-                                            <div class="progress-bar">
-                                                <div class="progress-fill" style="width:67%;"></div>
-                                            </div>
-                                        </div>
-                                    </td>
-
-                                    <td><span class="status inactive">Inactive</span></td>
-
-                                    <td>19 Aug 2026</td>
-
-                                    <td class="table-actions">
-                                        <a href="#" class="view-btn"><i class="fa-regular fa-eye"></i></a>
-                                        <a href="#" class="edit-btn"><i class="fa-solid fa-pen"></i></a>
-                                        <a href="#" class="delete-btn danger"><i class="fa-solid fa-trash"></i></a>
-                                    </td>
-
-                                </tr>
-
-
-                                <tr data-phone="9876543228">
-
-                                    <td>#ST019</td>
-
-                                    <td>
-                                        <div class="student-name">
-                                            <div class="avatar">LP</div>
-                                            <strong>Lakshmi Priya</strong>
-                                        </div>
-                                    </td>
-
-                                    <td>lakshmi@gmail.com</td>
-                                    <td>UI/UX Design</td>
-
-                                    <td>
-                                        <div class="progress-wrapper">
-                                            <div class="progress-info"><span>93%</span></div>
-                                            <div class="progress-bar">
-                                                <div class="progress-fill" style="width:93%;"></div>
-                                            </div>
-                                        </div>
-                                    </td>
-
-                                    <td><span class="badge badge-active">Active</span></td>
-
-                                    <td>20 Aug 2026</td>
-
-                                    <td class="table-actions">
-                                        <a href="#" class="view-btn"><i class="fa-regular fa-eye"></i></a>
-                                        <a href="#" class="edit-btn"><i class="fa-solid fa-pen"></i></a>
-                                        <a href="#" class="delete-btn danger"><i class="fa-solid fa-trash"></i></a>
-                                    </td>
-
-                                </tr>
-
-
-                                <tr data-phone="9876543229">
-
-                                    <td>#ST020</td>
-
-                                    <td>
-                                        <div class="student-name">
-                                            <div class="avatar">HA</div>
-                                            <strong>Hari Anand</strong>
-                                        </div>
-                                    </td>
-
-                                    <td>hari@gmail.com</td>
-                                    <td>JavaScript</td>
-
-                                    <td>
-                                        <div class="progress-wrapper">
-                                            <div class="progress-info"><span>80%</span></div>
-                                            <div class="progress-bar">
-                                                <div class="progress-fill" style="width:80%;"></div>
-                                            </div>
-                                        </div>
-                                    </td>
-
-                                    <td><span class="badge badge-active">Active</span></td>
-
-                                    <td>21 Aug 2026</td>
-
-                                    <td class="table-actions">
-                                        <a href="#" class="view-btn"><i class="fa-regular fa-eye"></i></a>
-                                        <a href="#" class="edit-btn"><i class="fa-solid fa-pen"></i></a>
-                                        <a href="#" class="delete-btn danger"><i class="fa-solid fa-trash"></i></a>
-                                    </td>
-
-                                </tr>
-
-
-                                <tr data-phone="9876543230">
-
-                                    <td>#ST021</td>
-
-                                    <td>
-                                        <div class="student-name">
-                                            <div class="avatar">AJ</div>
-                                            <strong>Ananya Joseph</strong>
-                                        </div>
-                                    </td>
-
-                                    <td>ananya.j@gmail.com</td>
-                                    <td>MERN Stack</td>
-
-                                    <td>
-                                        <div class="progress-wrapper">
-                                            <div class="progress-info"><span>82%</span></div>
-                                            <div class="progress-bar">
-                                                <div class="progress-fill" style="width:82%;"></div>
-                                            </div>
-                                        </div>
-                                    </td>
-
-                                    <td><span class="badge badge-active">Active</span></td>
-
-                                    <td>22 Aug 2026</td>
-
-                                    <td class="table-actions">
-                                        <a href="#" class="view-btn"><i class="fa-regular fa-eye"></i></a>
-                                        <a href="#" class="edit-btn"><i class="fa-solid fa-pen"></i></a>
-                                        <a href="#" class="delete-btn danger"><i class="fa-solid fa-trash"></i></a>
-                                    </td>
-
-                                </tr>
-
-
-                                <tr data-phone="9876543231">
-
-                                    <td>#ST022</td>
-
-                                    <td>
-                                        <div class="student-name">
-                                            <div class="avatar">RM</div>
-                                            <strong>Rahul Madhav</strong>
-                                        </div>
-                                    </td>
-
-                                    <td>rahulmadhav@gmail.com</td>
-                                    <td>Python</td>
-
-                                    <td>
-                                        <div class="progress-wrapper">
-                                            <div class="progress-info"><span>65%</span></div>
-                                            <div class="progress-bar">
-                                                <div class="progress-fill" style="width:65%;"></div>
-                                            </div>
-                                        </div>
-                                    </td>
-
-                                    <td><span class="badge badge-active">Active</span></td>
-
-                                    <td>23 Aug 2026</td>
-
-                                    <td class="table-actions">
-                                        <a href="#" class="view-btn"><i class="fa-regular fa-eye"></i></a>
-                                        <a href="#" class="edit-btn"><i class="fa-solid fa-pen"></i></a>
-                                        <a href="#" class="delete-btn danger"><i class="fa-solid fa-trash"></i></a>
-                                    </td>
-
-                                </tr>
-
-
-                                <tr data-phone="9876543232">
-
-                                    <td>#ST023</td>
-
-                                    <td>
-                                        <div class="student-name">
-                                            <div class="avatar">DT</div>
-                                            <strong>Disha Thomas</strong>
-                                        </div>
-                                    </td>
-
-                                    <td>disha@gmail.com</td>
-                                    <td>React.js</td>
-
-                                    <td>
-                                        <div class="progress-wrapper">
-                                            <div class="progress-info"><span>74%</span></div>
-                                            <div class="progress-bar">
-                                                <div class="progress-fill" style="width:74%;"></div>
-                                            </div>
-                                        </div>
-                                    </td>
-
-                                    <td><span class="badge badge-active">Active</span></td>
-
-                                    <td>24 Aug 2026</td>
-
-                                    <td class="table-actions">
-                                        <a href="#" class="view-btn"><i class="fa-regular fa-eye"></i></a>
-                                        <a href="#" class="edit-btn"><i class="fa-solid fa-pen"></i></a>
-                                        <a href="#" class="delete-btn danger"><i class="fa-solid fa-trash"></i></a>
-                                    </td>
-
-                                </tr>
-
-
-                                <tr data-phone="9876543233">
-
-                                    <td>#ST024</td>
-
-                                    <td>
-                                        <div class="student-name">
-                                            <div class="avatar">AN</div>
-                                            <strong>Arjun Nair</strong>
-                                        </div>
-                                    </td>
-
-                                    <td>arjun.n@gmail.com</td>
-                                    <td>SQL & Database</td>
-
-                                    <td>
-                                        <div class="progress-wrapper">
-                                            <div class="progress-info"><span>40%</span></div>
-                                            <div class="progress-bar">
-                                                <div class="progress-fill" style="width:40%;"></div>
-                                            </div>
-                                        </div>
-                                    </td>
-
-                                    <td><span class="status inactive">Inactive</span></td>
-
-                                    <td>25 Aug 2026</td>
-
-                                    <td class="table-actions">
-                                        <a href="#" class="view-btn"><i class="fa-regular fa-eye"></i></a>
-                                        <a href="#" class="edit-btn"><i class="fa-solid fa-pen"></i></a>
-                                        <a href="#" class="delete-btn danger"><i class="fa-solid fa-trash"></i></a>
-                                    </td>
-
-                                </tr>
-
-
-                                <tr data-phone="9876543234">
-
-                                    <td>#ST025</td>
-
-                                    <td>
-                                        <div class="student-name">
-                                            <div class="avatar">MS</div>
-                                            <strong>Meera Suresh</strong>
-                                        </div>
-                                    </td>
-
-                                    <td>meera.s@gmail.com</td>
-                                    <td>MERN Stack</td>
-
-                                    <td>
-                                        <div class="progress-wrapper">
-                                            <div class="progress-info"><span>91%</span></div>
-                                            <div class="progress-bar">
-                                                <div class="progress-fill" style="width:91%;"></div>
-                                            </div>
-                                        </div>
-                                    </td>
-
-                                    <td><span class="badge badge-active">Active</span></td>
-
-                                    <td>26 Aug 2026</td>
-
-                                    <td class="table-actions">
-                                        <a href="#" class="view-btn"><i class="fa-regular fa-eye"></i></a>
-                                        <a href="#" class="edit-btn"><i class="fa-solid fa-pen"></i></a>
-                                        <a href="#" class="delete-btn danger"><i class="fa-solid fa-trash"></i></a>
-                                    </td>
-
-                                </tr>
-
-
-                                <tr data-phone="9876543235">
-
-                                    <td>#ST026</td>
-
-                                    <td>
-                                        <div class="student-name">
-                                            <div class="avatar">AN</div>
-                                            <strong>Abhinav Nair</strong>
-                                        </div>
-                                    </td>
-
-                                    <td>abhinav@gmail.com</td>
-                                    <td>React.js</td>
-
-                                    <td>
-                                        <div class="progress-wrapper">
-                                            <div class="progress-info"><span>88%</span></div>
-                                            <div class="progress-bar">
-                                                <div class="progress-fill" style="width:88%;"></div>
-                                            </div>
-                                        </div>
-                                    </td>
-
-                                    <td><span class="badge badge-active">Active</span></td>
-
-                                    <td>27 Aug 2026</td>
-
-                                    <td class="table-actions">
-                                        <a href="#" class="view-btn"><i class="fa-regular fa-eye"></i></a>
-                                        <a href="#" class="edit-btn"><i class="fa-solid fa-pen"></i></a>
-                                        <a href="#" class="delete-btn danger"><i class="fa-solid fa-trash"></i></a>
-                                    </td>
-
-                                </tr>
-
-
-                                <tr data-phone="9876543236">
-
-                                    <td>#ST027</td>
-
-                                    <td>
-                                        <div class="student-name">
-                                            <div class="avatar">SR</div>
-                                            <strong>Swetha Raj</strong>
-                                        </div>
-                                    </td>
-
-                                    <td>swetha@gmail.com</td>
-                                    <td>JavaScript</td>
-
-                                    <td>
-                                        <div class="progress-wrapper">
-                                            <div class="progress-info"><span>92%</span></div>
-                                            <div class="progress-bar">
-                                                <div class="progress-fill" style="width:92%;"></div>
-                                            </div>
-                                        </div>
-                                    </td>
-
-                                    <td><span class="badge badge-active">Active</span></td>
-
-                                    <td>28 Aug 2026</td>
-
-                                    <td class="table-actions">
-                                        <a href="#" class="view-btn"><i class="fa-regular fa-eye"></i></a>
-                                        <a href="#" class="edit-btn"><i class="fa-solid fa-pen"></i></a>
-                                        <a href="#" class="delete-btn danger"><i class="fa-solid fa-trash"></i></a>
-                                    </td>
-
-                                </tr>
-
-
-                                <tr data-phone="9876543237">
-
-                                    <td>#ST028</td>
-
-                                    <td>
-                                        <div class="student-name">
-                                            <div class="avatar">RM</div>
-                                            <strong>Rohan Menon</strong>
-                                        </div>
-                                    </td>
-
-                                    <td>rohan@gmail.com</td>
-                                    <td>UI/UX Design</td>
-
-                                    <td>
-                                        <div class="progress-wrapper">
-                                            <div class="progress-info"><span>81%</span></div>
-                                            <div class="progress-bar">
-                                                <div class="progress-fill" style="width:81%;"></div>
-                                            </div>
-                                        </div>
-                                    </td>
-
-                                    <td><span class="badge badge-active">Active</span></td>
-
-                                    <td>28 Aug 2026</td>
-
-                                    <td class="table-actions">
-                                        <a href="#" class="view-btn"><i class="fa-regular fa-eye"></i></a>
-                                        <a href="#" class="edit-btn"><i class="fa-solid fa-pen"></i></a>
-                                        <a href="#" class="delete-btn danger"><i class="fa-solid fa-trash"></i></a>
-                                    </td>
-
-                                </tr>
-
-
-                                <tr data-phone="9876543238">
-
-                                    <td>#ST029</td>
-
-                                    <td>
-                                        <div class="student-name">
-                                            <div class="avatar">FK</div>
-                                            <strong>Fathima K</strong>
-                                        </div>
-                                    </td>
-
-                                    <td>fathima@gmail.com</td>
-                                    <td>Python</td>
-
-                                    <td>
-                                        <div class="progress-wrapper">
-                                            <div class="progress-info"><span>76%</span></div>
-                                            <div class="progress-bar">
-                                                <div class="progress-fill" style="width:76%;"></div>
-                                            </div>
-                                        </div>
-                                    </td>
-
-                                    <td><span class="status inactive">Inactive</span></td>
-
-                                    <td>29 Aug 2026</td>
-
-                                    <td class="table-actions">
-                                        <a href="#" class="view-btn"><i class="fa-regular fa-eye"></i></a>
-                                        <a href="#" class="edit-btn"><i class="fa-solid fa-pen"></i></a>
-                                        <a href="#" class="delete-btn danger"><i class="fa-solid fa-trash"></i></a>
-                                    </td>
-
-                                </tr>
-
-
-                                <tr data-phone="9876543239">
-
-                                    <td>#ST030</td>
-
-                                    <td>
-                                        <div class="student-name">
-                                            <div class="avatar">NJ</div>
-                                            <strong>Nandana Jose</strong>
-                                        </div>
-                                    </td>
-
-                                    <td>nandana@gmail.com</td>
-                                    <td>SQL & Database</td>
-
-                                    <td>
-                                        <div class="progress-wrapper">
-                                            <div class="progress-info"><span>89%</span></div>
-                                            <div class="progress-bar">
-                                                <div class="progress-fill" style="width:89%;"></div>
-                                            </div>
-                                        </div>
-                                    </td>
-
-                                    <td><span class="badge badge-active">Active</span></td>
-
-                                    <td>29 Aug 2026</td>
-
-                                    <td class="table-actions">
-                                        <a href="#" class="view-btn"><i class="fa-regular fa-eye"></i></a>
-                                        <a href="#" class="edit-btn"><i class="fa-solid fa-pen"></i></a>
-                                        <a href="#" class="delete-btn danger"><i class="fa-solid fa-trash"></i></a>
-                                    </td>
-
-                                </tr>
-
-                            </tbody>
-
-                        </table>
-
-                    </div>
-
-
-                    <!-- PAGINATION -->
-
-                    <div class="flex-between mt-4">
-
-                        <span class="text-muted"
-                              id="showingText">
-
-                            Showing 1–6 of 30 students
-
-                        </span>
-
-
-                        <div class="table-actions"
-                             id="pagination">
-
-                        </div>
-
-                    </div>
-
+                </div>
+            </div>
+
+            <!-- STUDENT TABLE -->
+            <div class="card animate-fadeInUp delay-4">
+                <div class="card-header">
+                    <div class="card-title"><i class="fas fa-users"></i> Students List</div>
+                    <span class="text-muted" id="totalStudents">30 Students</span>
                 </div>
 
-            </section>
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Student</th>
+                                <th>Email</th>
+                                <th>Course</th>
+                                <th>Progress</th>
+                                <th>Status</th>
+                                <th>Joined</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="studentTableBody">
+                            <!-- 30 Students will be rendered by JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="flex-between mt-4">
+                    <span class="text-muted" id="showingText">Showing 1–6 of 30 students</span>
+                    <div class="table-actions" id="pagination"></div>
+                </div>
+            </div>
 
         </main>
-
     </div>
 
+    <!-- ADD STUDENT MODAL -->
+    <div id="addStudentModal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-user-plus text-[#0F766E] mr-2"></i>Add New Student</h3>
+                <button id="closeAddStudent" class="text-[#64748B] hover:text-[#0F172A] text-xl transition-colors duration-300"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="modal-body space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-[#0F172A] mb-1">Student Name</label>
+                    <input type="text" id="studentName" placeholder="Enter student name" class="form-control" />
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-[#0F172A] mb-1">Email</label>
+                    <input type="email" id="studentEmail" placeholder="Enter email address" class="form-control" />
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-[#0F172A] mb-1">Phone Number</label>
+                    <input type="tel" id="studentPhone" placeholder="Enter 10 digit phone number" maxlength="10" class="form-control" />
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-[#0F172A] mb-1">Course</label>
+                    <select id="course" class="form-control">
+                        <option value="">Select course</option>
+                        <option value="MERN Stack">MERN Stack</option>
+                        <option value="Python">Python</option>
+                        <option value="SQL & Database">SQL & Database</option>
+                        <option value="JavaScript">JavaScript</option>
+                        <option value="React.js">React.js</option>
+                        <option value="UI/UX Design">UI/UX Design</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="cancelAddStudent" class="btn btn-ghost btn-sm hover:scale-105 transition-transform duration-300">Cancel</button>
+                <button id="addStudentBtn" class="btn btn-primary btn-sm hover:scale-105 transition-transform duration-300"><i class="fas fa-plus"></i> Add Student</button>
+            </div>
+        </div>
+    </div>
 
+    <!-- VIEW STUDENT MODAL -->
+    <div id="viewStudentModal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-eye text-[#0F766E] mr-2"></i>Student Details</h3>
+                <button id="closeViewModal" class="text-[#64748B] hover:text-[#0F172A] text-xl transition-colors duration-300"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="modal-body" id="viewStudentContent"></div>
+        </div>
+    </div>
 
-    <!-- =====================================================
-         JAVASCRIPT
-         ===================================================== -->
+    <!-- EDIT STUDENT MODAL -->
+    <div id="editStudentModal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-pen text-[#0F766E] mr-2"></i>Edit Student</h3>
+                <button id="closeEditModal" class="text-[#64748B] hover:text-[#0F172A] text-xl transition-colors duration-300"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="modal-body space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-[#0F172A] mb-1">Student Name</label>
+                    <input type="text" id="editName" class="form-control" />
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-[#0F172A] mb-1">Email</label>
+                    <input type="email" id="editEmail" class="form-control" />
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-[#0F172A] mb-1">Phone</label>
+                    <input type="tel" id="editPhone" maxlength="10" class="form-control" />
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-[#0F172A] mb-1">Course</label>
+                    <select id="editCourse" class="form-control">
+                        <option value="MERN Stack">MERN Stack</option>
+                        <option value="Python">Python</option>
+                        <option value="SQL & Database">SQL & Database</option>
+                        <option value="JavaScript">JavaScript</option>
+                        <option value="React.js">React.js</option>
+                        <option value="UI/UX Design">UI/UX Design</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-[#0F172A] mb-1">Progress (%)</label>
+                    <input type="number" id="editProgress" min="0" max="100" class="form-control" />
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-[#0F172A] mb-1">Status</label>
+                    <select id="editStatus" class="form-control">
+                        <option value="Active">Active</option>
+                        <option value="Inactive">Inactive</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="cancelEdit" class="btn btn-ghost btn-sm hover:scale-105 transition-transform duration-300">Cancel</button>
+                <button id="saveEdit" class="btn btn-primary btn-sm hover:scale-105 transition-transform duration-300"><i class="fas fa-check"></i> Save Changes</button>
+            </div>
+        </div>
+    </div>
 
     <script>
+        // =====================================================
+        // STUDENT DATA
+        // =====================================================
+        const studentsData = [
+            { id: '#ST001', name: 'Arjun Suresh', email: 'arjun@gmail.com', course: 'MERN Stack', progress: 91, status: 'Active', joined: '02 Aug 2026', phone: '9876543210' },
+            { id: '#ST002', name: 'Ananya Nair', email: 'ananya@gmail.com', course: 'Python', progress: 87, status: 'Active', joined: '03 Aug 2026', phone: '9876543211' },
+            { id: '#ST003', name: 'Rahul Kumar', email: 'rahul@gmail.com', course: 'JavaScript', progress: 78, status: 'Active', joined: '04 Aug 2026', phone: '9876543212' },
+            { id: '#ST004', name: 'Priya Menon', email: 'priya@gmail.com', course: 'JavaScript', progress: 85, status: 'Active', joined: '05 Aug 2026', phone: '9876543213' },
+            { id: '#ST005', name: 'Meera Suresh', email: 'meera@gmail.com', course: 'React.js', progress: 91, status: 'Active', joined: '06 Aug 2026', phone: '9876543214' },
+            { id: '#ST006', name: 'Vishnu S', email: 'vishnu@gmail.com', course: 'SQL & Database', progress: 73, status: 'Active', joined: '07 Aug 2026', phone: '9876543215' },
+            { id: '#ST007', name: 'Neha Krishnan', email: 'neha@gmail.com', course: 'Python', progress: 88, status: 'Active', joined: '08 Aug 2026', phone: '9876543216' },
+            { id: '#ST008', name: 'Adithya Das', email: 'adithya@gmail.com', course: 'UI/UX Design', progress: 69, status: 'Inactive', joined: '09 Aug 2026', phone: '9876543217' },
+            { id: '#ST009', name: 'Sneha Raj', email: 'sneha@gmail.com', course: 'React.js', progress: 94, status: 'Active', joined: '10 Aug 2026', phone: '9876543218' },
+            { id: '#ST010', name: 'Arun Kumar', email: 'arun@gmail.com', course: 'JavaScript', progress: 82, status: 'Active', joined: '11 Aug 2026', phone: '9876543219' },
+            { id: '#ST011', name: 'Riya Menon', email: 'riya@gmail.com', course: 'MERN Stack', progress: 89, status: 'Active', joined: '12 Aug 2026', phone: '9876543220' },
+            { id: '#ST012', name: 'Jithin Mathew', email: 'jithin@gmail.com', course: 'SQL & Database', progress: 76, status: 'Inactive', joined: '13 Aug 2026', phone: '9876543221' },
+            { id: '#ST013', name: 'Fahad Khan', email: 'fahad@gmail.com', course: 'Python', progress: 92, status: 'Active', joined: '14 Aug 2026', phone: '9876543222' },
+            { id: '#ST014', name: 'Devika S', email: 'devika@gmail.com', course: 'UI/UX Design', progress: 86, status: 'Active', joined: '15 Aug 2026', phone: '9876543223' },
+            { id: '#ST015', name: 'Nikhil Jose', email: 'nikhil@gmail.com', course: 'JavaScript', progress: 71, status: 'Active', joined: '16 Aug 2026', phone: '9876543224' },
+            { id: '#ST016', name: 'Akhil Mohan', email: 'akhil@gmail.com', course: 'MERN Stack', progress: 84, status: 'Active', joined: '17 Aug 2026', phone: '9876543225' },
+            { id: '#ST017', name: 'Sara Rahman', email: 'sara@gmail.com', course: 'React.js', progress: 90, status: 'Active', joined: '18 Aug 2026', phone: '9876543226' },
+            { id: '#ST018', name: 'Gokul V', email: 'gokul@gmail.com', course: 'Python', progress: 67, status: 'Inactive', joined: '19 Aug 2026', phone: '9876543227' },
+            { id: '#ST019', name: 'Lakshmi Priya', email: 'lakshmi@gmail.com', course: 'UI/UX Design', progress: 93, status: 'Active', joined: '20 Aug 2026', phone: '9876543228' },
+            { id: '#ST020', name: 'Hari Anand', email: 'hari@gmail.com', course: 'JavaScript', progress: 80, status: 'Active', joined: '21 Aug 2026', phone: '9876543229' },
+            { id: '#ST021', name: 'Ananya Joseph', email: 'ananya.j@gmail.com', course: 'MERN Stack', progress: 82, status: 'Active', joined: '22 Aug 2026', phone: '9876543230' },
+            { id: '#ST022', name: 'Rahul Madhav', email: 'rahulmadhav@gmail.com', course: 'Python', progress: 65, status: 'Active', joined: '23 Aug 2026', phone: '9876543231' },
+            { id: '#ST023', name: 'Disha Thomas', email: 'disha@gmail.com', course: 'React.js', progress: 74, status: 'Active', joined: '24 Aug 2026', phone: '9876543232' },
+            { id: '#ST024', name: 'Arjun Nair', email: 'arjun.n@gmail.com', course: 'SQL & Database', progress: 40, status: 'Inactive', joined: '25 Aug 2026', phone: '9876543233' },
+            { id: '#ST025', name: 'Meera Suresh', email: 'meera.s@gmail.com', course: 'MERN Stack', progress: 91, status: 'Active', joined: '26 Aug 2026', phone: '9876543234' },
+            { id: '#ST026', name: 'Abhinav Nair', email: 'abhinav@gmail.com', course: 'React.js', progress: 88, status: 'Active', joined: '27 Aug 2026', phone: '9876543235' },
+            { id: '#ST027', name: 'Swetha Raj', email: 'swetha@gmail.com', course: 'JavaScript', progress: 92, status: 'Active', joined: '28 Aug 2026', phone: '9876543236' },
+            { id: '#ST028', name: 'Rohan Menon', email: 'rohan@gmail.com', course: 'UI/UX Design', progress: 81, status: 'Active', joined: '28 Aug 2026', phone: '9876543237' },
+            { id: '#ST029', name: 'Fathima K', email: 'fathima@gmail.com', course: 'Python', progress: 76, status: 'Inactive', joined: '29 Aug 2026', phone: '9876543238' },
+            { id: '#ST030', name: 'Nandana Jose', email: 'nandana@gmail.com', course: 'SQL & Database', progress: 89, status: 'Active', joined: '29 Aug 2026', phone: '9876543239' }
+        ];
 
-        /* =====================================================
-           SIDEBAR
-           ===================================================== */
-
-        (function() {
-
-            const sidebar =
-                document.getElementById("sidebar");
-
-            const overlay =
-                document.getElementById("drawerOverlay");
-
-            const hamBtn =
-                document.getElementById("hamburgerBtn");
-
-            let drawerOpen = false;
-
-
-            function toggleDrawer() {
-
-                drawerOpen = !drawerOpen;
-
-
-                if (drawerOpen) {
-
-                    sidebar.classList.remove("-translate-x-full");
-
-                    overlay.classList.remove("hidden");
-
-                }
-
-                else {
-
-                    sidebar.classList.add("-translate-x-full");
-
-                    overlay.classList.add("hidden");
-
-                }
-
-            }
-
-
-            if (hamBtn) {
-
-                hamBtn.addEventListener(
-                    "click",
-                    toggleDrawer
-                );
-
-            }
-
-
-            if (overlay) {
-
-                overlay.addEventListener(
-                    "click",
-                    toggleDrawer
-                );
-
-            }
-
-
-            window.addEventListener(
-                "resize",
-                function() {
-
-                    if (
-                        window.innerWidth >= 768 &&
-                        drawerOpen
-                    ) {
-
-                        sidebar.classList.remove(
-                            "-translate-x-full"
-                        );
-
-                        overlay.classList.add(
-                            "hidden"
-                        );
-
-                        drawerOpen = false;
-
-                    }
-
-                }
-            );
-
-        })();
-
-
-
-        /* =====================================================
-           STUDENT VARIABLES
-           ===================================================== */
-
-        const tableBody =
-            document.getElementById("studentTableBody");
-
-        const searchInput =
-            document.getElementById("studentSearch");
-
-        const courseFilter =
-            document.getElementById("courseFilter");
-
-        const statusFilter =
-            document.getElementById("statusFilter");
-
-        const pagination =
-            document.getElementById("pagination");
-
-        const showingText =
-            document.getElementById("showingText");
-
-        const totalStudents =
-            document.getElementById("totalStudents");
-
-
-        const rowsPerPage = 6;
-
+        // =====================================================
+        // STATE
+        // =====================================================
         let currentPage = 1;
-
+        const rowsPerPage = 6;
         let nextStudentNumber = 31;
-
         let editingRow = null;
 
-
-
-        /* =====================================================
-           COURSE DETAILS
-           ===================================================== */
-
-        const courseDetails = {
-
-            "MERN Stack": {
-
-                description:
-                    "Learn MongoDB, Express, React and Node.js from beginner to advanced level.",
-
-                category:
-                    "Web Development",
-
-                lessons:
-                    "32 Lessons",
-
-                status:
-                    "Active"
-
-            },
-
-
-            "Python": {
-
-                description:
-                    "Master Python programming, problem solving and real-world applications.",
-
-                category:
-                    "Programming",
-
-                lessons:
-                    "28 Lessons",
-
-                status:
-                    "Active"
-
-            },
-
-
-            "SQL & Database": {
-
-                description:
-                    "Understand SQL, relational databases, queries and database design.",
-
-                category:
-                    "Database",
-
-                lessons:
-                    "20 Lessons",
-
-                status:
-                    "Draft"
-
-            },
-
-
-            "JavaScript": {
-
-                description:
-                    "Learn modern JavaScript concepts, ES6+, DOM and asynchronous programming.",
-
-                category:
-                    "Programming",
-
-                lessons:
-                    "35 Lessons",
-
-                status:
-                    "Active"
-
-            },
-
-
-            "React.js": {
-
-                description:
-                    "Build modern and responsive web applications using React.js.",
-
-                category:
-                    "Web Development",
-
-                lessons:
-                    "26 Lessons",
-
-                status:
-                    "Active"
-
-            },
-
-
-            "UI/UX Design": {
-
-                description:
-                    "Learn user interface design, UX principles, wireframing and prototyping.",
-
-                category:
-                    "Design",
-
-                lessons:
-                    "18 Lessons",
-
-                status:
-                    "Draft"
-
-            }
-
-        };
-
-
-
-        /* =====================================================
-           ADD MODAL
-           ===================================================== */
-
-        const addModal =
-            document.getElementById("addStudentModal");
-
-        const openAddStudent =
-            document.getElementById("openAddStudent");
-
-        const closeAddStudent =
-            document.getElementById("closeAddStudent");
-
-        const cancelAddStudent =
-            document.getElementById("cancelAddStudent");
-
-        const addStudentBtn =
-            document.getElementById("addStudentBtn");
-
-
-        function openAddModal() {
-
-            addModal.classList.remove("hidden");
-
-            addModal.classList.add("flex");
-
-        }
-
-
-        function closeAddModal() {
-
-            addModal.classList.add("hidden");
-
-            addModal.classList.remove("flex");
-
-        }
-
-
-        openAddStudent.addEventListener(
-            "click",
-            openAddModal
-        );
-
-
-        closeAddStudent.addEventListener(
-            "click",
-            closeAddModal
-        );
-
-
-        cancelAddStudent.addEventListener(
-            "click",
-            closeAddModal
-        );
-
-
-
-        /* =====================================================
-           GET ROWS
-           ===================================================== */
-
-        function getRows() {
-
-            return Array.from(
-                tableBody.querySelectorAll("tr")
-            );
-
-        }
-
-
-
-        /* =====================================================
-           ADD STUDENT
-           ===================================================== */
-
-        addStudentBtn.addEventListener(
-            "click",
-            function() {
-
-                const name =
-                    document
-                    .getElementById("studentName")
-                    .value
-                    .trim();
-
-
-                const email =
-                    document
-                    .getElementById("studentEmail")
-                    .value
-                    .trim();
-
-
-                const phone =
-                    document
-                    .getElementById("studentphno")
-                    .value
-                    .trim();
-
-
-                const courseSelect =
-                    document
-                    .getElementById("course");
-
-
-                const course =
-                    courseSelect.value;
-
-
-                if (
-                    name === "" ||
-                    email === "" ||
-                    phone === "" ||
-                    course === ""
-                ) {
-
-                    alert(
-                        "Please fill all student details."
-                    );
-
-                    return;
-
-                }
-
-
-                if (!/^\d{10}$/.test(phone)) {
-
-                    alert(
-                        "Please enter a valid 10 digit phone number."
-                    );
-
-                    return;
-
-                }
-
-
-                const id =
-                    "#ST" +
-                    String(nextStudentNumber)
-                    .padStart(3, "0");
-
-
-                nextStudentNumber++;
-
-
-                const today =
-                    new Date();
-
-
-                const months = [
-                    "Jan",
-                    "Feb",
-                    "Mar",
-                    "Apr",
-                    "May",
-                    "Jun",
-                    "Jul",
-                    "Aug",
-                    "Sep",
-                    "Oct",
-                    "Nov",
-                    "Dec"
-                ];
-
-
-                const joinedDate =
-                    String(today.getDate())
-                    .padStart(2, "0")
-                    + " "
-                    + months[today.getMonth()]
-                    + " "
-                    + today.getFullYear();
-
-
-                const initials =
-                    name
-                    .split(" ")
-                    .map(word => word[0])
-                    .join("")
-                    .substring(0, 2)
-                    .toUpperCase();
-
-
-                const row =
-                    document.createElement("tr");
-
-
-                row.dataset.phone = phone;
-
-
-                row.innerHTML = `
-
-                    <td>${id}</td>
-
+        // =====================================================
+        // DOM REFS
+        // =====================================================
+        const tableBody = document.getElementById('studentTableBody');
+        const searchInput = document.getElementById('studentSearch');
+        const courseFilter = document.getElementById('courseFilter');
+        const statusFilter = document.getElementById('statusFilter');
+        const pagination = document.getElementById('pagination');
+        const showingText = document.getElementById('showingText');
+        const totalStudents = document.getElementById('totalStudents');
+
+        // =====================================================
+        // RENDER TABLE
+        // =====================================================
+        function renderTable(students) {
+            tableBody.innerHTML = '';
+            students.forEach((s, index) => {
+                const initials = s.name.split(' ').map(w => w[0]).join('').substring(0, 2).toUpperCase();
+                const statusClass = s.status === 'Active' ? 'badge-active' : 'status-inactive';
+                const tr = document.createElement('tr');
+                tr.className = `animate-fadeInUp delay-${(index % 6) + 1}`;
+                tr.dataset.phone = s.phone;
+                tr.innerHTML = `
+                    <td>${s.id}</td>
                     <td>
-
                         <div class="student-name">
-
-                            <div class="avatar">
-                                ${initials}
-                            </div>
-
-                            <strong>
-                                ${name}
-                            </strong>
-
+                            <div class="avatar">${initials}</div>
+                            <strong>${s.name}</strong>
                         </div>
-
                     </td>
-
+                    <td>${s.email}</td>
+                    <td>${s.course}</td>
                     <td>
-                        ${email}
-                    </td>
-
-                    <td>
-                        ${course}
-                    </td>
-
-                    <td>
-
                         <div class="progress-wrapper">
-
-                            <div class="progress-info">
-                                <span>0%</span>
-                            </div>
-
+                            <div class="progress-info"><span>${s.progress}%</span></div>
                             <div class="progress-bar">
-
-                                <div
-                                    class="progress-fill"
-                                    style="width:0%;">
-                                </div>
-
+                                <div class="progress-fill" style="width:${s.progress}%;"></div>
                             </div>
-
                         </div>
-
                     </td>
-
-                    <td>
-
-                        <span class="badge badge-active">
-                            Active
-                        </span>
-
-                    </td>
-
-                    <td>
-                        ${joinedDate}
-                    </td>
-
+                    <td><span class="${statusClass}">${s.status}</span></td>
+                    <td>${s.joined}</td>
                     <td class="table-actions">
-
-                        <a href="#" class="view-btn">
-                            <i class="fa-regular fa-eye"></i>
-                        </a>
-
-                        <a href="#" class="edit-btn">
-                            <i class="fa-solid fa-pen"></i>
-                        </a>
-
-                        <a href="#" class="delete-btn danger">
-                            <i class="fa-solid fa-trash"></i>
-                        </a>
-
+                        <a href="#" class="view-btn" title="View"><i class="fa-regular fa-eye"></i></a>
+                        <a href="#" class="edit-btn" title="Edit"><i class="fa-solid fa-pen"></i></a>
+                        <a href="#" class="delete-btn danger" title="Delete"><i class="fa-solid fa-trash"></i></a>
                     </td>
-
                 `;
-
-
-                tableBody.appendChild(row);
-
-
-                document
-                .getElementById("studentName")
-                .value = "";
-
-
-                document
-                .getElementById("studentEmail")
-                .value = "";
-
-
-                document
-                .getElementById("studentphno")
-                .value = "";
-
-
-                courseSelect.value = "";
-
-
-                closeAddModal();
-
-
-                currentPage = 1;
-
-                showPage(1);
-
-            }
-        );
-
-
-
-        /* =====================================================
-           FILTER
-           ===================================================== */
-
-        function getFilteredRows() {
-
-            const search =
-                searchInput.value
-                .toLowerCase()
-                .trim();
-
-
-            const course =
-                courseFilter.value
-                .toLowerCase()
-                .trim();
-
-
-            const status =
-                statusFilter.value
-                .toLowerCase()
-                .trim();
-
-
-            return getRows().filter(row => {
-
-                const name =
-                    row.cells[1]
-                    .innerText
-                    .toLowerCase()
-                    .trim();
-
-
-                const email =
-                    row.cells[2]
-                    .innerText
-                    .toLowerCase()
-                    .trim();
-
-
-                const courseText =
-                    row.cells[3]
-                    .innerText
-                    .toLowerCase()
-                    .trim();
-
-
-                const statusText =
-                    row.cells[5]
-                    .innerText
-                    .toLowerCase()
-                    .trim();
-
-
-                const matchesSearch =
-                    search === "" ||
-                    name.includes(search) ||
-                    email.includes(search);
-
-
-                const matchesCourse =
-                    course === "" ||
-                    courseText === course;
-
-
-                const matchesStatus =
-                    status === "" ||
-                    statusText === status;
-
-
-                return (
-                    matchesSearch &&
-                    matchesCourse &&
-                    matchesStatus
-                );
-
+                tableBody.appendChild(tr);
             });
-
         }
 
+        // =====================================================
+        // GET FILTERED ROWS
+        // =====================================================
+        function getFilteredData() {
+            const search = searchInput.value.toLowerCase().trim();
+            const course = courseFilter.value.toLowerCase().trim();
+            const status = statusFilter.value.toLowerCase().trim();
 
-
-        /* =====================================================
-           SHOW PAGE
-           ===================================================== */
-
-        function showPage(page) {
-
-            const allRows =
-                getRows();
-
-
-            const filteredRows =
-                getFilteredRows();
-
-
-            const totalPages =
-                Math.ceil(
-                    filteredRows.length /
-                    rowsPerPage
-                );
-
-
-            allRows.forEach(row => {
-
-                row.style.display = "none";
-
+            return studentsData.filter(s => {
+                const matchesSearch = search === '' || s.name.toLowerCase().includes(search) || s.email.toLowerCase().includes(search);
+                const matchesCourse = course === '' || s.course.toLowerCase() === course;
+                const matchesStatus = status === '' || s.status.toLowerCase() === status;
+                return matchesSearch && matchesCourse && matchesStatus;
             });
+        }
 
+        // =====================================================
+        // SHOW PAGE
+        // =====================================================
+        function showPage(page) {
+            const filtered = getFilteredData();
+            const totalPages = Math.ceil(filtered.length / rowsPerPage) || 1;
 
-            if (totalPages === 0) {
-
-                currentPage = 1;
-
-                showingText.innerText =
-                    "Showing 0 students";
-
-                totalStudents.innerText =
-                    "0 Students";
-
-                createPagination(0);
-
-                return;
-
-            }
-
-
-            if (page < 1) {
-
-                page = 1;
-
-            }
-
-
-            if (page > totalPages) {
-
-                page = totalPages;
-
-            }
-
-
+            if (page < 1) page = 1;
+            if (page > totalPages) page = totalPages;
             currentPage = page;
 
+            const start = (currentPage - 1) * rowsPerPage;
+            const end = Math.min(start + rowsPerPage, filtered.length);
+            const pageData = filtered.slice(start, end);
 
-            const start =
-                (currentPage - 1) *
-                rowsPerPage;
+            renderTable(pageData);
 
+            showingText.innerText = filtered.length > 0
+                ? `Showing ${start + 1}–${end} of ${filtered.length} students`
+                : 'Showing 0 students';
+            totalStudents.innerText = `${filtered.length} Students`;
 
-            const end =
-                start + rowsPerPage;
-
-
-            filteredRows
-            .slice(start, end)
-            .forEach(row => {
-
-                row.style.display = "";
-
-            });
-
-
-            showingText.innerText =
-                `Showing ${start + 1}–${Math.min(
-                    end,
-                    filteredRows.length
-                )} of ${filteredRows.length} students`;
-
-
-            totalStudents.innerText =
-                `${filteredRows.length} Students`;
-
-
-            createPagination(totalPages);
-
+            createPagination(totalPages, filtered.length);
         }
 
+        // =====================================================
+        // PAGINATION
+        // =====================================================
+        function createPagination(totalPages, totalItems) {
+            pagination.innerHTML = '';
+            if (totalItems === 0) return;
 
+            const prev = document.createElement('button');
+            prev.type = 'button';
+            prev.className = 'btn btn-outline btn-sm hover:scale-105 transition-transform duration-300';
+            prev.innerHTML = '<i class="fas fa-chevron-left"></i>';
+            prev.disabled = currentPage === 1;
+            prev.onclick = () => showPage(currentPage - 1);
+            pagination.appendChild(prev);
 
-        /* =====================================================
-           PAGINATION
-           ===================================================== */
-
-        function createPagination(totalPages) {
-
-            pagination.innerHTML = "";
-
-
-            const previous =
-                document.createElement("button");
-
-
-            previous.type = "button";
-
-
-            previous.className =
-                "btn btn-outline btn-sm";
-
-
-            previous.innerHTML =
-                '<i class="fa-solid fa-chevron-left"></i>';
-
-
-            previous.disabled =
-                currentPage === 1 ||
-                totalPages === 0;
-
-
-            previous.onclick =
-                function() {
-
-                    showPage(
-                        currentPage - 1
-                    );
-
-                };
-
-
-            pagination.appendChild(previous);
-
-
-            for (
-                let i = 1;
-                i <= totalPages;
-                i++
-            ) {
-
-                const button =
-                    document.createElement("button");
-
-
-                button.type = "button";
-
-
-                button.className =
-                    i === currentPage
-                    ? "btn btn-primary btn-sm"
-                    : "btn btn-outline btn-sm";
-
-
-                button.innerText = i;
-
-
-                button.onclick =
-                    function() {
-
-                        showPage(i);
-
-                    };
-
-
-                pagination.appendChild(button);
-
+            for (let i = 1; i <= totalPages; i++) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.className = i === currentPage ? 'btn btn-primary btn-sm hover:scale-105 transition-transform duration-300' : 'btn btn-outline btn-sm hover:scale-105 transition-transform duration-300';
+                btn.innerText = i;
+                btn.onclick = () => showPage(i);
+                pagination.appendChild(btn);
             }
 
-
-            const next =
-                document.createElement("button");
-
-
-            next.type = "button";
-
-
-            next.className =
-                "btn btn-outline btn-sm";
-
-
-            next.innerHTML =
-                '<i class="fa-solid fa-chevron-right"></i>';
-
-
-            next.disabled =
-                currentPage === totalPages ||
-                totalPages === 0;
-
-
-            next.onclick =
-                function() {
-
-                    showPage(
-                        currentPage + 1
-                    );
-
-                };
-
-
+            const next = document.createElement('button');
+            next.type = 'button';
+            next.className = 'btn btn-outline btn-sm hover:scale-105 transition-transform duration-300';
+            next.innerHTML = '<i class="fas fa-chevron-right"></i>';
+            next.disabled = currentPage === totalPages;
+            next.onclick = () => showPage(currentPage + 1);
             pagination.appendChild(next);
-
         }
 
+        // =====================================================
+        // FILTER EVENTS
+        // =====================================================
+        searchInput.addEventListener('input', () => { currentPage = 1; showPage(1); });
+        courseFilter.addEventListener('change', () => { currentPage = 1; showPage(1); });
+        statusFilter.addEventListener('change', () => { currentPage = 1; showPage(1); });
 
+        function resetFilters() {
+            searchInput.value = '';
+            courseFilter.value = '';
+            statusFilter.value = '';
+            currentPage = 1;
+            showPage(1);
+        }
 
-        /* =====================================================
-           VIEW / EDIT / DELETE
-           ===================================================== */
+        // =====================================================
+        // SIDEBAR TOGGLE
+        // =====================================================
+        (function() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('drawerOverlay');
+            const hamBtn = document.getElementById('hamburgerBtn');
+            let drawerOpen = false;
 
-        tableBody.addEventListener(
-            "click",
-            function(event) {
-
-                event.preventDefault();
-
-
-                const row =
-                    event.target.closest("tr");
-
-
-                if (!row) {
-
-                    return;
-
-                }
-
-
-                if (
-                    event.target.closest(".view-btn")
-                ) {
-
-                    openView(row);
-
-                    return;
-
-                }
-
-
-                if (
-                    event.target.closest(".edit-btn")
-                ) {
-
-                    openEdit(row);
-
-                    return;
-
-                }
-
-
-                if (
-                    event.target.closest(".delete-btn")
-                ) {
-
-                    deleteStudent(row);
-
-                    return;
-
-                }
-
+            function toggleDrawer() {
+                drawerOpen = !drawerOpen;
+                if (drawerOpen) { sidebar.classList.remove('-translate-x-full'); overlay.classList.remove('hidden'); }
+                else { sidebar.classList.add('-translate-x-full'); overlay.classList.add('hidden'); }
             }
-        );
+            if (hamBtn) hamBtn.addEventListener('click', toggleDrawer);
+            if (overlay) overlay.addEventListener('click', toggleDrawer);
+            window.addEventListener('resize', function() {
+                if (window.innerWidth >= 768 && drawerOpen) {
+                    sidebar.classList.remove('-translate-x-full');
+                    overlay.classList.add('hidden');
+                    drawerOpen = false;
+                }
+            });
+        })();
 
+        // =====================================================
+        // MODALS
+        // =====================================================
+        const addModal = document.getElementById('addStudentModal');
+        const openAdd = document.getElementById('openAddStudent');
+        const closeAdd = document.getElementById('closeAddStudent');
+        const cancelAdd = document.getElementById('cancelAddStudent');
+        const addBtn = document.getElementById('addStudentBtn');
 
+        function openAddModal() { addModal.classList.remove('hidden'); addModal.classList.add('flex'); }
+        function closeAddModal() { addModal.classList.add('hidden'); addModal.classList.remove('flex'); }
 
-        /* =====================================================
-           VIEW STUDENT
-           ===================================================== */
+        openAdd.addEventListener('click', openAddModal);
+        closeAdd.addEventListener('click', closeAddModal);
+        cancelAdd.addEventListener('click', closeAddModal);
 
-        const viewModal =
-            document.getElementById("viewStudentModal");
+        // =====================================================
+        // ADD STUDENT
+        // =====================================================
+        addBtn.addEventListener('click', function() {
+            const name = document.getElementById('studentName').value.trim();
+            const email = document.getElementById('studentEmail').value.trim();
+            const phone = document.getElementById('studentPhone').value.trim();
+            const course = document.getElementById('course').value;
 
+            if (!name || !email || !phone || !course) { alert('Please fill all student details.'); return; }
+            if (!/^\d{10}$/.test(phone)) { alert('Please enter a valid 10 digit phone number.'); return; }
 
-        const viewContent =
-            document.getElementById("viewStudentContent");
+            const id = '#ST' + String(nextStudentNumber).padStart(3, '0');
+            nextStudentNumber++;
+            const today = new Date();
+            const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+            const joined = String(today.getDate()).padStart(2, '0') + ' ' + months[today.getMonth()] + ' ' + today.getFullYear();
 
+            studentsData.push({ id, name, email, course, progress: 0, status: 'Active', joined, phone });
 
-        function openView(row) {
+            document.getElementById('studentName').value = '';
+            document.getElementById('studentEmail').value = '';
+            document.getElementById('studentPhone').value = '';
+            document.getElementById('course').value = '';
 
-            const id =
-                row.cells[0]
-                .innerText
-                .trim();
+            closeAddModal();
+            currentPage = 1;
+            showPage(1);
+        });
 
+        // =====================================================
+        // VIEW / EDIT / DELETE
+        // =====================================================
+        const viewModal = document.getElementById('viewStudentModal');
+        const viewContent = document.getElementById('viewStudentContent');
+        const closeView = document.getElementById('closeViewModal');
 
-            const name =
-                row.cells[1]
-                .innerText
-                .trim();
+        const editModal = document.getElementById('editStudentModal');
+        const closeEdit = document.getElementById('closeEditModal');
+        const cancelEdit = document.getElementById('cancelEdit');
+        const saveEdit = document.getElementById('saveEdit');
 
+        const courseDetails = {
+            'MERN Stack': { description: 'Learn MongoDB, Express, React and Node.js from beginner to advanced level.', category: 'Web Development', lessons: '32 Lessons', status: 'Active' },
+            'Python': { description: 'Master Python programming, problem solving and real-world applications.', category: 'Programming', lessons: '28 Lessons', status: 'Active' },
+            'SQL & Database': { description: 'Understand SQL, relational databases, queries and database design.', category: 'Database', lessons: '20 Lessons', status: 'Draft' },
+            'JavaScript': { description: 'Learn modern JavaScript concepts, ES6+, DOM and asynchronous programming.', category: 'Programming', lessons: '35 Lessons', status: 'Active' },
+            'React.js': { description: 'Build modern and responsive web applications using React.js.', category: 'Web Development', lessons: '26 Lessons', status: 'Active' },
+            'UI/UX Design': { description: 'Learn user interface design, UX principles, wireframing and prototyping.', category: 'Design', lessons: '18 Lessons', status: 'Draft' }
+        };
 
-            const email =
-                row.cells[2]
-                .innerText
-                .trim();
+        tableBody.addEventListener('click', function(e) {
+            e.preventDefault();
+            const row = e.target.closest('tr');
+            if (!row) return;
 
+            const idx = Array.from(tableBody.children).indexOf(row);
+            const data = getFilteredData();
+            const pageStart = (currentPage - 1) * rowsPerPage;
+            const student = data[pageStart + idx];
+            if (!student) return;
 
-            const course =
-                row.cells[3]
-                .innerText
-                .trim();
+            if (e.target.closest('.view-btn')) { openView(student); return; }
+            if (e.target.closest('.edit-btn')) { openEdit(student, row); return; }
+            if (e.target.closest('.delete-btn')) { deleteStudent(student); return; }
+        });
 
-
-            const progress =
-                row.cells[4]
-                .innerText
-                .trim();
-
-
-            const status =
-                row.cells[5]
-                .innerText
-                .trim();
-
-
-            const date =
-                row.cells[6]
-                .innerText
-                .trim();
-
-
-            const phone =
-                row.dataset.phone ||
-                "Not available";
-
-
-            const details =
-                courseDetails[course];
-
-
-            const courseDescription =
-                details
-                ? details.description
-                : "Course information not available.";
-
-
-            const category =
-                details
-                ? details.category
-                : "Not available";
-
-
-            const lessons =
-                details
-                ? details.lessons
-                : "Not available";
-
-
-            const courseStatus =
-                details
-                ? details.status
-                : "Not available";
-
-
-            const courseStatusClass =
-                courseStatus === "Active"
-                ? "badge-active"
-                : "course-draft";
-
-
+        function openView(s) {
+            const details = courseDetails[s.course] || { description: 'Course information not available.', category: 'Not available', lessons: 'Not available', status: 'Not available' };
+            const statusClass = details.status === 'Active' ? 'badge-active' : 'course-draft';
             viewContent.innerHTML = `
-
-                <div class="flex justify-between border-b pb-2">
-
-                    <span class="text-slate-500">
-                        Student ID
-                    </span>
-
-                    <strong>${id}</strong>
-
-                </div>
-
-
-                <div class="flex justify-between border-b pb-2">
-
-                    <span class="text-slate-500">
-                        Name
-                    </span>
-
-                    <strong>${name}</strong>
-
-                </div>
-
-
-                <div class="flex justify-between border-b pb-2">
-
-                    <span class="text-slate-500">
-                        Email
-                    </span>
-
-                    <strong>${email}</strong>
-
-                </div>
-
-
-                <div class="flex justify-between border-b pb-2">
-
-                    <span class="text-slate-500">
-                        Phone
-                    </span>
-
-                    <strong>${phone}</strong>
-
-                </div>
-
-
-                <div class="flex justify-between border-b pb-2">
-
-                    <span class="text-slate-500">
-                        Course
-                    </span>
-
-                    <strong>${course}</strong>
-
-                </div>
-
-
-                <div class="bg-slate-50 rounded-lg p-4 mt-3">
-
-                    <h4 class="font-semibold text-slate-800 mb-2">
-                        Course Information
-                    </h4>
-
-                    <p class="text-sm text-slate-600 mb-3">
-                        ${courseDescription}
-                    </p>
-
+                <div class="flex justify-between border-b pb-2"><span class="text-[#64748B]">Student ID</span><strong>${s.id}</strong></div>
+                <div class="flex justify-between border-b pb-2"><span class="text-[#64748B]">Name</span><strong>${s.name}</strong></div>
+                <div class="flex justify-between border-b pb-2"><span class="text-[#64748B]">Email</span><strong>${s.email}</strong></div>
+                <div class="flex justify-between border-b pb-2"><span class="text-[#64748B]">Phone</span><strong>${s.phone}</strong></div>
+                <div class="flex justify-between border-b pb-2"><span class="text-[#64748B]">Course</span><strong>${s.course}</strong></div>
+                <div class="bg-[#f8fbfa] rounded-lg p-4 mt-3">
+                    <h4 class="font-semibold text-[#0F172A] mb-2">Course Information</h4>
+                    <p class="text-sm text-[#64748B] mb-3">${details.description}</p>
                     <div class="grid grid-cols-2 gap-3">
-
-                        <div>
-
-                            <span class="text-xs text-slate-500">
-                                Category
-                            </span>
-
-                            <p class="font-medium text-sm">
-                                ${category}
-                            </p>
-
-                        </div>
-
-
-                        <div>
-
-                            <span class="text-xs text-slate-500">
-                                Lessons
-                            </span>
-
-                            <p class="font-medium text-sm">
-                                ${lessons}
-                            </p>
-
-                        </div>
-
-
-                        <div>
-
-                            <span class="text-xs text-slate-500">
-                                Course Status
-                            </span>
-
-                            <p class="mt-1">
-
-                                <span class="${courseStatusClass}">
-                                    ${courseStatus}
-                                </span>
-
-                            </p>
-
-                        </div>
-
+                        <div><span class="text-xs text-[#64748B]">Category</span><p class="font-medium text-sm">${details.category}</p></div>
+                        <div><span class="text-xs text-[#64748B]">Lessons</span><p class="font-medium text-sm">${details.lessons}</p></div>
+                        <div><span class="text-xs text-[#64748B]">Course Status</span><p class="mt-1"><span class="${statusClass}">${details.status}</span></p></div>
                     </div>
-
                 </div>
-
-
-                <div class="flex justify-between border-b pb-2">
-
-                    <span class="text-slate-500">
-                        Student Progress
-                    </span>
-
-                    <strong>${progress}</strong>
-
-                </div>
-
-
-                <div class="flex justify-between border-b pb-2">
-
-                    <span class="text-slate-500">
-                        Student Status
-                    </span>
-
-                    <strong>${status}</strong>
-
-                </div>
-
-
-                <div class="flex justify-between">
-
-                    <span class="text-slate-500">
-                        Joined Date
-                    </span>
-
-                    <strong>${date}</strong>
-
-                </div>
-
+                <div class="flex justify-between border-b pb-2"><span class="text-[#64748B]">Progress</span><strong>${s.progress}%</strong></div>
+                <div class="flex justify-between border-b pb-2"><span class="text-[#64748B]">Status</span><strong>${s.status}</strong></div>
+                <div class="flex justify-between"><span class="text-[#64748B]">Joined</span><strong>${s.joined}</strong></div>
             `;
-
-
-            viewModal.classList.remove("hidden");
-
-            viewModal.classList.add("flex");
-
+            viewModal.classList.remove('hidden');
+            viewModal.classList.add('flex');
         }
 
+        closeView.addEventListener('click', () => { viewModal.classList.add('hidden'); viewModal.classList.remove('flex'); });
 
-        document
-        .getElementById("closeViewModal")
-        .addEventListener(
-            "click",
-            function() {
-
-                viewModal.classList.add("hidden");
-
-                viewModal.classList.remove("flex");
-
-            }
-        );
-
-
-
-        /* =====================================================
-           EDIT STUDENT
-           ===================================================== */
-
-        const editModal =
-            document.getElementById("editStudentModal");
-
-
-        function openEdit(row) {
-
-            editingRow = row;
-
-
-            document
-            .getElementById("editName")
-            .value =
-                row.cells[1]
-                .innerText
-                .trim();
-
-
-            document
-            .getElementById("editEmail")
-            .value =
-                row.cells[2]
-                .innerText
-                .trim();
-
-
-            document
-            .getElementById("editPhone")
-            .value =
-                row.dataset.phone || "";
-
-
-            document
-            .getElementById("editCourse")
-            .value =
-                row.cells[3]
-                .innerText
-                .trim();
-
-
-            document
-            .getElementById("editProgress")
-            .value =
-                parseInt(
-                    row.cells[4]
-                    .innerText
-                ) || 0;
-
-
-            document
-            .getElementById("editStatus")
-            .value =
-                row.cells[5]
-                .innerText
-                .trim();
-
-
-            editModal.classList.remove("hidden");
-
-            editModal.classList.add("flex");
-
+        function openEdit(s, row) {
+            editingRow = { student: s, row: row };
+            document.getElementById('editName').value = s.name;
+            document.getElementById('editEmail').value = s.email;
+            document.getElementById('editPhone').value = s.phone;
+            document.getElementById('editCourse').value = s.course;
+            document.getElementById('editProgress').value = s.progress;
+            document.getElementById('editStatus').value = s.status;
+            editModal.classList.remove('hidden');
+            editModal.classList.add('flex');
         }
 
-
-        function closeEdit() {
-
-            editModal.classList.add("hidden");
-
-            editModal.classList.remove("flex");
-
-            editingRow = null;
-
-        }
-
-
-        document
-        .getElementById("closeEditModal")
-        .addEventListener(
-            "click",
-            closeEdit
-        );
-
-
-        document
-        .getElementById("cancelEdit")
-        .addEventListener(
-            "click",
-            closeEdit
-        );
-
-
-
-        /* =====================================================
-           SAVE EDIT
-           ===================================================== */
-
-        document
-        .getElementById("saveEdit")
-        .addEventListener(
-            "click",
-            function() {
-
-                if (!editingRow) {
-
-                    return;
-
-                }
-
-
-                const name =
-                    document
-                    .getElementById("editName")
-                    .value
-                    .trim();
-
-
-                const email =
-                    document
-                    .getElementById("editEmail")
-                    .value
-                    .trim();
-
-
-                const phone =
-                    document
-                    .getElementById("editPhone")
-                    .value
-                    .trim();
-
-
-                const course =
-                    document
-                    .getElementById("editCourse")
-                    .value;
-
-
-                const progress =
-                    parseInt(
-                        document
-                        .getElementById("editProgress")
-                        .value
-                    );
-
-
-                const status =
-                    document
-                    .getElementById("editStatus")
-                    .value;
-
-
-                if (
-                    name === "" ||
-                    email === "" ||
-                    phone === ""
-                ) {
-
-                    alert(
-                        "Please fill all fields."
-                    );
-
-                    return;
-
-                }
-
-
-                if (!/^\d{10}$/.test(phone)) {
-
-                    alert(
-                        "Please enter a valid 10 digit phone number."
-                    );
-
-                    return;
-
-                }
-
-
-                if (
-                    isNaN(progress) ||
-                    progress < 0 ||
-                    progress > 100
-                ) {
-
-                    alert(
-                        "Progress must be between 0 and 100."
-                    );
-
-                    return;
-
-                }
-
-
-                const initials =
-                    name
-                    .split(" ")
-                    .map(word => word[0])
-                    .join("")
-                    .substring(0, 2)
-                    .toUpperCase();
-
-
-                editingRow.cells[1].innerHTML = `
-
-                    <div class="student-name">
-
-                        <div class="avatar">
-                            ${initials}
-                        </div>
-
-                        <strong>
-                            ${name}
-                        </strong>
-
-                    </div>
-
-                `;
-
-
-                editingRow.cells[2].innerText =
-                    email;
-
-
-                editingRow.dataset.phone =
-                    phone;
-
-
-                editingRow.cells[3].innerText =
-                    course;
-
-
-                editingRow.cells[4].innerHTML = `
-
-                    <div class="progress-wrapper">
-
-                        <div class="progress-info">
-
-                            <span>
-                                ${progress}%
-                            </span>
-
-                        </div>
-
-                        <div class="progress-bar">
-
-                            <div
-                                class="progress-fill"
-                                style="width:${progress}%;">
-                            </div>
-
-                        </div>
-
-                    </div>
-
-                `;
-
-
-                if (
-                    status.toLowerCase() === "active"
-                ) {
-
-                    editingRow.cells[5].innerHTML = `
-
-                        <span class="badge badge-active">
-                            Active
-                        </span>
-
-                    `;
-
-                }
-
-                else {
-
-                    editingRow.cells[5].innerHTML = `
-
-                        <span class="status inactive">
-                            Inactive
-                        </span>
-
-                    `;
-
-                }
-
-
-                closeEdit();
-
-                showPage(currentPage);
-
-            }
-        );
-
-
-
-        /* =====================================================
-           DELETE
-           ===================================================== */
-
-        function deleteStudent(row) {
-
-            const id =
-                row.cells[0]
-                .innerText
-                .trim();
-
-
-            const name =
-                row.cells[1]
-                .innerText
-                .trim();
-
-
-            const confirmation =
-                confirm(
-
-`⚠️ Delete Student
-
-Are you sure you want to delete:
-
-${id} - ${name}
-
-This action cannot be undone.`
-
-                );
-
-
-            if (!confirmation) {
-
-                return;
-
-            }
-
-
-            row.remove();
-
-
-            const filteredRows =
-                getFilteredRows();
-
-
-            const totalPages =
-                Math.ceil(
-                    filteredRows.length /
-                    rowsPerPage
-                );
-
-
-            if (
-                currentPage > totalPages &&
-                totalPages > 0
-            ) {
-
-                currentPage =
-                    totalPages;
-
-            }
-
-
+        function closeEditModalFn() { editModal.classList.add('hidden'); editModal.classList.remove('flex'); editingRow = null; }
+        closeEdit.addEventListener('click', closeEditModalFn);
+        cancelEdit.addEventListener('click', closeEditModalFn);
+
+        saveEdit.addEventListener('click', function() {
+            if (!editingRow) return;
+            const s = editingRow.student;
+            const name = document.getElementById('editName').value.trim();
+            const email = document.getElementById('editEmail').value.trim();
+            const phone = document.getElementById('editPhone').value.trim();
+            const course = document.getElementById('editCourse').value;
+            const progress = parseInt(document.getElementById('editProgress').value);
+            const status = document.getElementById('editStatus').value;
+
+            if (!name || !email || !phone) { alert('Please fill all fields.'); return; }
+            if (!/^\d{10}$/.test(phone)) { alert('Please enter a valid 10 digit phone number.'); return; }
+            if (isNaN(progress) || progress < 0 || progress > 100) { alert('Progress must be between 0 and 100.'); return; }
+
+            s.name = name;
+            s.email = email;
+            s.phone = phone;
+            s.course = course;
+            s.progress = progress;
+            s.status = status;
+
+            closeEditModalFn();
             showPage(currentPage);
+        });
 
+        function deleteStudent(s) {
+            if (!confirm(`⚠️ Delete Student\n\nAre you sure you want to delete:\n${s.id} - ${s.name}\n\nThis action cannot be undone.`)) return;
+            const idx = studentsData.indexOf(s);
+            if (idx > -1) studentsData.splice(idx, 1);
+            const filtered = getFilteredData();
+            const totalPages = Math.ceil(filtered.length / rowsPerPage) || 1;
+            if (currentPage > totalPages) currentPage = totalPages;
+            showPage(currentPage);
         }
 
-
-
-        /* =====================================================
-           SEARCH
-           ===================================================== */
-
-        searchInput.addEventListener(
-            "input",
-            function() {
-
-                currentPage = 1;
-
-                showPage(1);
-
-            }
-        );
-
-
-
-        /* =====================================================
-           COURSE FILTER
-           ===================================================== */
-
-        courseFilter.addEventListener(
-            "change",
-            function() {
-
-                currentPage = 1;
-
-                showPage(1);
-
-            }
-        );
-
-
-
-        /* =====================================================
-           STATUS FILTER
-           ===================================================== */
-
-        statusFilter.addEventListener(
-            "change",
-            function() {
-
-                currentPage = 1;
-
-                showPage(1);
-
-            }
-        );
-
-
-
-        /* =====================================================
-           INITIAL PAGE
-           ===================================================== */
-
+        // =====================================================
+        // INITIALIZE
+        // =====================================================
         showPage(1);
-
     </script>
 
 </body>
-
 </html>
-
-
-
-
-

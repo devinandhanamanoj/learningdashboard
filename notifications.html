@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
     <title>EduNova · Notifications</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
@@ -17,7 +17,9 @@
         .nav-search input {
             background: white; border: 1px solid #d1e0e0; border-radius: 40px;
             padding: 0.5rem 1rem 0.5rem 2.8rem; width: 240px; font-size: 0.9rem;
+            transition: all 0.3s ease;
         }
+        .nav-search input:focus { border-color: #14B8A6; transform: scale(1.02); }
         .nav-search i { position: absolute; left: 1rem; top: 0.7rem; color: #64748B; }
         .badge-status { background: #e6f7f5; color: #0F766E; font-weight: 500; padding: 0.2rem 0.8rem; border-radius: 40px; font-size: 0.7rem; }
         .badge-unread { background: #dbeafe; color: #2563eb; }
@@ -34,37 +36,91 @@
         .filter-group select, .filter-group input {
             padding: 0.3rem 0.6rem; border: 1px solid #dce8e6; border-radius: 8px;
             font-size: 0.8rem; background: white; color: #0F172A; width: 100%;
+            transition: all 0.3s ease;
         }
-        .filter-group select:focus, .filter-group input:focus { outline: none; border-color: #14B8A6; box-shadow: 0 0 0 3px rgba(20,184,166,0.12); }
+        .filter-group select:focus, .filter-group input:focus { outline: none; border-color: #14B8A6; box-shadow: 0 0 0 3px rgba(20,184,166,0.12); transform: scale(1.02); }
+        .filter-group select:hover, .filter-group input:hover { border-color: #14B8A6; }
         .filter-actions { display: flex; gap: 0.4rem; flex-wrap: wrap; align-items: center; }
-        .btn { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.3rem 1rem; border-radius: 40px; font-size: 0.8rem; font-weight: 500; border: none; cursor: pointer; transition: all 0.15s; font-family: inherit; }
+        .btn { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.3rem 1rem; border-radius: 40px; font-size: 0.8rem; font-weight: 500; border: none; cursor: pointer; transition: all 0.3s; font-family: inherit; }
         .btn-primary { background: #0F766E; color: white; }
-        .btn-primary:hover { background: #0d6b63; box-shadow: 0 2px 8px rgba(15,118,110,0.2); }
+        .btn-primary:hover { background: #0d6b63; box-shadow: 0 2px 8px rgba(15,118,110,0.2); transform: scale(1.05); }
         .btn-outline { background: transparent; color: #0F766E; border: 1px solid #0F766E; }
-        .btn-outline:hover { background: #e6f7f5; }
+        .btn-outline:hover { background: #e6f7f5; transform: scale(1.05); }
         .btn-ghost { background: transparent; color: #64748B; }
-        .btn-ghost:hover { background: #f5fafa; color: #0F172A; }
+        .btn-ghost:hover { background: #f5fafa; color: #0F172A; transform: scale(1.05); }
         .btn-sm { padding: 0.2rem 0.7rem; font-size: 0.7rem; }
         .btn-success { background: #16A34A; color: white; }
-        .btn-success:hover { background: #15803d; }
+        .btn-success:hover { background: #15803d; transform: scale(1.05); }
         .btn-danger { background: #dc2626; color: white; }
-        .btn-danger:hover { background: #b91c1c; }
+        .btn-danger:hover { background: #b91c1c; transform: scale(1.05); }
         .btn-warning { background: #f59e0b; color: white; }
-        .btn-warning:hover { background: #d97706; }
+        .btn-warning:hover { background: #d97706; transform: scale(1.05); }
         .stat-card {
             background: white; border-radius: 16px; box-shadow: 0 4px 12px rgba(15,23,42,0.04), 0 1px 2px rgba(0,0,0,0.02);
             border: 1px solid #e6f0ed; padding: 1.25rem 1.5rem; display: flex; align-items: flex-start; justify-content: space-between;
+            transition: all 0.3s ease;
         }
+        .stat-card:hover { transform: translateY(-4px); box-shadow: 0 8px 24px rgba(15,23,42,0.08); }
         .stat-card .stat-info .label { color: #64748B; font-size: 0.875rem; }
         .stat-card .stat-info .value { font-size: 1.5rem; font-weight: 700; color: #0F172A; margin-top: 0.25rem; }
         .stat-card .stat-info .trend { font-size: 0.75rem; display: inline-flex; align-items: center; gap: 0.25rem; margin-top: 0.25rem; }
         .stat-card .stat-info .trend.up { color: #16A34A; }
         .stat-card .stat-info .trend.down { color: #dc2626; }
-        .stat-card .stat-icon { background: #e6f7f5; color: #0F766E; width: 2.75rem; height: 2.75rem; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; flex-shrink: 0; }
-        .notification-item { transition: all 0.2s ease; border-left: 3px solid transparent; }
-        .notification-item:hover { background: #f8fbfa; }
+        .stat-card .stat-icon { background: #e6f7f5; color: #0F766E; width: 2.75rem; height: 2.75rem; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; flex-shrink: 0; transition: all 0.3s ease; }
+        .stat-card .stat-icon:hover { transform: scale(1.1) rotate(5deg); background: #d4f0ed; }
+        .notification-item {
+            transition: all 0.3s ease;
+            border-left: 3px solid transparent;
+            border-radius: 8px;
+            margin-bottom: 2px;
+        }
+        .notification-item:hover { background: #f8fbfa; transform: scale(1.01); }
         .notification-item.unread { border-left-color: #0F766E; background: #f0fdfa; }
         .notification-item.unread:hover { background: #e6f7f5; }
+
+        /* ===== ANIMATIONS ===== */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeInRight {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        @keyframes scaleIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+
+        .animate-fadeInUp { animation: fadeInUp 0.6s ease forwards; }
+        .animate-fadeInRight { animation: fadeInRight 0.6s ease forwards; }
+        .animate-slideDown { animation: slideDown 0.4s ease forwards; }
+        .animate-pulse { animation: pulse 2s ease-in-out infinite; }
+        .animate-scaleIn { animation: scaleIn 0.5s ease forwards; }
+
+        .delay-1 { animation-delay: 0.05s; }
+        .delay-2 { animation-delay: 0.1s; }
+        .delay-3 { animation-delay: 0.15s; }
+        .delay-4 { animation-delay: 0.2s; }
+        .delay-5 { animation-delay: 0.25s; }
+        .delay-6 { animation-delay: 0.3s; }
+        .delay-7 { animation-delay: 0.35s; }
+        .delay-8 { animation-delay: 0.4s; }
+        .delay-9 { animation-delay: 0.45s; }
+        .delay-10 { animation-delay: 0.5s; }
+
         @media (max-width: 768px) { .nav-search input { width: 140px; } .filter-bar { flex-direction: column; align-items: stretch; } .filter-actions { justify-content: flex-end; } }
         @media (max-width: 480px) { .nav-search input { width: 100px; padding: 0.3rem 0.8rem 0.3rem 2rem; font-size: 0.7rem; } .nav-search i { left: 0.6rem; top: 0.5rem; font-size: 0.7rem; } .stat-card .stat-info .value { font-size: 1.2rem; } }
     </style>
@@ -74,29 +130,29 @@
 
     <!-- SIDEBAR -->
     <aside id="sidebar" class="fixed top-0 left-0 h-full w-64 sidebar-bg text-white z-50 flex flex-col transition-transform duration-300 -translate-x-full md:translate-x-0">
-        <div class="p-5 text-2xl font-bold tracking-tight flex items-center gap-2 border-b border-[#2a8a82]">
+        <div class="p-5 text-2xl font-bold tracking-tight flex items-center gap-2 border-b border-[#2a8a82] animate-fadeInRight">
             <i class="fas fa-graduation-cap text-[#38BDF8]"></i> EduNova
         </div>
         <nav class="flex-1 px-3 py-6 space-y-1 overflow-y-auto">
-            <a href="./index.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg sidebar-text"><i class="fas fa-tachometer-alt w-5"></i> Dashboard</a>
-            <a href="./student.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg sidebar-text"><i class="fas fa-user-graduate w-5"></i> Students</a>
-            <a href="./instructor.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg sidebar-text"><i class="fas fa-chalkboard-teacher w-5"></i> Instructors</a>
-            <a href="./courses.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg sidebar-text"><i class="fas fa-book-open w-5"></i> Courses</a>
-            <a href="./assignments.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg sidebar-text"><i class="fas fa-tasks w-5"></i> Assignments</a>
-            <a href="./analytics.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg sidebar-text"><i class="fas fa-chart-line w-5"></i> Analytics</a>
-            <a href="./payment.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg sidebar-text"><i class="fas fa-credit-card w-5"></i> Payments</a>
-            <a href="./reviews.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg sidebar-text"><i class="fas fa-star w-5"></i> Reviews</a>
-            <a href="./notifications.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg sidebar-text active"><i class="fas fa-bell w-5"></i> Notifications</a>
+            <a href="./index.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg sidebar-text animate-fadeInRight delay-1"><i class="fas fa-tachometer-alt w-5"></i> Dashboard</a>
+            <a href="./student.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg sidebar-text animate-fadeInRight delay-2"><i class="fas fa-user-graduate w-5"></i> Students</a>
+            <a href="./instructor.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg sidebar-text animate-fadeInRight delay-3"><i class="fas fa-chalkboard-teacher w-5"></i> Instructors</a>
+            <a href="./courses.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg sidebar-text animate-fadeInRight delay-4"><i class="fas fa-book-open w-5"></i> Courses</a>
+            <a href="./assignments.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg sidebar-text animate-fadeInRight delay-5"><i class="fas fa-tasks w-5"></i> Assignments</a>
+            <a href="./analytics.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg sidebar-text animate-fadeInRight delay-6"><i class="fas fa-chart-line w-5"></i> Analytics</a>
+            <a href="./payment.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg sidebar-text animate-fadeInRight delay-7"><i class="fas fa-credit-card w-5"></i> Payments</a>
+            <a href="./reviews.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg sidebar-text animate-fadeInRight delay-8"><i class="fas fa-star w-5"></i> Reviews</a>
+            <a href="./notifications.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg sidebar-text active animate-fadeInRight delay-9"><i class="fas fa-bell w-5"></i> Notifications</a>
             <hr class="border-[#2a8a82] my-4" />
-            <a href="./settings.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg sidebar-text"><i class="fas fa-cog w-5"></i> Settings</a>
-            <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg sidebar-text"><i class="fas fa-sign-out-alt w-5"></i> Logout</a>
+            <a href="./settings.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg sidebar-text animate-fadeInRight delay-10"><i class="fas fa-cog w-5"></i> Settings</a>
+            <a href="./logout.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg sidebar-text animate-fadeInRight delay-10"><i class="fas fa-sign-out-alt w-5"></i> Logout</a>
         </nav>
-        <div class="p-4 text-xs text-[#b0d6d0] border-t border-[#2a8a82]">v2.0 · EduNova</div>
+        <div class="p-4 text-xs text-[#b0d6d0] border-t border-[#2a8a82] animate-fadeInRight delay-10">v2.0 · EduNova</div>
     </aside>
 
     <!-- MAIN -->
     <div class="md:ml-64 min-h-screen flex flex-col">
-        <header class="bg-white/80 backdrop-blur-sm border-b border-[#dce8e6] sticky top-0 z-30 px-4 sm:px-6 py-3 flex items-center justify-between flex-wrap gap-2">
+        <header class="bg-white/80 backdrop-blur-sm border-b border-[#dce8e6] sticky top-0 z-30 px-4 sm:px-6 py-3 flex items-center justify-between flex-wrap gap-2 animate-slideDown">
             <div class="flex items-center gap-3">
                 <button id="hamburgerBtn" class="md:hidden text-[#0F766E] text-xl"><i class="fas fa-bars"></i></button>
                 <div class="nav-search relative hidden sm:block">
@@ -106,84 +162,177 @@
             </div>
             <div class="flex items-center gap-3 sm:gap-4">
                 <i class="fas fa-search text-[#64748B] sm:hidden"></i>
-                <i class="fas fa-bell text-[#0F766E] text-lg cursor-pointer relative">
+                <i class="fas fa-bell text-[#0F766E] text-lg cursor-pointer relative animate-pulse">
                     <span class="absolute -top-1 -right-1 bg-[#DC2626] text-white text-[10px] rounded-full w-4 h-4 flex items-center justify-center">12</span>
                 </i>
                 <i class="fas fa-envelope text-[#64748B] text-lg hover:text-[#0F766E] cursor-pointer"></i>
                 <div class="flex items-center gap-2 border-l pl-3 border-[#dce8e6]">
-                    <img src="https://ui-avatars.com/api/?name=Admin&background=0F766E&color=fff&size=32" alt="admin" class="w-8 h-8 rounded-full" />
+                    <img src="https://ui-avatars.com/api/?name=Admin&background=0F766E&color=fff&size=32" alt="admin" class="w-8 h-8 rounded-full hover:scale-110 transition-transform duration-300" />
                     <span class="hidden sm:inline font-medium text-sm text-[#0F172A]">Admin <i class="fas fa-chevron-down ml-1 text-[#64748B] text-xs"></i></span>
                 </div>
             </div>
         </header>
 
         <main class="flex-1 p-4 sm:p-6 space-y-6">
-            <div class="flex flex-wrap items-center justify-between gap-2">
+            <div class="flex flex-wrap items-center justify-between gap-2 animate-fadeInUp">
                 <div><h1 class="text-2xl font-bold text-[#0F172A] flex items-center gap-2"><i class="fas fa-bell text-[#0F766E]"></i> Notifications</h1><p class="text-[#64748B] text-sm">Stay updated with all platform activities and alerts</p></div>
                 <div class="flex gap-2">
-                    <button class="btn btn-primary btn-sm"><i class="fas fa-check-double"></i> Mark All Read</button>
-                    <button class="btn btn-outline btn-sm"><i class="fas fa-cog"></i> Settings</button>
+                    <button class="btn btn-primary btn-sm hover:scale-105 transition-transform duration-300"><i class="fas fa-check-double"></i> Mark All Read</button>
+                    <button class="btn btn-outline btn-sm hover:scale-105 transition-transform duration-300"><i class="fas fa-cog"></i> Settings</button>
                 </div>
             </div>
 
             <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                <div class="stat-card"><div class="stat-info"><div class="label">Total Notifications</div><div class="value">284</div><div class="trend up"><i class="fas fa-arrow-up"></i> +12 this week</div></div><div class="stat-icon"><i class="fas fa-bell"></i></div></div>
-                <div class="stat-card"><div class="stat-info"><div class="label">Unread</div><div class="value">12</div><div class="trend down"><i class="fas fa-arrow-up"></i> +3</div></div><div class="stat-icon"><i class="fas fa-circle text-[#2563EB]"></i></div></div>
-                <div class="stat-card"><div class="stat-info"><div class="label">Important</div><div class="value">8</div><div class="trend up"><i class="fas fa-arrow-up"></i> +2</div></div><div class="stat-icon"><i class="fas fa-exclamation-triangle text-[#DC2626]"></i></div></div>
-                <div class="stat-card"><div class="stat-info"><div class="label">Archived</div><div class="value">156</div><div class="trend neutral"><i class="fas fa-minus"></i> Stable</div></div><div class="stat-icon"><i class="fas fa-archive text-[#64748B]"></i></div></div>
+                <div class="stat-card animate-fadeInUp delay-1">
+                    <div class="stat-info"><div class="label">Total Notifications</div><div class="value">284</div><div class="trend up"><i class="fas fa-arrow-up"></i> +12 this week</div></div>
+                    <div class="stat-icon"><i class="fas fa-bell"></i></div>
+                </div>
+                <div class="stat-card animate-fadeInUp delay-2">
+                    <div class="stat-info"><div class="label">Unread</div><div class="value">12</div><div class="trend down"><i class="fas fa-arrow-up"></i> +3</div></div>
+                    <div class="stat-icon"><i class="fas fa-circle text-[#2563EB]"></i></div>
+                </div>
+                <div class="stat-card animate-fadeInUp delay-3">
+                    <div class="stat-info"><div class="label">Important</div><div class="value">8</div><div class="trend up"><i class="fas fa-arrow-up"></i> +2</div></div>
+                    <div class="stat-icon"><i class="fas fa-exclamation-triangle text-[#DC2626]"></i></div>
+                </div>
+                <div class="stat-card animate-fadeInUp delay-4">
+                    <div class="stat-info"><div class="label">Archived</div><div class="value">156</div><div class="trend neutral"><i class="fas fa-minus"></i> Stable</div></div>
+                    <div class="stat-icon"><i class="fas fa-archive text-[#64748B]"></i></div>
+                </div>
             </section>
 
-            <div class="filter-bar">
-                <div class="filter-group"><label><i class="fas fa-filter"></i> Type</label><select><option>All Types</option><option>Course Updates</option><option>Student Activity</option><option>Payment Alerts</option></select></div>
-                <div class="filter-group"><label><i class="fas fa-flag"></i> Status</label><select><option>All Status</option><option>Unread</option><option>Read</option><option>Important</option></select></div>
-                <div class="filter-group"><label><i class="fas fa-calendar-alt"></i> Date</label><input type="date" value="2026-08-01" /></div>
-                <div class="filter-group" style="flex:0 0 auto; min-width:auto;"><label>&nbsp;</label><div class="filter-actions"><button class="btn btn-primary btn-sm"><i class="fas fa-filter"></i> Apply</button><button class="btn btn-ghost btn-sm"><i class="fas fa-undo"></i> Reset</button></div></div>
+            <div class="filter-bar animate-fadeInUp delay-3">
+                <div class="filter-group"><label><i class="fas fa-filter"></i> Type</label>
+                    <select class="hover:border-[#14B8A6] transition-all duration-300">
+                        <option>All Types</option>
+                        <option>Course Updates</option>
+                        <option>Student Activity</option>
+                        <option>Payment Alerts</option>
+                    </select>
+                </div>
+                <div class="filter-group"><label><i class="fas fa-flag"></i> Status</label>
+                    <select class="hover:border-[#14B8A6] transition-all duration-300">
+                        <option>All Status</option>
+                        <option>Unread</option>
+                        <option>Read</option>
+                        <option>Important</option>
+                    </select>
+                </div>
+                <div class="filter-group"><label><i class="fas fa-calendar-alt"></i> Date</label>
+                    <input type="date" value="2026-08-01" class="hover:border-[#14B8A6] transition-all duration-300" />
+                </div>
+                <div class="filter-group" style="flex:0 0 auto; min-width:auto;">
+                    <label>&nbsp;</label>
+                    <div class="filter-actions">
+                        <button class="btn btn-primary btn-sm hover:scale-105 transition-transform duration-300"><i class="fas fa-filter"></i> Apply</button>
+                        <button class="btn btn-ghost btn-sm hover:scale-105 transition-transform duration-300"><i class="fas fa-undo"></i> Reset</button>
+                    </div>
+                </div>
             </div>
 
-            <div class="bg-white rounded-2xl card-shadow border border-[#e6f0ed] overflow-hidden">
+            <div class="bg-white rounded-2xl card-shadow border border-[#e6f0ed] overflow-hidden animate-fadeInUp delay-4">
                 <div class="flex flex-wrap items-center justify-between gap-2 p-4 border-b border-[#e6f0ed] bg-[#f8fbfa]">
-                    <div class="flex items-center gap-3"><input type="checkbox" class="rounded border-[#dce8e6] text-[#0F766E]" /><span class="text-xs text-[#64748B]">Select All</span></div>
-                    <div class="flex gap-2"><button class="btn btn-ghost btn-sm"><i class="fas fa-check"></i> Mark Read</button><button class="btn btn-ghost btn-sm"><i class="fas fa-archive"></i> Archive</button><button class="btn btn-danger btn-sm"><i class="fas fa-trash"></i> Delete</button></div>
+                    <div class="flex items-center gap-3">
+                        <input type="checkbox" class="rounded border-[#dce8e6] text-[#0F766E] hover:scale-110 transition-transform duration-300" />
+                        <span class="text-xs text-[#64748B]">Select All</span>
+                    </div>
+                    <div class="flex gap-2">
+                        <button class="btn btn-ghost btn-sm hover:scale-105 transition-transform duration-300"><i class="fas fa-check"></i> Mark Read</button>
+                        <button class="btn btn-ghost btn-sm hover:scale-105 transition-transform duration-300"><i class="fas fa-archive"></i> Archive</button>
+                        <button class="btn btn-danger btn-sm hover:scale-105 transition-transform duration-300"><i class="fas fa-trash"></i> Delete</button>
+                    </div>
                 </div>
                 <div class="divide-y divide-[#e6f0ed]">
-                    <div class="notification-item unread p-4 flex items-start gap-4">
-                        <input type="checkbox" class="mt-1 rounded border-[#dce8e6] text-[#0F766E]" />
-                        <div class="w-10 h-10 rounded-full bg-[#fee2e2] flex items-center justify-center text-[#DC2626]"><i class="fas fa-exclamation"></i></div>
-                        <div><p class="font-semibold text-sm flex items-center gap-2">Payment Failed <span class="badge-status badge-important">Important</span><span class="badge-status badge-unread">Unread</span></p><p class="text-sm text-[#64748B]">John Doe's payment of ₹5,999 failed.</p><div class="flex gap-3 mt-1 text-xs text-[#64748B]"><span><i class="far fa-clock"></i> 5 min ago</span></div></div>
+                    <!-- Notification 1 - Payment Failed for Arun -->
+                    <div class="notification-item unread p-4 flex items-start gap-4 animate-fadeInUp delay-5">
+                        <input type="checkbox" class="mt-1 rounded border-[#dce8e6] text-[#0F766E] hover:scale-110 transition-transform duration-300" />
+                        <div class="w-10 h-10 rounded-full bg-[#fee2e2] flex items-center justify-center text-[#DC2626] flex-shrink-0 hover:scale-110 transition-transform duration-300"><i class="fas fa-exclamation"></i></div>
+                        <div>
+                            <p class="font-semibold text-sm flex items-center gap-2 flex-wrap">Payment Failed <span class="badge-status badge-important">Important</span><span class="badge-status badge-unread animate-pulse">Unread</span></p>
+                            <p class="text-sm text-[#64748B]">Arun's payment of ₹5,999 for Web Development course failed.</p>
+                            <div class="flex gap-3 mt-1 text-xs text-[#64748B]"><span><i class="far fa-clock"></i> 5 min ago</span></div>
+                        </div>
                     </div>
-                    <div class="notification-item unread p-4 flex items-start gap-4">
-                        <input type="checkbox" class="mt-1 rounded border-[#dce8e6] text-[#0F766E]" />
-                        <div class="w-10 h-10 rounded-full bg-[#dbeafe] flex items-center justify-center text-[#2563EB]"><i class="fas fa-user-graduate"></i></div>
-                        <div><p class="font-semibold text-sm flex items-center gap-2">New Student Enrolled <span class="badge-status badge-unread">Unread</span></p><p class="text-sm text-[#64748B]">Sarah Lee enrolled in Python Programming.</p><div class="flex gap-3 mt-1 text-xs text-[#64748B]"><span><i class="far fa-clock"></i> 25 min ago</span></div></div>
+
+                    <!-- Notification 2 - New Student Enrolled (Devika) -->
+                    <div class="notification-item unread p-4 flex items-start gap-4 animate-fadeInUp delay-6">
+                        <input type="checkbox" class="mt-1 rounded border-[#dce8e6] text-[#0F766E] hover:scale-110 transition-transform duration-300" />
+                        <div class="w-10 h-10 rounded-full bg-[#dbeafe] flex items-center justify-center text-[#2563EB] flex-shrink-0 hover:scale-110 transition-transform duration-300"><i class="fas fa-user-graduate"></i></div>
+                        <div>
+                            <p class="font-semibold text-sm flex items-center gap-2 flex-wrap">New Student Enrolled <span class="badge-status badge-unread animate-pulse">Unread</span></p>
+                            <p class="text-sm text-[#64748B]">Devika enrolled in Data Science Masterclass. Total students now: 8,721.</p>
+                            <div class="flex gap-3 mt-1 text-xs text-[#64748B]"><span><i class="far fa-clock"></i> 25 min ago</span></div>
+                        </div>
                     </div>
-                    <div class="notification-item p-4 flex items-start gap-4 bg-[#f8fbfa]">
-                        <input type="checkbox" class="mt-1 rounded border-[#dce8e6] text-[#0F766E]" />
-                        <div class="w-10 h-10 rounded-full bg-[#e6f7f5] flex items-center justify-center text-[#0F766E]"><i class="fas fa-star"></i></div>
-                        <div><p class="font-semibold text-sm flex items-center gap-2">New Review <span class="badge-status badge-read">Read</span></p><p class="text-sm text-[#64748B]">5-star review for Data Science Masterclass.</p><div class="flex gap-3 mt-1 text-xs text-[#64748B]"><span><i class="far fa-clock"></i> 2 hours ago</span></div></div>
+
+                    <!-- Notification 3 - New Review (Vimal) -->
+                    <div class="notification-item p-4 flex items-start gap-4 bg-[#f8fbfa] animate-fadeInUp delay-7">
+                        <input type="checkbox" class="mt-1 rounded border-[#dce8e6] text-[#0F766E] hover:scale-110 transition-transform duration-300" />
+                        <div class="w-10 h-10 rounded-full bg-[#e6f7f5] flex items-center justify-center text-[#0F766E] flex-shrink-0 hover:scale-110 transition-transform duration-300"><i class="fas fa-star"></i></div>
+                        <div>
+                            <p class="font-semibold text-sm flex items-center gap-2 flex-wrap">New Review <span class="badge-status badge-read">Read</span></p>
+                            <p class="text-sm text-[#64748B]">Vimal left a 5-star review for UI/UX Design Pro.</p>
+                            <div class="flex gap-3 mt-1 text-xs text-[#64748B]"><span><i class="far fa-clock"></i> 2 hours ago</span></div>
+                        </div>
+                    </div>
+
+                    <!-- Notification 4 - Assignment Submitted (Sandeep) -->
+                    <div class="notification-item p-4 flex items-start gap-4 bg-[#f8fbfa] animate-fadeInUp delay-8">
+                        <input type="checkbox" class="mt-1 rounded border-[#dce8e6] text-[#0F766E] hover:scale-110 transition-transform duration-300" />
+                        <div class="w-10 h-10 rounded-full bg-[#dcfce7] flex items-center justify-center text-[#16A34A] flex-shrink-0 hover:scale-110 transition-transform duration-300"><i class="fas fa-check-circle"></i></div>
+                        <div>
+                            <p class="font-semibold text-sm flex items-center gap-2 flex-wrap">Assignment Submitted <span class="badge-status badge-read">Read</span></p>
+                            <p class="text-sm text-[#64748B]">Sandeep submitted Cloud Architecture Design assignment. Ready for review.</p>
+                            <div class="flex gap-3 mt-1 text-xs text-[#64748B]"><span><i class="far fa-clock"></i> 4 hours ago</span></div>
+                        </div>
+                    </div>
+
+                    <!-- Notification 5 - Payment Received (Shivapriya) -->
+                    <div class="notification-item p-4 flex items-start gap-4 bg-[#f8fbfa] animate-fadeInUp delay-9">
+                        <input type="checkbox" class="mt-1 rounded border-[#dce8e6] text-[#0F766E] hover:scale-110 transition-transform duration-300" />
+                        <div class="w-10 h-10 rounded-full bg-[#dcfce7] flex items-center justify-center text-[#16A34A] flex-shrink-0 hover:scale-110 transition-transform duration-300"><i class="fas fa-rupee-sign"></i></div>
+                        <div>
+                            <p class="font-semibold text-sm flex items-center gap-2 flex-wrap">Payment Received <span class="badge-status badge-read">Read</span></p>
+                            <p class="text-sm text-[#64748B]">Payment of ₹7,499 received from Shivapriya for Data Science Masterclass.</p>
+                            <div class="flex gap-3 mt-1 text-xs text-[#64748B]"><span><i class="far fa-clock"></i> 1 day ago</span></div>
+                        </div>
                     </div>
                 </div>
                 <div class="flex justify-between items-center p-4 border-t border-[#e6f0ed] text-xs text-[#64748B] bg-[#f8fbfa]">
-                    <span>Showing 1-3 of 284</span>
-                    <div class="flex gap-1"><button class="px-2 py-1 border rounded">Prev</button><button class="px-2 py-1 border rounded bg-[#0F766E] text-white">1</button><button class="px-2 py-1 border rounded">Next</button></div>
+                    <span>Showing 1-5 of 284</span>
+                    <div class="flex gap-1">
+                        <button class="px-2 py-1 border rounded hover:bg-[#0F766E] hover:text-white transition-all duration-300">Prev</button>
+                        <button class="px-2 py-1 border rounded bg-[#0F766E] text-white hover:scale-105 transition-transform duration-300">1</button>
+                        <button class="px-2 py-1 border rounded hover:bg-[#0F766E] hover:text-white transition-all duration-300">Next</button>
+                    </div>
                 </div>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div class="bg-white rounded-2xl card-shadow border border-[#e6f0ed] p-5">
+                <div class="bg-white rounded-2xl card-shadow border border-[#e6f0ed] p-5 animate-fadeInUp delay-5">
                     <h3 class="font-semibold text-[#0F172A] flex items-center gap-2 mb-4"><i class="fas fa-bolt text-[#0F766E]"></i> Quick Actions</h3>
                     <div class="grid grid-cols-2 gap-3">
-                        <button class="bg-[#e6f7f5] hover:bg-[#d4f0ed] rounded-xl p-4 text-center transition"><i class="fas fa-bell text-[#0F766E] text-2xl block mb-1"></i><span class="text-sm font-medium">Send Broadcast</span></button>
-                        <button class="bg-[#e6f7f5] hover:bg-[#d4f0ed] rounded-xl p-4 text-center transition"><i class="fas fa-envelope text-[#0F766E] text-2xl block mb-1"></i><span class="text-sm font-medium">Email All</span></button>
-                        <button class="bg-[#e6f7f5] hover:bg-[#d4f0ed] rounded-xl p-4 text-center transition"><i class="fas fa-sliders-h text-[#0F766E] text-2xl block mb-1"></i><span class="text-sm font-medium">Preferences</span></button>
-                        <button class="bg-[#e6f7f5] hover:bg-[#d4f0ed] rounded-xl p-4 text-center transition"><i class="fas fa-archive text-[#0F766E] text-2xl block mb-1"></i><span class="text-sm font-medium">View Archive</span></button>
+                        <button class="bg-[#e6f7f5] hover:bg-[#d4f0ed] rounded-xl p-4 text-center transition-all duration-300 hover:scale-105 hover:shadow-md"><i class="fas fa-bell text-[#0F766E] text-2xl block mb-1"></i><span class="text-sm font-medium">Send Broadcast</span></button>
+                        <button class="bg-[#e6f7f5] hover:bg-[#d4f0ed] rounded-xl p-4 text-center transition-all duration-300 hover:scale-105 hover:shadow-md"><i class="fas fa-envelope text-[#0F766E] text-2xl block mb-1"></i><span class="text-sm font-medium">Email All</span></button>
+                        <button class="bg-[#e6f7f5] hover:bg-[#d4f0ed] rounded-xl p-4 text-center transition-all duration-300 hover:scale-105 hover:shadow-md"><i class="fas fa-sliders-h text-[#0F766E] text-2xl block mb-1"></i><span class="text-sm font-medium">Preferences</span></button>
+                        <button class="bg-[#e6f7f5] hover:bg-[#d4f0ed] rounded-xl p-4 text-center transition-all duration-300 hover:scale-105 hover:shadow-md"><i class="fas fa-archive text-[#0F766E] text-2xl block mb-1"></i><span class="text-sm font-medium">View Archive</span></button>
                     </div>
                 </div>
-                <div class="bg-white rounded-2xl card-shadow border border-[#e6f0ed] p-5">
+                <div class="bg-white rounded-2xl card-shadow border border-[#e6f0ed] p-5 animate-fadeInUp delay-6">
                     <h3 class="font-semibold text-[#0F172A] flex items-center gap-2 mb-4"><i class="fas fa-cog text-[#0F766E]"></i> Preferences</h3>
                     <div class="space-y-3">
-                        <div class="flex items-center justify-between"><div><p class="text-sm font-medium">Course Updates</p><p class="text-xs text-[#64748B]">New courses and announcements</p></div><label class="relative inline-flex items-center cursor-pointer"><input type="checkbox" checked class="sr-only peer"><div class="w-9 h-5 bg-[#dce8e6] peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-[#0F766E]"></div></label></div>
-                        <div class="flex items-center justify-between"><div><p class="text-sm font-medium">Student Activity</p><p class="text-xs text-[#64748B]">Enrollments and progress</p></div><label class="relative inline-flex items-center cursor-pointer"><input type="checkbox" checked class="sr-only peer"><div class="w-9 h-5 bg-[#dce8e6] peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-[#0F766E]"></div></label></div>
-                        <div class="flex items-center justify-between"><div><p class="text-sm font-medium">Payment Alerts</p><p class="text-xs text-[#64748B]">Transactions and invoices</p></div><label class="relative inline-flex items-center cursor-pointer"><input type="checkbox" checked class="sr-only peer"><div class="w-9 h-5 bg-[#dce8e6] peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-[#0F766E]"></div></label></div>
+                        <div class="flex items-center justify-between hover:bg-[#f8fbfa] p-2 rounded-lg transition-all duration-300">
+                            <div><p class="text-sm font-medium">Course Updates</p><p class="text-xs text-[#64748B]">New courses and announcements</p></div>
+                            <label class="relative inline-flex items-center cursor-pointer"><input type="checkbox" checked class="sr-only peer"><div class="w-9 h-5 bg-[#dce8e6] peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-[#0F766E]"></div></label>
+                        </div>
+                        <div class="flex items-center justify-between hover:bg-[#f8fbfa] p-2 rounded-lg transition-all duration-300">
+                            <div><p class="text-sm font-medium">Student Activity</p><p class="text-xs text-[#64748B]">Enrollments and progress</p></div>
+                            <label class="relative inline-flex items-center cursor-pointer"><input type="checkbox" checked class="sr-only peer"><div class="w-9 h-5 bg-[#dce8e6] peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-[#0F766E]"></div></label>
+                        </div>
+                        <div class="flex items-center justify-between hover:bg-[#f8fbfa] p-2 rounded-lg transition-all duration-300">
+                            <div><p class="text-sm font-medium">Payment Alerts</p><p class="text-xs text-[#64748B]">Transactions and invoices</p></div>
+                            <label class="relative inline-flex items-center cursor-pointer"><input type="checkbox" checked class="sr-only peer"><div class="w-9 h-5 bg-[#dce8e6] peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-[#0F766E]"></div></label>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -210,6 +359,7 @@
                     drawerOpen = false;
                 }
             });
+
             document.querySelectorAll('.notification-item').forEach(item => {
                 item.addEventListener('click', function(e) {
                     if (e.target.closest('input[type="checkbox"]') || e.target.closest('button')) return;
@@ -219,12 +369,28 @@
                         if (this.classList.contains('unread')) {
                             badge.textContent = 'Unread';
                             badge.className = 'badge-status badge-unread text-xs';
+                            badge.classList.add('animate-pulse');
                         } else {
                             badge.textContent = 'Read';
                             badge.className = 'badge-status badge-read text-xs';
+                            badge.classList.remove('animate-pulse');
                         }
                     }
                 });
+            });
+
+            // Animate stat numbers on scroll
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            document.querySelectorAll('.stat-card .value').forEach(el => {
+                observer.observe(el);
             });
         })();
     </script>

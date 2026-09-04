@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
+    <title>EduNova · Logout</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <style>
+        /* ===== ROOT VARIABLES ===== */
+        :root {
+            --primary: #0F766E;
+            --primary-dark: #0d6b63;
+            --primary-light: #e6f7f5;
+            --secondary: #14B8A6;
+            --accent: #38BDF8;
+            --bg: #F0FDFA;
+            --card: #FFFFFF;
+            --text: #0F172A;
+            --muted: #64748B;
+            --border: #dce8e6;
+            --border-light: #e6f0ed;
+            --success: #16A34A;
+            --warning: #F59E0B;
+            --danger: #DC2626;
+            --shadow: 0 4px 12px rgba(15,23,42,0.04), 0 1px 2px rgba(0,0,0,0.02);
+            --radius: 16px;
+            --radius-sm: 8px;
+            --radius-full: 9999px;
+            --transition: 0.3s ease;
+        }
+
+        /* ===== BASE ===== */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow-x: hidden;
+        }
+
+        /* ===== ANIMATIONS ===== */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px) scale(0.95); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        @keyframes fadeInRight {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+        @keyframes spinSlow {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+            20%, 40%, 60%, 80% { transform: translateX(5px); }
+        }
+
+        .animate-fadeInUp {
+            animation: fadeInUp 0.6s ease forwards;
+        }
+        .animate-fadeInRight {
+            animation: fadeInRight 0.6s ease forwards;
+        }
+        .animate-pulse {
+            animation: pulse 2s ease-in-out infinite;
+        }
+        .animate-float {
+            animation: float 3s ease-in-out infinite;
+        }
+        .animate-shake {
+            animation: shake 0.5s ease;
+        }
+
+        .delay-1 { animation-delay: 0.05s; }
+        .delay-2 { animation-delay: 0.1s; }
+        .delay-3 { animation-delay: 0.15s; }
+        .delay-4 { animation-delay: 0.2s; }
+        .delay-5 { animation-delay: 0.25s; }
+
+        /* ===== LOGOUT CONTAINER ===== */
+        .logout-container {
+            width: 100%;
+            max-width: 480px;
+            padding: 1.5rem;
+        }
+
+        .logout-card {
+            background: white;
+            border-radius: var(--radius);
+            padding: 2.5rem 2rem;
+            box-shadow: 0 20px 60px rgba(15, 23, 42, 0.08);
+            border: 1px solid var(--border-light);
+            text-align: center;
+            transition: all var(--transition);
+        }
+        .logout-card:hover {
+            box-shadow: 0 24px 80px rgba(15, 23, 42, 0.12);
+        }
+
+        .logout-icon {
+            width: 80px;
+            height: 80px;
+            background: #fee2e2;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            font-size: 2.5rem;
+            color: #dc2626;
+            transition: all var(--transition);
+        }
+        .logout-icon:hover {
+            transform: scale(1.1) rotate(10deg);
+            background: #fecaca;
+        }
+
+        .logout-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 0.5rem;
+        }
+
+        .logout-subtitle {
+            color: var(--muted);
+            font-size: 0.95rem;
+            margin-bottom: 2rem;
+        }
+
+        .user-info {
+            background: var(--primary-light);
+            border-radius: var(--radius-sm);
+            padding: 0.75rem 1rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            font-size: 0.9rem;
+            color: var(--text);
+        }
+        .user-info i {
+            color: var(--primary);
+            font-size: 1.1rem;
+        }
+        .user-info .user-name {
+            font-weight: 600;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.6rem;
+            padding: 0.6rem 1.5rem;
+            border-radius: var(--radius-full);
+            font-size: 0.9rem;
+            font-weight: 500;
+            border: none;
+            cursor: pointer;
+            transition: all var(--transition);
+            font-family: inherit;
+            text-decoration: none;
+            touch-action: manipulation;
+            min-width: 120px;
+        }
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            box-shadow: 0 4px 16px rgba(15, 118, 110, 0.3);
+            transform: translateY(-2px);
+        }
+        .btn-outline {
+            background: transparent;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+        }
+        .btn-outline:hover {
+            background: var(--primary-light);
+            transform: translateY(-2px);
+        }
+        .btn-danger {
+            background: var(--danger);
+            color: white;
+        }
+        .btn-danger:hover {
+            background: #b91c1c;
+            box-shadow: 0 4px 16px rgba(220, 38, 38, 0.3);
+            transform: translateY(-2px);
+        }
+        .btn-ghost {
+            background: transparent;
+            color: var(--muted);
+        }
+        .btn-ghost:hover {
+            background: #f5fafa;
+            color: var(--text);
+            transform: translateY(-2px);
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: scale(0.98);
+        }
+
+        .button-group {
+            display: flex;
+            gap: 0.75rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 0.5rem;
+        }
+
+        /* ===== SUCCESS STATE ===== */
+        .success-state {
+            display: none;
+            animation: fadeInUp 0.5s ease forwards;
+        }
+        .success-state.show {
+            display: block;
+        }
+        .success-icon {
+            width: 80px;
+            height: 80px;
+            background: #dcfce7;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            font-size: 2.5rem;
+            color: #16a34a;
+        }
+        .success-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 0.5rem;
+        }
+        .success-subtitle {
+            color: var(--muted);
+            font-size: 0.95rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .redirect-timer {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: #f8fbfa;
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius-full);
+            font-size: 0.85rem;
+            color: var(--muted);
+        }
+        .redirect-timer .count {
+            font-weight: 700;
+            color: var(--primary);
+            font-size: 1.1rem;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 480px) {
+            .logout-container { padding: 1rem; }
+            .logout-card { padding: 1.5rem 1rem; }
+            .logout-icon { width: 64px; height: 64px; font-size: 2rem; }
+            .logout-title { font-size: 1.25rem; }
+            .btn { min-width: 100px; padding: 0.5rem 1rem; font-size: 0.8rem; }
+            .button-group { gap: 0.5rem; }
+            .user-info { font-size: 0.8rem; padding: 0.5rem 0.75rem; }
+        }
+
+        @media (max-width: 360px) {
+            .button-group { flex-direction: column; align-items: center; }
+            .btn { width: 100%; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="logout-container">
+
+        <!-- ===== LOGOUT CARD ===== -->
+        <div id="logoutCard" class="logout-card animate-fadeInUp">
+
+            <!-- Icon -->
+            <div class="logout-icon animate-float">
+                <i class="fas fa-sign-out-alt"></i>
+            </div>
+
+            <!-- Title -->
+            <h1 class="logout-title">Logout</h1>
+            <p class="logout-subtitle">Are you sure you want to sign out?</p>
+
+            <!-- User Info -->
+            <div class="user-info animate-fadeInUp delay-1">
+                <i class="fas fa-user-circle"></i>
+                <span>You are currently signed in as <span class="user-name">Admin</span></span>
+            </div>
+
+            <!-- Warning -->
+            <div class="bg-amber-50 border border-amber-200 rounded-lg p-3 mb-4 text-sm text-amber-800 animate-fadeInUp delay-2">
+                <i class="fas fa-info-circle mr-2"></i>
+                You will be redirected to the login page after signing out.
+            </div>
+
+            <!-- Buttons -->
+            <div class="button-group animate-fadeInUp delay-3">
+                <a href="index.html" class="btn btn-ghost">
+                    <i class="fas fa-times"></i> Cancel
+                </a>
+                <button id="logoutBtn" class="btn btn-danger">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </button>
+            </div>
+
+        </div>
+
+        <!-- ===== SUCCESS STATE (hidden initially) ===== -->
+        <div id="successState" class="success-state logout-card">
+
+            <div class="success-icon animate-pulse">
+                <i class="fas fa-check-circle"></i>
+            </div>
+
+            <h2 class="success-title">Logged Out Successfully</h2>
+            <p class="success-subtitle">You have been signed out of your account.</p>
+
+            <div class="redirect-timer">
+                <i class="fas fa-spinner fa-spin"></i>
+                Redirecting to login in <span class="count" id="timerCount">5</span> seconds
+            </div>
+
+            <div class="button-group mt-4">
+                <a href="index.html" class="btn btn-primary">
+                    <i class="fas fa-arrow-left"></i> Go Back to Dashboard
+                </a>
+                <a href="#" class="btn btn-outline">
+                    <i class="fas fa-sign-in-alt"></i> Login Again
+                </a>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- ===== SCRIPTS ===== -->
+    <script>
+        (function() {
+            'use strict';
+
+            const logoutBtn = document.getElementById('logoutBtn');
+            const logoutCard = document.getElementById('logoutCard');
+            const successState = document.getElementById('successState');
+            const timerCount = document.getElementById('timerCount');
+
+            let countdownInterval = null;
+            let seconds = 5;
+
+            // Handle logout button click
+            logoutBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+
+                // Disable button and show loading state
+                const originalText = this.innerHTML;
+                this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Logging out...';
+                this.disabled = true;
+
+                // Shake animation for the card
+                logoutCard.classList.add('animate-shake');
+                setTimeout(() => {
+                    logoutCard.classList.remove('animate-shake');
+                }, 500);
+
+                // Simulate logout process
+                setTimeout(() => {
+                    // Hide the logout card
+                    logoutCard.style.display = 'none';
+
+                    // Show the success state
+                    successState.classList.add('show');
+
+                    // Start the countdown timer
+                    startCountdown();
+
+                }, 1200);
+            });
+
+            // Start countdown timer
+            function startCountdown() {
+                seconds = 5;
+                timerCount.textContent = seconds;
+
+                if (countdownInterval) {
+                    clearInterval(countdownInterval);
+                }
+
+                countdownInterval = setInterval(function() {
+                    seconds--;
+                    timerCount.textContent = seconds;
+
+                    if (seconds <= 0) {
+                        clearInterval(countdownInterval);
+                        // Redirect to login page (or dashboard in this case)
+                        window.location.href = 'index.html';
+                    }
+                }, 1000);
+            }
+
+            // Cancel button - just go back
+            document.querySelector('.btn-ghost')?.addEventListener('click', function(e) {
+                e.preventDefault();
+                window.location.href = 'index.html';
+            });
+
+            // Handle keyboard events
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    // Pressing Escape cancels logout
+                    if (logoutCard.style.display !== 'none') {
+                        window.location.href = 'index.html';
+                    }
+                }
+                if (e.key === 'Enter') {
+                    // Pressing Enter triggers logout
+                    if (logoutCard.style.display !== 'none') {
+                        logoutBtn.click();
+                    }
+                }
+            });
+
+            // Prevent accidental navigation
+            window.addEventListener('beforeunload', function(e) {
+                if (logoutCard.style.display !== 'none') {
+                    // Only show if not already logged out
+                    e.preventDefault();
+                    e.returnValue = '';
+                }
+            });
+
+        })();
+    </script>
+
+</body>
+</html>

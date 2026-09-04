@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
     <title>EduNova · Assignments</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
@@ -40,28 +40,68 @@
         }
         .filter-group select:focus, .filter-group input:focus { outline: none; border-color: #14B8A6; box-shadow: 0 0 0 3px rgba(20,184,166,0.12); }
         .filter-actions { display: flex; gap: 0.4rem; flex-wrap: wrap; align-items: center; }
-        .btn { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.3rem 1rem; border-radius: 40px; font-size: 0.8rem; font-weight: 500; border: none; cursor: pointer; transition: all 0.15s; font-family: inherit; }
+        .btn { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.3rem 1rem; border-radius: 40px; font-size: 0.8rem; font-weight: 500; border: none; cursor: pointer; transition: all 0.3s; font-family: inherit; }
         .btn-primary { background: #0F766E; color: white; }
-        .btn-primary:hover { background: #0d6b63; box-shadow: 0 2px 8px rgba(15,118,110,0.2); }
+        .btn-primary:hover { background: #0d6b63; box-shadow: 0 2px 8px rgba(15,118,110,0.2); transform: scale(1.05); }
         .btn-outline { background: transparent; color: #0F766E; border: 1px solid #0F766E; }
-        .btn-outline:hover { background: #e6f7f5; }
+        .btn-outline:hover { background: #e6f7f5; transform: scale(1.05); }
         .btn-ghost { background: transparent; color: #64748B; }
-        .btn-ghost:hover { background: #f5fafa; color: #0F172A; }
+        .btn-ghost:hover { background: #f5fafa; color: #0F172A; transform: scale(1.05); }
         .btn-sm { padding: 0.2rem 0.7rem; font-size: 0.7rem; }
         .btn-success { background: #16A34A; color: white; }
-        .btn-success:hover { background: #15803d; }
+        .btn-success:hover { background: #15803d; transform: scale(1.05); }
         .btn-danger { background: #dc2626; color: white; }
-        .btn-danger:hover { background: #b91c1c; }
+        .btn-danger:hover { background: #b91c1c; transform: scale(1.05); }
         .stat-card {
             background: white; border-radius: 16px; box-shadow: 0 4px 12px rgba(15,23,42,0.04), 0 1px 2px rgba(0,0,0,0.02);
             border: 1px solid #e6f0ed; padding: 1.25rem 1.5rem; display: flex; align-items: flex-start; justify-content: space-between;
+            transition: all 0.3s ease;
         }
+        .stat-card:hover { transform: translateY(-4px); box-shadow: 0 8px 24px rgba(15,23,42,0.08); }
         .stat-card .stat-info .label { color: #64748B; font-size: 0.875rem; }
         .stat-card .stat-info .value { font-size: 1.5rem; font-weight: 700; color: #0F172A; margin-top: 0.25rem; }
         .stat-card .stat-info .trend { font-size: 0.75rem; display: inline-flex; align-items: center; gap: 0.25rem; margin-top: 0.25rem; }
         .stat-card .stat-info .trend.up { color: #16A34A; }
         .stat-card .stat-info .trend.down { color: #dc2626; }
-        .stat-card .stat-icon { background: #e6f7f5; color: #0F766E; width: 2.75rem; height: 2.75rem; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; flex-shrink: 0; }
+        .stat-card .stat-icon { background: #e6f7f5; color: #0F766E; width: 2.75rem; height: 2.75rem; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; flex-shrink: 0; transition: all 0.3s ease; }
+        .stat-card .stat-icon:hover { transform: scale(1.1) rotate(5deg); background: #d4f0ed; }
+        .table-row-hover { transition: all 0.3s ease; }
+        .table-row-hover:hover { background: #f0fdfa; transform: scale(1.01); }
+
+        /* ===== ANIMATIONS ===== */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeInRight {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .animate-fadeInUp { animation: fadeInUp 0.6s ease forwards; }
+        .animate-fadeInRight { animation: fadeInRight 0.6s ease forwards; }
+        .animate-slideDown { animation: slideDown 0.4s ease forwards; }
+        .animate-pulse { animation: pulse 2s ease-in-out infinite; }
+
+        .delay-1 { animation-delay: 0.05s; }
+        .delay-2 { animation-delay: 0.1s; }
+        .delay-3 { animation-delay: 0.15s; }
+        .delay-4 { animation-delay: 0.2s; }
+        .delay-5 { animation-delay: 0.25s; }
+        .delay-6 { animation-delay: 0.3s; }
+        .delay-7 { animation-delay: 0.35s; }
+        .delay-8 { animation-delay: 0.4s; }
+        .delay-9 { animation-delay: 0.45s; }
+        .delay-10 { animation-delay: 0.5s; }
+
         @media (max-width: 768px) { .nav-search input { width: 140px; } .filter-bar { flex-direction: column; align-items: stretch; } .filter-actions { justify-content: flex-end; } }
         @media (max-width: 480px) { .nav-search input { width: 100px; padding: 0.3rem 0.8rem 0.3rem 2rem; font-size: 0.7rem; } .nav-search i { left: 0.6rem; top: 0.5rem; font-size: 0.7rem; } .stat-card .stat-info .value { font-size: 1.2rem; } }
     </style>
@@ -71,29 +111,29 @@
 
     <!-- SIDEBAR -->
     <aside id="sidebar" class="fixed top-0 left-0 h-full w-64 sidebar-bg text-white z-50 flex flex-col transition-transform duration-300 -translate-x-full md:translate-x-0">
-        <div class="p-5 text-2xl font-bold tracking-tight flex items-center gap-2 border-b border-[#2a8a82]">
+        <div class="p-5 text-2xl font-bold tracking-tight flex items-center gap-2 border-b border-[#2a8a82] animate-fadeInRight">
             <i class="fas fa-graduation-cap text-[#38BDF8]"></i> EduNova
         </div>
         <nav class="flex-1 px-3 py-6 space-y-1 overflow-y-auto">
-            <a href="./index.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg sidebar-text"><i class="fas fa-tachometer-alt w-5"></i> Dashboard</a>
-            <a href="./student.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg sidebar-text"><i class="fas fa-user-graduate w-5"></i> Students</a>
-            <a href="./instructor.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg sidebar-text"><i class="fas fa-chalkboard-teacher w-5"></i> Instructors</a>
-            <a href="./courses.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg sidebar-text"><i class="fas fa-book-open w-5"></i> Courses</a>
-            <a href="./assignments.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg sidebar-text active"><i class="fas fa-tasks w-5"></i> Assignments</a>
-            <a href="./analytics.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg sidebar-text"><i class="fas fa-chart-line w-5"></i> Analytics</a>
-            <a href="./payment.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg sidebar-text"><i class="fas fa-credit-card w-5"></i> Payments</a>
-            <a href="./reviews.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg sidebar-text"><i class="fas fa-star w-5"></i> Reviews</a>
-            <a href="./notifications.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg sidebar-text"><i class="fas fa-bell w-5"></i> Notifications</a>
+            <a href="./index.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg sidebar-text animate-fadeInRight delay-1"><i class="fas fa-tachometer-alt w-5"></i> Dashboard</a>
+            <a href="./student.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg sidebar-text animate-fadeInRight delay-2"><i class="fas fa-user-graduate w-5"></i> Students</a>
+            <a href="./instructor.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg sidebar-text animate-fadeInRight delay-3"><i class="fas fa-chalkboard-teacher w-5"></i> Instructors</a>
+            <a href="./courses.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg sidebar-text animate-fadeInRight delay-4"><i class="fas fa-book-open w-5"></i> Courses</a>
+            <a href="./assignments.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg sidebar-text active animate-fadeInRight delay-5"><i class="fas fa-tasks w-5"></i> Assignments</a>
+            <a href="./analytics.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg sidebar-text animate-fadeInRight delay-6"><i class="fas fa-chart-line w-5"></i> Analytics</a>
+            <a href="./payment.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg sidebar-text animate-fadeInRight delay-7"><i class="fas fa-credit-card w-5"></i> Payments</a>
+            <a href="./reviews.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg sidebar-text animate-fadeInRight delay-8"><i class="fas fa-star w-5"></i> Reviews</a>
+            <a href="./notifications.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg sidebar-text animate-fadeInRight delay-9"><i class="fas fa-bell w-5"></i> Notifications</a>
             <hr class="border-[#2a8a82] my-4" />
-            <a href="./settings.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg sidebar-text"><i class="fas fa-cog w-5"></i> Settings</a>
-            <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg sidebar-text"><i class="fas fa-sign-out-alt w-5"></i> Logout</a>
+            <a href="./settings.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg sidebar-text animate-fadeInRight delay-10"><i class="fas fa-cog w-5"></i> Settings</a>
+            <a href="./logout.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg sidebar-text animate-fadeInRight delay-10"><i class="fas fa-sign-out-alt w-5"></i> Logout</a>
         </nav>
-        <div class="p-4 text-xs text-[#b0d6d0] border-t border-[#2a8a82]">v2.0 · EduNova</div>
+        <div class="p-4 text-xs text-[#b0d6d0] border-t border-[#2a8a82] animate-fadeInRight delay-10">v2.0 · EduNova</div>
     </aside>
 
     <!-- MAIN -->
     <div class="md:ml-64 min-h-screen flex flex-col">
-        <header class="bg-white/80 backdrop-blur-sm border-b border-[#dce8e6] sticky top-0 z-30 px-4 sm:px-6 py-3 flex items-center justify-between flex-wrap gap-2">
+        <header class="bg-white/80 backdrop-blur-sm border-b border-[#dce8e6] sticky top-0 z-30 px-4 sm:px-6 py-3 flex items-center justify-between flex-wrap gap-2 animate-slideDown">
             <div class="flex items-center gap-3">
                 <button id="hamburgerBtn" class="md:hidden text-[#0F766E] text-xl"><i class="fas fa-bars"></i></button>
                 <div class="nav-search relative hidden sm:block">
@@ -103,76 +143,193 @@
             </div>
             <div class="flex items-center gap-3 sm:gap-4">
                 <i class="fas fa-search text-[#64748B] sm:hidden"></i>
-                <i class="fas fa-bell text-[#64748B] text-lg hover:text-[#0F766E] cursor-pointer relative">
+                <i class="fas fa-bell text-[#64748B] text-lg hover:text-[#0F766E] cursor-pointer relative animate-pulse">
                     <span class="absolute -top-1 -right-1 bg-[#DC2626] text-white text-[10px] rounded-full w-4 h-4 flex items-center justify-center">12</span>
                 </i>
                 <i class="fas fa-envelope text-[#64748B] text-lg hover:text-[#0F766E] cursor-pointer"></i>
                 <div class="flex items-center gap-2 border-l pl-3 border-[#dce8e6]">
-                    <img src="https://ui-avatars.com/api/?name=Admin&background=0F766E&color=fff&size=32" alt="admin" class="w-8 h-8 rounded-full" />
+                    <img src="https://ui-avatars.com/api/?name=Admin&background=0F766E&color=fff&size=32" alt="admin" class="w-8 h-8 rounded-full hover:scale-110 transition-transform duration-300" />
                     <span class="hidden sm:inline font-medium text-sm text-[#0F172A]">Admin <i class="fas fa-chevron-down ml-1 text-[#64748B] text-xs"></i></span>
                 </div>
             </div>
         </header>
 
         <main class="flex-1 p-4 sm:p-6 space-y-6">
-            <div class="flex flex-wrap items-center justify-between gap-2">
+            <div class="flex flex-wrap items-center justify-between gap-2 animate-fadeInUp">
                 <div><h1 class="text-2xl font-bold text-[#0F172A] flex items-center gap-2"><i class="fas fa-tasks text-[#0F766E]"></i> Assignments</h1><p class="text-[#64748B] text-sm">Manage and track all student assignments across courses</p></div>
                 <div class="flex gap-2">
-                    <button class="btn btn-primary btn-sm"><i class="fas fa-plus-circle"></i> New Assignment</button>
-                    <button class="btn btn-outline btn-sm"><i class="fas fa-file-export"></i> Export</button>
+                    <button class="btn btn-primary btn-sm hover:scale-105 transition-transform duration-300"><i class="fas fa-plus-circle"></i> New Assignment</button>
+                    <button class="btn btn-outline btn-sm hover:scale-105 transition-transform duration-300"><i class="fas fa-file-export"></i> Export</button>
                 </div>
             </div>
 
             <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                <div class="stat-card"><div class="stat-info"><div class="label">Total Assignments</div><div class="value">156</div><div class="trend up"><i class="fas fa-arrow-up"></i> +8 this week</div></div><div class="stat-icon"><i class="fas fa-list"></i></div></div>
-                <div class="stat-card"><div class="stat-info"><div class="label">Pending Review</div><div class="value">23</div><div class="trend down"><i class="fas fa-arrow-up"></i> +5</div></div><div class="stat-icon"><i class="fas fa-clock text-[#F59E0B]"></i></div></div>
-                <div class="stat-card"><div class="stat-info"><div class="label">Submitted</div><div class="value">89</div><div class="trend up"><i class="fas fa-arrow-up"></i> +12%</div></div><div class="stat-icon"><i class="fas fa-check-circle text-[#16A34A]"></i></div></div>
-                <div class="stat-card"><div class="stat-info"><div class="label">Overdue</div><div class="value">14</div><div class="trend down"><i class="fas fa-arrow-up"></i> +3</div></div><div class="stat-icon"><i class="fas fa-exclamation-triangle text-[#DC2626]"></i></div></div>
+                <div class="stat-card animate-fadeInUp delay-1">
+                    <div class="stat-info"><div class="label">Total Assignments</div><div class="value">156</div><div class="trend up"><i class="fas fa-arrow-up"></i> +8 this week</div></div>
+                    <div class="stat-icon"><i class="fas fa-list"></i></div>
+                </div>
+                <div class="stat-card animate-fadeInUp delay-2">
+                    <div class="stat-info"><div class="label">Pending Review</div><div class="value">23</div><div class="trend down"><i class="fas fa-arrow-up"></i> +5</div></div>
+                    <div class="stat-icon"><i class="fas fa-clock text-[#F59E0B]"></i></div>
+                </div>
+                <div class="stat-card animate-fadeInUp delay-3">
+                    <div class="stat-info"><div class="label">Submitted</div><div class="value">89</div><div class="trend up"><i class="fas fa-arrow-up"></i> +12%</div></div>
+                    <div class="stat-icon"><i class="fas fa-check-circle text-[#16A34A]"></i></div>
+                </div>
+                <div class="stat-card animate-fadeInUp delay-4">
+                    <div class="stat-info"><div class="label">Overdue</div><div class="value">14</div><div class="trend down"><i class="fas fa-arrow-up"></i> +3</div></div>
+                    <div class="stat-icon"><i class="fas fa-exclamation-triangle text-[#DC2626]"></i></div>
+                </div>
             </section>
 
-            <div class="filter-bar">
-                <div class="filter-group"><label><i class="fas fa-book"></i> Course</label><select><option>All Courses</option><option>Web Development</option><option>Data Science</option></select></div>
-                <div class="filter-group"><label><i class="fas fa-user"></i> Student</label><select><option>All Students</option><option>John Doe</option><option>Jane Smith</option></select></div>
-                <div class="filter-group"><label><i class="fas fa-flag"></i> Status</label><select><option>All Status</option><option>Pending</option><option>Submitted</option><option>Graded</option></select></div>
-                <div class="filter-group"><label><i class="fas fa-calendar-alt"></i> Due Date</label><input type="date" value="2026-08-28" /></div>
-                <div class="filter-group" style="flex:0 0 auto; min-width:auto;"><label>&nbsp;</label><div class="filter-actions"><button class="btn btn-primary btn-sm"><i class="fas fa-filter"></i> Apply</button><button class="btn btn-ghost btn-sm"><i class="fas fa-undo"></i> Reset</button></div></div>
+            <div class="filter-bar animate-fadeInUp delay-3">
+                <div class="filter-group"><label><i class="fas fa-book"></i> Course</label>
+                    <select class="hover:border-[#14B8A6] transition-all duration-300">
+                        <option>All Courses</option>
+                        <option>Web Development</option>
+                        <option>Data Science</option>
+                    </select>
+                </div>
+                <div class="filter-group"><label><i class="fas fa-user"></i> Student</label>
+                    <select class="hover:border-[#14B8A6] transition-all duration-300">
+                        <option>All Students</option>
+                        <option>Arun</option>
+                        <option>Devika</option>
+                        <option>Vimal</option>
+                        <option>Sandeep</option>
+                        <option>Shivapriya</option>
+                    </select>
+                </div>
+                <div class="filter-group"><label><i class="fas fa-flag"></i> Status</label>
+                    <select class="hover:border-[#14B8A6] transition-all duration-300">
+                        <option>All Status</option>
+                        <option>Pending</option>
+                        <option>Submitted</option>
+                        <option>Graded</option>
+                    </select>
+                </div>
+                <div class="filter-group"><label><i class="fas fa-calendar-alt"></i> Due Date</label>
+                    <input type="date" value="2026-08-28" class="hover:border-[#14B8A6] transition-all duration-300" />
+                </div>
+                <div class="filter-group" style="flex:0 0 auto; min-width:auto;">
+                    <label>&nbsp;</label>
+                    <div class="filter-actions">
+                        <button class="btn btn-primary btn-sm hover:scale-105 transition-transform duration-300"><i class="fas fa-filter"></i> Apply</button>
+                        <button class="btn btn-ghost btn-sm hover:scale-105 transition-transform duration-300"><i class="fas fa-undo"></i> Reset</button>
+                    </div>
+                </div>
             </div>
 
-            <div class="bg-white rounded-2xl card-shadow border border-[#e6f0ed] p-5">
+            <div class="bg-white rounded-2xl card-shadow border border-[#e6f0ed] p-5 animate-fadeInUp delay-4">
                 <div class="flex flex-wrap items-center justify-between gap-2 mb-4">
                     <h3 class="font-semibold text-[#0F172A] flex items-center gap-2"><i class="fas fa-list-ul text-[#0F766E]"></i> Recent Assignments</h3>
-                    <div class="flex gap-2"><button class="btn btn-ghost btn-sm"><i class="fas fa-th-large"></i> Grid</button><button class="btn btn-primary btn-sm"><i class="fas fa-table"></i> Table</button></div>
+                    <div class="flex gap-2">
+                        <button class="btn btn-ghost btn-sm hover:scale-105 transition-transform duration-300"><i class="fas fa-th-large"></i> Grid</button>
+                        <button class="btn btn-primary btn-sm hover:scale-105 transition-transform duration-300"><i class="fas fa-table"></i> Table</button>
+                    </div>
                 </div>
                 <div class="table-wrap">
                     <table class="w-full text-sm">
-                        <thead class="text-[#64748B] border-b border-[#e6f0ed]"><tr><th class="py-2 text-left">Assignment</th><th class="py-2 text-left">Course</th><th class="py-2 text-left">Student</th><th class="py-2 text-left">Due Date</th><th class="py-2 text-left">Status</th><th class="py-2 text-left">Grade</th><th class="py-2 text-left">Actions</th></tr></thead>
+                        <thead class="text-[#64748B] border-b border-[#e6f0ed]">
+                            <tr>
+                                <th class="py-2 text-left">Assignment</th>
+                                <th class="py-2 text-left hidden sm:table-cell">Course</th>
+                                <th class="py-2 text-left">Student</th>
+                                <th class="py-2 text-left hidden md:table-cell">Due Date</th>
+                                <th class="py-2 text-left">Status</th>
+                                <th class="py-2 text-left hidden lg:table-cell">Grade</th>
+                                <th class="py-2 text-left">Actions</th>
+                            </tr>
+                        </thead>
                         <tbody>
-                            <tr class="border-b border-[#f0f7f5]"><td class="py-3 font-medium">Final Project: E-commerce</td><td>Web Dev</td><td>John Doe</td><td>Aug 30, 2026</td><td><span class="badge-status badge-pending"><i class="fas fa-circle text-[#F59E0B] text-[8px] mr-1"></i>Pending</span></td><td>—</td><td><button class="btn btn-primary btn-sm"><i class="fas fa-eye"></i> Review</button></td></tr>
-                            <tr class="border-b border-[#f0f7f5]"><td class="py-3 font-medium">Data Analysis Report</td><td>Data Sci</td><td>Jane Smith</td><td>Aug 25, 2026</td><td><span class="badge-status badge-submitted"><i class="fas fa-circle text-[#2563EB] text-[8px] mr-1"></i>Submitted</span></td><td>92%</td><td><button class="btn btn-success btn-sm"><i class="fas fa-check"></i> Grade</button></td></tr>
-                            <tr class="border-b border-[#f0f7f5]"><td class="py-3 font-medium">UI Prototype: Mobile App</td><td>UI/UX</td><td>Mike Johnson</td><td>Aug 22, 2026</td><td><span class="badge-status badge-danger"><i class="fas fa-circle text-[#DC2626] text-[8px] mr-1"></i>Overdue</span></td><td>—</td><td><button class="btn btn-danger btn-sm"><i class="fas fa-exclamation"></i> Remind</button></td></tr>
-                            <tr><td class="py-3 font-medium">Cloud Architecture Design</td><td>Cloud</td><td>Alex Chen</td><td>Aug 28, 2026</td><td><span class="badge-status badge-submitted"><i class="fas fa-circle text-[#2563EB] text-[8px] mr-1"></i>Submitted</span></td><td>88%</td><td><button class="btn btn-success btn-sm"><i class="fas fa-check"></i> Grade</button></td></tr>
+                            <tr class="border-b border-[#f0f7f5] table-row-hover animate-fadeInUp delay-5">
+                                <td class="py-3 font-medium">Final Project: E-commerce</td>
+                                <td class="hidden sm:table-cell">Web Dev</td>
+                                <td>Arun</td>
+                                <td class="hidden md:table-cell">Aug 30, 2026</td>
+                                <td><span class="badge-status badge-pending"><i class="fas fa-circle text-[#F59E0B] text-[8px] mr-1"></i>Pending</span></td>
+                                <td class="hidden lg:table-cell">—</td>
+                                <td><button class="btn btn-primary btn-sm hover:scale-105 transition-transform duration-300"><i class="fas fa-eye"></i> Review</button></td>
+                            </tr>
+                            <tr class="border-b border-[#f0f7f5] table-row-hover animate-fadeInUp delay-6">
+                                <td class="py-3 font-medium">Data Analysis Report</td>
+                                <td class="hidden sm:table-cell">Data Sci</td>
+                                <td>Devika</td>
+                                <td class="hidden md:table-cell">Aug 25, 2026</td>
+                                <td><span class="badge-status badge-submitted"><i class="fas fa-circle text-[#2563EB] text-[8px] mr-1"></i>Submitted</span></td>
+                                <td class="hidden lg:table-cell">92%</td>
+                                <td><button class="btn btn-success btn-sm hover:scale-105 transition-transform duration-300"><i class="fas fa-check"></i> Grade</button></td>
+                            </tr>
+                            <tr class="border-b border-[#f0f7f5] table-row-hover animate-fadeInUp delay-7">
+                                <td class="py-3 font-medium">UI Prototype: Mobile App</td>
+                                <td class="hidden sm:table-cell">UI/UX</td>
+                                <td>Vimal</td>
+                                <td class="hidden md:table-cell">Aug 22, 2026</td>
+                                <td><span class="badge-status badge-danger"><i class="fas fa-circle text-[#DC2626] text-[8px] mr-1"></i>Overdue</span></td>
+                                <td class="hidden lg:table-cell">—</td>
+                                <td><button class="btn btn-danger btn-sm hover:scale-105 transition-transform duration-300"><i class="fas fa-exclamation"></i> Remind</button></td>
+                            </tr>
+                            <tr class="border-b border-[#f0f7f5] table-row-hover animate-fadeInUp delay-8">
+                                <td class="py-3 font-medium">Cloud Architecture Design</td>
+                                <td class="hidden sm:table-cell">Cloud</td>
+                                <td>Sandeep</td>
+                                <td class="hidden md:table-cell">Aug 28, 2026</td>
+                                <td><span class="badge-status badge-submitted"><i class="fas fa-circle text-[#2563EB] text-[8px] mr-1"></i>Submitted</span></td>
+                                <td class="hidden lg:table-cell">88%</td>
+                                <td><button class="btn btn-success btn-sm hover:scale-105 transition-transform duration-300"><i class="fas fa-check"></i> Grade</button></td>
+                            </tr>
+                            <tr class="table-row-hover animate-fadeInUp delay-9">
+                                <td class="py-3 font-medium">Machine Learning Project</td>
+                                <td class="hidden sm:table-cell">Data Sci</td>
+                                <td>Shivapriya</td>
+                                <td class="hidden md:table-cell">Sep 02, 2026</td>
+                                <td><span class="badge-status badge-pending"><i class="fas fa-circle text-[#F59E0B] text-[8px] mr-1"></i>Pending</span></td>
+                                <td class="hidden lg:table-cell">—</td>
+                                <td><button class="btn btn-primary btn-sm hover:scale-105 transition-transform duration-300"><i class="fas fa-eye"></i> Review</button></td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
-                <div class="flex justify-between items-center mt-4 text-xs text-[#64748B]"><span>Showing 1-4 of 156</span><div class="flex gap-1"><button class="px-2 py-1 border rounded">Prev</button><button class="px-2 py-1 border rounded bg-[#0F766E] text-white">1</button><button class="px-2 py-1 border rounded">2</button><button class="px-2 py-1 border rounded">Next</button></div></div>
+                <div class="flex justify-between items-center mt-4 text-xs text-[#64748B]">
+                    <span>Showing 1-5 of 156</span>
+                    <div class="flex gap-1">
+                        <button class="px-2 py-1 border rounded hover:bg-[#0F766E] hover:text-white transition-all duration-300">Prev</button>
+                        <button class="px-2 py-1 border rounded bg-[#0F766E] text-white hover:scale-105 transition-transform duration-300">1</button>
+                        <button class="px-2 py-1 border rounded hover:bg-[#0F766E] hover:text-white transition-all duration-300">2</button>
+                        <button class="px-2 py-1 border rounded hover:bg-[#0F766E] hover:text-white transition-all duration-300">Next</button>
+                    </div>
+                </div>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div class="bg-white rounded-2xl card-shadow border border-[#e6f0ed] p-5">
+                <div class="bg-white rounded-2xl card-shadow border border-[#e6f0ed] p-5 animate-fadeInUp delay-5">
                     <h3 class="font-semibold text-[#0F172A] flex items-center gap-2 mb-4"><i class="fas fa-bolt text-[#0F766E]"></i> Quick Actions</h3>
                     <div class="grid grid-cols-2 gap-3">
-                        <button class="bg-[#e6f7f5] hover:bg-[#d4f0ed] rounded-xl p-4 text-center transition"><i class="fas fa-plus-circle text-[#0F766E] text-2xl block mb-1"></i><span class="text-sm font-medium">Create</span></button>
-                        <button class="bg-[#e6f7f5] hover:bg-[#d4f0ed] rounded-xl p-4 text-center transition"><i class="fas fa-upload text-[#0F766E] text-2xl block mb-1"></i><span class="text-sm font-medium">Bulk Upload</span></button>
-                        <button class="bg-[#e6f7f5] hover:bg-[#d4f0ed] rounded-xl p-4 text-center transition"><i class="fas fa-file-pdf text-[#0F766E] text-2xl block mb-1"></i><span class="text-sm font-medium">Export Report</span></button>
-                        <button class="bg-[#e6f7f5] hover:bg-[#d4f0ed] rounded-xl p-4 text-center transition"><i class="fas fa-envelope text-[#0F766E] text-2xl block mb-1"></i><span class="text-sm font-medium">Send Reminder</span></button>
+                        <button class="bg-[#e6f7f5] hover:bg-[#d4f0ed] rounded-xl p-4 text-center transition-all duration-300 hover:scale-105"><i class="fas fa-plus-circle text-[#0F766E] text-2xl block mb-1"></i><span class="text-sm font-medium">Create</span></button>
+                        <button class="bg-[#e6f7f5] hover:bg-[#d4f0ed] rounded-xl p-4 text-center transition-all duration-300 hover:scale-105"><i class="fas fa-upload text-[#0F766E] text-2xl block mb-1"></i><span class="text-sm font-medium">Bulk Upload</span></button>
+                        <button class="bg-[#e6f7f5] hover:bg-[#d4f0ed] rounded-xl p-4 text-center transition-all duration-300 hover:scale-105"><i class="fas fa-file-pdf text-[#0F766E] text-2xl block mb-1"></i><span class="text-sm font-medium">Export Report</span></button>
+                        <button class="bg-[#e6f7f5] hover:bg-[#d4f0ed] rounded-xl p-4 text-center transition-all duration-300 hover:scale-105"><i class="fas fa-envelope text-[#0F766E] text-2xl block mb-1"></i><span class="text-sm font-medium">Send Reminder</span></button>
                     </div>
                 </div>
-                <div class="bg-white rounded-2xl card-shadow border border-[#e6f0ed] p-5">
+                <div class="bg-white rounded-2xl card-shadow border border-[#e6f0ed] p-5 animate-fadeInUp delay-6">
                     <h3 class="font-semibold text-[#0F172A] flex items-center gap-2 mb-4"><i class="fas fa-clock text-[#0F766E]"></i> Recent Submissions</h3>
                     <div class="space-y-3">
-                        <div class="flex items-center justify-between border-b border-[#f0f7f5] pb-2"><div><p class="font-medium text-sm">Data Analysis Report</p><p class="text-xs text-[#64748B]">Jane Smith · 2 hours ago</p></div><span class="badge-status badge-submitted text-xs">Submitted</span></div>
-                        <div class="flex items-center justify-between border-b border-[#f0f7f5] pb-2"><div><p class="font-medium text-sm">Cloud Architecture Design</p><p class="text-xs text-[#64748B]">Alex Chen · 5 hours ago</p></div><span class="badge-status badge-submitted text-xs">Submitted</span></div>
-                        <div class="flex items-center justify-between"><div><p class="font-medium text-sm">UI Prototype: Mobile App</p><p class="text-xs text-[#64748B]">Mike Johnson · 2 days ago</p></div><span class="badge-status badge-danger text-xs">Overdue</span></div>
+                        <div class="flex items-center justify-between border-b border-[#f0f7f5] pb-2 hover:bg-[#f8fbfa] transition-all duration-300 p-2 rounded-lg">
+                            <div><p class="font-medium text-sm">Data Analysis Report</p><p class="text-xs text-[#64748B]">Devika · 2 hours ago</p></div>
+                            <span class="badge-status badge-submitted text-xs">Submitted</span>
+                        </div>
+                        <div class="flex items-center justify-between border-b border-[#f0f7f5] pb-2 hover:bg-[#f8fbfa] transition-all duration-300 p-2 rounded-lg">
+                            <div><p class="font-medium text-sm">Cloud Architecture Design</p><p class="text-xs text-[#64748B]">Sandeep · 5 hours ago</p></div>
+                            <span class="badge-status badge-submitted text-xs">Submitted</span>
+                        </div>
+                        <div class="flex items-center justify-between border-b border-[#f0f7f5] pb-2 hover:bg-[#f8fbfa] transition-all duration-300 p-2 rounded-lg">
+                            <div><p class="font-medium text-sm">Machine Learning Project</p><p class="text-xs text-[#64748B]">Shivapriya · Yesterday</p></div>
+                            <span class="badge-status badge-pending text-xs">Pending</span>
+                        </div>
+                        <div class="flex items-center justify-between hover:bg-[#f8fbfa] transition-all duration-300 p-2 rounded-lg">
+                            <div><p class="font-medium text-sm">UI Prototype: Mobile App</p><p class="text-xs text-[#64748B]">Vimal · 2 days ago</p></div>
+                            <span class="badge-status badge-danger text-xs">Overdue</span>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -198,6 +355,20 @@
                     overlay.classList.add('hidden');
                     drawerOpen = false;
                 }
+            });
+
+            // Animate stat numbers on scroll
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            document.querySelectorAll('.stat-card .value').forEach(el => {
+                observer.observe(el);
             });
         })();
     </script>

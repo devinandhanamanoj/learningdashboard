@@ -25,6 +25,129 @@
         .drawer-overlay { background: rgba(15,23,42,0.4); }
         .doughnut-static { width: 100px; height: 100px; border-radius: 50%; background: conic-gradient(#0F766E 0% 42%, #38BDF8 42% 78%, #d1e0e0 78% 100%); margin: 0.5rem auto; }
         .legend-dot { display: inline-block; width: 10px; height: 10px; border-radius: 4px; margin-right: 4px; }
+
+        /* ===== ANIMATIONS ===== */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeInLeft {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        @keyframes fadeInRight {
+            from { opacity: 0; transform: translateX(20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        @keyframes scaleIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+        }
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes countUp {
+            from { opacity: 0; transform: scale(0.5); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+
+        .animate-fadeInUp {
+            animation: fadeInUp 0.6s ease forwards;
+        }
+        .animate-fadeInLeft {
+            animation: fadeInLeft 0.6s ease forwards;
+        }
+        .animate-fadeInRight {
+            animation: fadeInRight 0.6s ease forwards;
+        }
+        .animate-scaleIn {
+            animation: scaleIn 0.5s ease forwards;
+        }
+        .animate-pulse {
+            animation: pulse 2s ease-in-out infinite;
+        }
+        .animate-slideDown {
+            animation: slideDown 0.4s ease forwards;
+        }
+        .animate-countUp {
+            animation: countUp 0.8s ease forwards;
+        }
+        .animate-shimmer {
+            background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.4) 50%, transparent 100%);
+            background-size: 200% 100%;
+            animation: shimmer 2s ease-in-out infinite;
+        }
+
+        /* Staggered delays */
+        .delay-1 { animation-delay: 0.05s; }
+        .delay-2 { animation-delay: 0.1s; }
+        .delay-3 { animation-delay: 0.15s; }
+        .delay-4 { animation-delay: 0.2s; }
+        .delay-5 { animation-delay: 0.25s; }
+        .delay-6 { animation-delay: 0.3s; }
+        .delay-7 { animation-delay: 0.35s; }
+        .delay-8 { animation-delay: 0.4s; }
+        .delay-9 { animation-delay: 0.45s; }
+        .delay-10 { animation-delay: 0.5s; }
+
+        /* Card hover animation */
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        .card-hover:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(15,23,42,0.08);
+        }
+
+        /* Stat icon pulse on hover */
+        .stat-icon-wrapper {
+            transition: all 0.3s ease;
+        }
+        .stat-icon-wrapper:hover {
+            transform: scale(1.1) rotate(5deg);
+            background: #d4f0ed;
+        }
+
+        /* Table row hover animation */
+        .table-row-hover {
+            transition: all 0.2s ease;
+        }
+        .table-row-hover:hover {
+            background: #f0fdfa;
+            transform: scale(1.01);
+        }
+
+        /* Quick link hover */
+        .quick-link {
+            transition: all 0.3s ease;
+        }
+        .quick-link:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 8px 24px rgba(15,23,42,0.08);
+        }
+
+        /* Chart bar animation */
+        .chart-bar {
+            transition: height 0.8s ease;
+        }
+        .chart-bar:hover {
+            opacity: 0.85;
+        }
+
+        /* Badge pulse for status */
+        .badge-pulse {
+            animation: pulse 2s ease-in-out infinite;
+        }
+
         @media (max-width: 768px) { .nav-search input { width: 140px; } }
         @media (max-width: 480px) { .nav-search input { width: 100px; padding: 0.3rem 0.8rem 0.3rem 2rem; font-size: 0.7rem; } .nav-search i { left: 0.6rem; top: 0.5rem; font-size: 0.7rem; } }
     </style>
@@ -32,32 +155,32 @@
 <body>
     <div id="drawerOverlay" class="fixed inset-0 z-40 drawer-overlay hidden md:hidden"></div>
 
-  <!-- SIDEBAR (desktop) + mobile drawer -->
-  <aside id="sidebar" class="fixed top-0 left-0 h-full w-64 sidebar-bg text-white z-50 flex flex-col transition-transform duration-300 -translate-x-full md:translate-x-0">
-    <div class="p-5 text-2xl font-bold tracking-tight flex items-center gap-2 border-b border-[#2a8a82]">
-      <i class="fas fa-graduation-cap text-[#38BDF8]"></i> LearnDash
-    </div>
-    <nav class="flex-1 px-3 py-6 space-y-1 overflow-y-auto">
-      <a href="./index.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg sidebar-text bg-[#0d6b63]"><i class="fas fa-tachometer-alt w-5"></i> Dashboard</a>
-      <a href="./student.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg sidebar-text hover:bg-[#0d6b63]"><i class="fas fa-user-graduate w-5"></i> Students</a>
-      <a href="./instructor.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg sidebar-text hover:bg-[#0d6b63]"><i class="fas fa-chalkboard-teacher w-5"></i> Instructors</a>
-      <a href="./courses.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg sidebar-text hover:bg-[#0d6b63]"><i class="fas fa-book-open w-5"></i> Courses</a>
-      <a href="./assignments.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg sidebar-text hover:bg-[#0d6b63]"><i class="fas fa-tasks w-5"></i> Assignments</a>
-      <a href="./analytics.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg sidebar-text hover:bg-[#0d6b63]"><i class="fas fa-chart-line w-5"></i> Analytics</a>
-      <a href="./payment.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg sidebar-text hover:bg-[#0d6b63]"><i class="fas fa-credit-card w-5"></i> Payments</a>
-      <a href="./reviews.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg sidebar-text hover:bg-[#0d6b63]"><i class="fas fa-star w-5"></i> Reviews</a>
-      <a href="./notifications.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg sidebar-text hover:bg-[#0d6b63]"><i class="fas fa-bell w-5"></i> Notifications</a>
-      <a href="./settings.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg sidebar-text hover:bg-[#0d6b63]"><i class="fas fa-cog w-5"></i> Settings</a>
-      <hr class="border-[#2a8a82] my-4" />
-      <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg sidebar-text hover:bg-[#0d6b63]"><i class="fas fa-sign-out-alt w-5"></i> Logout</a>
-    </nav>
-    <div class="p-4 text-xs text-[#b0d6d0] border-t border-[#2a8a82]">v2.0 · edu admin</div>
-  </aside>
+    <!-- SIDEBAR -->
+    <aside id="sidebar" class="fixed top-0 left-0 h-full w-64 sidebar-bg text-white z-50 flex flex-col transition-transform duration-300 -translate-x-full md:translate-x-0">
+        <div class="p-5 text-2xl font-bold tracking-tight flex items-center gap-2 border-b border-[#2a8a82] animate-fadeInRight">
+            <i class="fas fa-graduation-cap text-[#38BDF8]"></i> EduNova
+        </div>
+        <nav class="flex-1 px-3 py-6 space-y-1 overflow-y-auto">
+            <a href="./index.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg sidebar-text bg-[#0d6b63] animate-fadeInRight delay-1"><i class="fas fa-tachometer-alt w-5"></i> Dashboard</a>
+            <a href="./student.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg sidebar-text hover:bg-[#0d6b63] animate-fadeInRight delay-2"><i class="fas fa-user-graduate w-5"></i> Students</a>
+            <a href="./instructor.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg sidebar-text hover:bg-[#0d6b63] animate-fadeInRight delay-3"><i class="fas fa-chalkboard-teacher w-5"></i> Instructors</a>
+            <a href="./courses.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg sidebar-text hover:bg-[#0d6b63] animate-fadeInRight delay-4"><i class="fas fa-book-open w-5"></i> Courses</a>
+            <a href="./assignments.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg sidebar-text hover:bg-[#0d6b63] animate-fadeInRight delay-5"><i class="fas fa-tasks w-5"></i> Assignments</a>
+            <a href="./analytics.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg sidebar-text hover:bg-[#0d6b63] animate-fadeInRight delay-6"><i class="fas fa-chart-line w-5"></i> Analytics</a>
+            <a href="./payment.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg sidebar-text hover:bg-[#0d6b63] animate-fadeInRight delay-7"><i class="fas fa-credit-card w-5"></i> Payments</a>
+            <a href="./reviews.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg sidebar-text hover:bg-[#0d6b63] animate-fadeInRight delay-8"><i class="fas fa-star w-5"></i> Reviews</a>
+            <a href="./notifications.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg sidebar-text hover:bg-[#0d6b63] animate-fadeInRight delay-9"><i class="fas fa-bell w-5"></i> Notifications</a>
+            <a href="./settings.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg sidebar-text hover:bg-[#0d6b63] animate-fadeInRight delay-10"><i class="fas fa-cog w-5"></i> Settings</a>
+            <hr class="border-[#2a8a82] my-4" />
+            <a href="./logout.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg sidebar-text hover:bg-[#0d6b63]"><i class="fas fa-sign-out-alt w-5"></i> Logout</a>
+        </nav>
+        <div class="p-4 text-xs text-[#b0d6d0] border-t border-[#2a8a82] animate-fadeInRight delay-10">v2.0 · EduNova</div>
+    </aside>
 
     <!-- MAIN -->
     <div class="md:ml-64 min-h-screen flex flex-col">
         <!-- TOP NAVBAR -->
-        <header class="bg-white/80 backdrop-blur-sm border-b border-[#dce8e6] sticky top-0 z-30 px-4 sm:px-6 py-3 flex items-center justify-between flex-wrap gap-2">
+        <header class="bg-white/80 backdrop-blur-sm border-b border-[#dce8e6] sticky top-0 z-30 px-4 sm:px-6 py-3 flex items-center justify-between flex-wrap gap-2 animate-slideDown">
             <div class="flex items-center gap-3">
                 <button id="hamburgerBtn" class="md:hidden text-[#0F766E] text-xl"><i class="fas fa-bars"></i></button>
                 <div class="nav-search relative hidden sm:block">
@@ -67,12 +190,12 @@
             </div>
             <div class="flex items-center gap-3 sm:gap-4">
                 <i class="fas fa-search text-[#64748B] sm:hidden"></i>
-                <i class="fas fa-bell text-[#64748B] text-lg hover:text-[#0F766E] cursor-pointer relative">
+                <i class="fas fa-bell text-[#64748B] text-lg hover:text-[#0F766E] cursor-pointer relative animate-pulse">
                     <span class="absolute -top-1 -right-1 bg-[#DC2626] text-white text-[10px] rounded-full w-4 h-4 flex items-center justify-center">12</span>
                 </i>
                 <i class="fas fa-envelope text-[#64748B] text-lg hover:text-[#0F766E] cursor-pointer"></i>
                 <div class="flex items-center gap-2 border-l pl-3 border-[#dce8e6]">
-                    <img src="https://ui-avatars.com/api/?name=Admin&background=0F766E&color=fff&size=32" alt="admin" class="w-8 h-8 rounded-full" />
+                    <img src="https://ui-avatars.com/api/?name=Admin&background=0F766E&color=fff&size=32" alt="admin" class="w-8 h-8 rounded-full hover:scale-110 transition-transform duration-300" />
                     <span class="hidden sm:inline font-medium text-sm text-[#0F172A]">Admin <i class="fas fa-chevron-down ml-1 text-[#64748B] text-xs"></i></span>
                 </div>
             </div>
@@ -80,94 +203,220 @@
 
         <!-- CONTENT -->
         <main class="flex-1 p-4 sm:p-6 space-y-6">
-            <div>
-                <h1 class="text-2xl font-bold text-[#0F172A] flex items-center gap-2">Good Morning, Admin 👋</h1>
+            <!-- GREETING -->
+            <div class="animate-fadeInUp">
+                <h1 class="text-2xl font-bold text-[#0F172A] flex items-center gap-2">
+                    Good Morning, Admin 👋
+                    <span class="text-sm font-normal text-[#64748B] animate-pulse">| <i class="fas fa-circle text-[#16A34A] text-[8px]"></i> Online</span>
+                </h1>
                 <p class="text-[#64748B]">Here's what's happening with your learning platform today.</p>
             </div>
 
+            <!-- STATS CARDS -->
             <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                <div class="bg-white card-shadow rounded-2xl p-5 flex items-start justify-between border border-[#e6f0ed]">
-                    <div><span class="text-[#64748B] text-sm">Total Students</span><div class="text-2xl font-bold mt-1">12,540</div><span class="text-[#16A34A] text-xs flex items-center gap-1 mt-1"><i class="fas fa-arrow-up"></i> 12.8%</span></div>
-                    <div class="stat-icon w-10 h-10 rounded-xl flex items-center justify-center text-xl"><i class="fas fa-user-graduate"></i></div>
+                <div class="bg-white card-shadow rounded-2xl p-5 flex items-start justify-between border border-[#e6f0ed] card-hover animate-fadeInUp delay-1">
+                    <div>
+                        <span class="text-[#64748B] text-sm">Total Students</span>
+                        <div class="text-2xl font-bold mt-1 animate-countUp">12,540</div>
+                        <span class="text-[#16A34A] text-xs flex items-center gap-1 mt-1"><i class="fas fa-arrow-up"></i> 12.8%</span>
+                    </div>
+                    <div class="stat-icon w-10 h-10 rounded-xl flex items-center justify-center text-xl stat-icon-wrapper"><i class="fas fa-user-graduate"></i></div>
                 </div>
-                <div class="bg-white card-shadow rounded-2xl p-5 flex items-start justify-between border border-[#e6f0ed]">
-                    <div><span class="text-[#64748B] text-sm">Total Courses</span><div class="text-2xl font-bold mt-1">248</div><span class="text-[#16A34A] text-xs flex items-center gap-1 mt-1"><i class="fas fa-arrow-up"></i> 4.3%</span></div>
-                    <div class="stat-icon w-10 h-10 rounded-xl flex items-center justify-center text-xl"><i class="fas fa-book-open"></i></div>
+                <div class="bg-white card-shadow rounded-2xl p-5 flex items-start justify-between border border-[#e6f0ed] card-hover animate-fadeInUp delay-2">
+                    <div>
+                        <span class="text-[#64748B] text-sm">Total Courses</span>
+                        <div class="text-2xl font-bold mt-1 animate-countUp">248</div>
+                        <span class="text-[#16A34A] text-xs flex items-center gap-1 mt-1"><i class="fas fa-arrow-up"></i> 4.3%</span>
+                    </div>
+                    <div class="stat-icon w-10 h-10 rounded-xl flex items-center justify-center text-xl stat-icon-wrapper"><i class="fas fa-book-open"></i></div>
                 </div>
-                <div class="bg-white card-shadow rounded-2xl p-5 flex items-start justify-between border border-[#e6f0ed]">
-                    <div><span class="text-[#64748B] text-sm">Instructors</span><div class="text-2xl font-bold mt-1">86</div><span class="text-[#64748B] text-xs flex items-center gap-1 mt-1"><i class="fas fa-minus"></i> stable</span></div>
-                    <div class="stat-icon w-10 h-10 rounded-xl flex items-center justify-center text-xl"><i class="fas fa-chalkboard-teacher"></i></div>
+                <div class="bg-white card-shadow rounded-2xl p-5 flex items-start justify-between border border-[#e6f0ed] card-hover animate-fadeInUp delay-3">
+                    <div>
+                        <span class="text-[#64748B] text-sm">Instructors</span>
+                        <div class="text-2xl font-bold mt-1 animate-countUp">86</div>
+                        <span class="text-[#64748B] text-xs flex items-center gap-1 mt-1"><i class="fas fa-minus"></i> stable</span>
+                    </div>
+                    <div class="stat-icon w-10 h-10 rounded-xl flex items-center justify-center text-xl stat-icon-wrapper"><i class="fas fa-chalkboard-teacher"></i></div>
                 </div>
-                <div class="bg-white card-shadow rounded-2xl p-5 flex items-start justify-between border border-[#e6f0ed]">
-                    <div><span class="text-[#64748B] text-sm">Revenue</span><div class="text-2xl font-bold mt-1">₹8.42L</div><span class="text-[#16A34A] text-xs flex items-center gap-1 mt-1"><i class="fas fa-arrow-up"></i> 9.1%</span></div>
-                    <div class="stat-icon w-10 h-10 rounded-xl flex items-center justify-center text-xl"><i class="fas fa-credit-card"></i></div>
+                <div class="bg-white card-shadow rounded-2xl p-5 flex items-start justify-between border border-[#e6f0ed] card-hover animate-fadeInUp delay-4">
+                    <div>
+                        <span class="text-[#64748B] text-sm">Revenue</span>
+                        <div class="text-2xl font-bold mt-1 animate-countUp">₹8.42L</div>
+                        <span class="text-[#16A34A] text-xs flex items-center gap-1 mt-1"><i class="fas fa-arrow-up"></i> 9.1%</span>
+                    </div>
+                    <div class="stat-icon w-10 h-10 rounded-xl flex items-center justify-center text-xl stat-icon-wrapper"><i class="fas fa-credit-card"></i></div>
                 </div>
             </section>
 
+            <!-- CHARTS ROW -->
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                <div class="bg-white p-5 rounded-2xl card-shadow border border-[#e6f0ed]">
+                <div class="bg-white p-5 rounded-2xl card-shadow border border-[#e6f0ed] card-hover animate-fadeInLeft delay-3">
                     <h3 class="text-sm font-semibold text-[#0F172A] flex items-center gap-2"><i class="fas fa-user-plus text-[#0F766E]"></i> Student Enrollment</h3>
                     <div class="flex items-end gap-2 h-32 mt-2">
-                        <div class="flex-1 flex flex-col items-center"><div class="w-full bg-[#0F766E] rounded-t" style="height:58px;"></div><span class="text-[10px] mt-1 text-[#64748B]">Jan</span></div>
-                        <div class="flex-1 flex flex-col items-center"><div class="w-full bg-[#0F766E] rounded-t" style="height:68px;"></div><span class="text-[10px] mt-1 text-[#64748B]">Feb</span></div>
-                        <div class="flex-1 flex flex-col items-center"><div class="w-full bg-[#0F766E] rounded-t" style="height:74px;"></div><span class="text-[10px] mt-1 text-[#64748B]">Mar</span></div>
-                        <div class="flex-1 flex flex-col items-center"><div class="w-full bg-[#0F766E] rounded-t" style="height:84px;"></div><span class="text-[10px] mt-1 text-[#64748B]">Apr</span></div>
-                        <div class="flex-1 flex flex-col items-center"><div class="w-full bg-[#0F766E] rounded-t" style="height:94px;"></div><span class="text-[10px] mt-1 text-[#64748B]">May</span></div>
-                        <div class="flex-1 flex flex-col items-center"><div class="w-full bg-[#0F766E] rounded-t" style="height:100px;"></div><span class="text-[10px] mt-1 text-[#64748B]">Jun</span></div>
+                        <div class="flex-1 flex flex-col items-center">
+                            <div class="w-full bg-[#0F766E] rounded-t chart-bar" style="height:58px; transition-delay: 0.1s;"></div>
+                            <span class="text-[10px] mt-1 text-[#64748B]">Jan</span>
+                        </div>
+                        <div class="flex-1 flex flex-col items-center">
+                            <div class="w-full bg-[#0F766E] rounded-t chart-bar" style="height:68px; transition-delay: 0.2s;"></div>
+                            <span class="text-[10px] mt-1 text-[#64748B]">Feb</span>
+                        </div>
+                        <div class="flex-1 flex flex-col items-center">
+                            <div class="w-full bg-[#0F766E] rounded-t chart-bar" style="height:74px; transition-delay: 0.3s;"></div>
+                            <span class="text-[10px] mt-1 text-[#64748B]">Mar</span>
+                        </div>
+                        <div class="flex-1 flex flex-col items-center">
+                            <div class="w-full bg-[#0F766E] rounded-t chart-bar" style="height:84px; transition-delay: 0.4s;"></div>
+                            <span class="text-[10px] mt-1 text-[#64748B]">Apr</span>
+                        </div>
+                        <div class="flex-1 flex flex-col items-center">
+                            <div class="w-full bg-[#0F766E] rounded-t chart-bar" style="height:94px; transition-delay: 0.5s;"></div>
+                            <span class="text-[10px] mt-1 text-[#64748B]">May</span>
+                        </div>
+                        <div class="flex-1 flex flex-col items-center">
+                            <div class="w-full bg-[#0F766E] rounded-t chart-bar" style="height:100px; transition-delay: 0.6s;"></div>
+                            <span class="text-[10px] mt-1 text-[#64748B]">Jun</span>
+                        </div>
                     </div>
+                    <div class="text-xs text-[#64748B] mt-1 text-center animate-pulse">⬆ +15% compared to last month</div>
                 </div>
-                <div class="bg-white p-5 rounded-2xl card-shadow border border-[#e6f0ed] flex flex-col items-center">
+                <div class="bg-white p-5 rounded-2xl card-shadow border border-[#e6f0ed] flex flex-col items-center card-hover animate-fadeInRight delay-3">
                     <h3 class="text-sm font-semibold text-[#0F172A] flex items-center gap-2 w-full"><i class="fas fa-chart-pie text-[#14B8A6]"></i> Course Performance</h3>
-                    <div class="doughnut-static"></div>
+                    <div class="doughnut-static animate-scaleIn delay-4"></div>
                     <div class="flex gap-4 text-xs mt-2 flex-wrap justify-center">
-                        <span><span class="legend-dot" style="background:#0F766E;"></span> Completed 42%</span>
-                        <span><span class="legend-dot" style="background:#38BDF8;"></span> In progress 36%</span>
-                        <span><span class="legend-dot" style="background:#d1e0e0;"></span> Not started 22%</span>
+                        <span class="animate-fadeInUp delay-5"><span class="legend-dot" style="background:#0F766E;"></span> Completed 42%</span>
+                        <span class="animate-fadeInUp delay-6"><span class="legend-dot" style="background:#38BDF8;"></span> In progress 36%</span>
+                        <span class="animate-fadeInUp delay-7"><span class="legend-dot" style="background:#d1e0e0;"></span> Not started 22%</span>
                     </div>
                 </div>
             </div>
 
-            <div class="bg-white p-5 rounded-2xl card-shadow border border-[#e6f0ed]">
-                <div class="flex justify-between items-center"><h3 class="text-sm font-semibold"><i class="fas fa-chart-bar text-[#0F766E] mr-2"></i>Revenue Analytics</h3><span class="text-xs text-[#64748B]">Monthly</span></div>
-                <div class="flex items-end gap-1 h-24 mt-3">
-                    <div class="flex-1 flex flex-col items-center"><div class="w-full bg-[#0F766E] rounded-t" style="height:32px;"></div><div class="w-full bg-[#14B8A6] rounded-t mt-0.5" style="height:18px;"></div><span class="text-[9px] mt-1 text-[#64748B]">Jan</span></div>
-                    <div class="flex-1 flex flex-col items-center"><div class="w-full bg-[#0F766E] rounded-t" style="height:40px;"></div><div class="w-full bg-[#14B8A6] rounded-t mt-0.5" style="height:22px;"></div><span class="text-[9px] mt-1 text-[#64748B]">Feb</span></div>
-                    <div class="flex-1 flex flex-col items-center"><div class="w-full bg-[#0F766E] rounded-t" style="height:36px;"></div><div class="w-full bg-[#14B8A6] rounded-t mt-0.5" style="height:20px;"></div><span class="text-[9px] mt-1 text-[#64748B]">Mar</span></div>
-                    <div class="flex-1 flex flex-col items-center"><div class="w-full bg-[#0F766E] rounded-t" style="height:48px;"></div><div class="w-full bg-[#14B8A6] rounded-t mt-0.5" style="height:28px;"></div><span class="text-[9px] mt-1 text-[#64748B]">Apr</span></div>
-                    <div class="flex-1 flex flex-col items-center"><div class="w-full bg-[#0F766E] rounded-t" style="height:56px;"></div><div class="w-full bg-[#14B8A6] rounded-t mt-0.5" style="height:32px;"></div><span class="text-[9px] mt-1 text-[#64748B]">May</span></div>
-                    <div class="flex-1 flex flex-col items-center"><div class="w-full bg-[#0F766E] rounded-t" style="height:68px;"></div><div class="w-full bg-[#14B8A6] rounded-t mt-0.5" style="height:38px;"></div><span class="text-[9px] mt-1 text-[#64748B]">Jun</span></div>
+            <!-- REVENUE ANALYTICS -->
+            <div class="bg-white p-5 rounded-2xl card-shadow border border-[#e6f0ed] card-hover animate-fadeInUp delay-4">
+                <div class="flex justify-between items-center">
+                    <h3 class="text-sm font-semibold"><i class="fas fa-chart-bar text-[#0F766E] mr-2"></i>Revenue Analytics</h3>
+                    <span class="text-xs text-[#64748B]">Monthly</span>
                 </div>
-                <div class="flex gap-4 text-xs mt-2"><span><span class="legend-dot" style="background:#0F766E;"></span> Revenue</span><span><span class="legend-dot" style="background:#14B8A6;"></span> Subscriptions</span></div>
+                <div class="flex items-end gap-1 h-24 mt-3">
+                    <div class="flex-1 flex flex-col items-center">
+                        <div class="w-full bg-[#0F766E] rounded-t chart-bar" style="height:32px; transition-delay: 0.1s;"></div>
+                        <div class="w-full bg-[#14B8A6] rounded-t mt-0.5 chart-bar" style="height:18px; transition-delay: 0.2s;"></div>
+                        <span class="text-[9px] mt-1 text-[#64748B]">Jan</span>
+                    </div>
+                    <div class="flex-1 flex flex-col items-center">
+                        <div class="w-full bg-[#0F766E] rounded-t chart-bar" style="height:40px; transition-delay: 0.2s;"></div>
+                        <div class="w-full bg-[#14B8A6] rounded-t mt-0.5 chart-bar" style="height:22px; transition-delay: 0.3s;"></div>
+                        <span class="text-[9px] mt-1 text-[#64748B]">Feb</span>
+                    </div>
+                    <div class="flex-1 flex flex-col items-center">
+                        <div class="w-full bg-[#0F766E] rounded-t chart-bar" style="height:36px; transition-delay: 0.3s;"></div>
+                        <div class="w-full bg-[#14B8A6] rounded-t mt-0.5 chart-bar" style="height:20px; transition-delay: 0.4s;"></div>
+                        <span class="text-[9px] mt-1 text-[#64748B]">Mar</span>
+                    </div>
+                    <div class="flex-1 flex flex-col items-center">
+                        <div class="w-full bg-[#0F766E] rounded-t chart-bar" style="height:48px; transition-delay: 0.4s;"></div>
+                        <div class="w-full bg-[#14B8A6] rounded-t mt-0.5 chart-bar" style="height:28px; transition-delay: 0.5s;"></div>
+                        <span class="text-[9px] mt-1 text-[#64748B]">Apr</span>
+                    </div>
+                    <div class="flex-1 flex flex-col items-center">
+                        <div class="w-full bg-[#0F766E] rounded-t chart-bar" style="height:56px; transition-delay: 0.5s;"></div>
+                        <div class="w-full bg-[#14B8A6] rounded-t mt-0.5 chart-bar" style="height:32px; transition-delay: 0.6s;"></div>
+                        <span class="text-[9px] mt-1 text-[#64748B]">May</span>
+                    </div>
+                    <div class="flex-1 flex flex-col items-center">
+                        <div class="w-full bg-[#0F766E] rounded-t chart-bar" style="height:68px; transition-delay: 0.6s;"></div>
+                        <div class="w-full bg-[#14B8A6] rounded-t mt-0.5 chart-bar" style="height:38px; transition-delay: 0.7s;"></div>
+                        <span class="text-[9px] mt-1 text-[#64748B]">Jun</span>
+                    </div>
+                </div>
+                <div class="flex gap-4 text-xs mt-2">
+                    <span class="animate-fadeInUp delay-5"><span class="legend-dot" style="background:#0F766E;"></span> Revenue</span>
+                    <span class="animate-fadeInUp delay-6"><span class="legend-dot" style="background:#14B8A6;"></span> Subscriptions</span>
+                </div>
             </div>
 
-            <div class="bg-white rounded-2xl card-shadow border border-[#e6f0ed] p-5">
+            <!-- RECENT COURSES TABLE -->
+            <div class="bg-white rounded-2xl card-shadow border border-[#e6f0ed] p-5 card-hover animate-fadeInUp delay-5">
                 <div class="flex flex-wrap items-center justify-between gap-2 mb-4">
                     <h3 class="font-semibold text-[#0F172A]"><i class="fas fa-table text-[#0F766E] mr-2"></i>Recent Courses</h3>
                     <div class="flex flex-wrap gap-2">
-                        <input type="text" placeholder="Search" class="text-sm border rounded-full px-3 py-1 border-[#d1e0e0] focus:ring-1 focus:ring-[#14B8A6] outline-none" />
-                        <select class="text-sm border rounded-full px-3 py-1 border-[#d1e0e0] bg-white"><option>All categories</option></select>
-                        <button class="text-sm bg-[#0F766E] text-white px-4 py-1 rounded-full"><i class="fas fa-sliders-h mr-1"></i>Sort</button>
+                        <input type="text" placeholder="Search" class="text-sm border rounded-full px-3 py-1 border-[#d1e0e0] focus:ring-1 focus:ring-[#14B8A6] outline-none transition-all duration-300 focus:scale-105" />
+                        <select class="text-sm border rounded-full px-3 py-1 border-[#d1e0e0] bg-white transition-all duration-300 hover:border-[#14B8A6]"><option>All categories</option></select>
+                        <button class="text-sm bg-[#0F766E] text-white px-4 py-1 rounded-full hover:bg-[#0d6b63] transition-all duration-300 hover:scale-105"><i class="fas fa-sliders-h mr-1"></i>Sort</button>
                     </div>
                 </div>
                 <div class="table-wrap">
                     <table class="w-full text-sm">
-                        <thead class="text-[#64748B] border-b border-[#e6f0ed]"><tr><th class="py-2 text-left">Course</th><th class="py-2 text-left">Instructor</th><th class="py-2 text-left">Students</th><th class="py-2 text-left">Status</th><th class="py-2 text-left">Rating</th></tr></thead>
+                        <thead class="text-[#64748B] border-b border-[#e6f0ed]">
+                            <tr>
+                                <th class="py-2 text-left">Course</th>
+                                <th class="py-2 text-left">Instructor</th>
+                                <th class="py-2 text-left">Students</th>
+                                <th class="py-2 text-left">Status</th>
+                                <th class="py-2 text-left">Rating</th>
+                            </tr>
+                        </thead>
                         <tbody>
-                            <tr class="border-b border-[#f0f7f5]"><td class="py-3 font-medium">Full Stack Development</td><td>Arun</td><td>1,245</td><td><span class="badge-status"><i class="fas fa-circle text-[#16A34A] text-[8px] mr-1"></i>Active</span></td><td>⭐ 4.8</td></tr>
-                            <tr class="border-b border-[#f0f7f5]"><td>Python Programming</td><td>Anjali</td><td>986</td><td><span class="badge-status"><i class="fas fa-circle text-[#16A34A] text-[8px] mr-1"></i>Active</span></td><td>⭐ 4.7</td></tr>
-                            <tr class="border-b border-[#f0f7f5]"><td>UI/UX Design</td><td>Rahul</td><td>742</td><td><span class="badge-status badge-draft"><i class="fas fa-circle text-[#F59E0B] text-[8px] mr-1"></i>Draft</span></td><td>⭐ 4.6</td></tr>
-                            <tr><td>Data Science</td><td>Meera</td><td>1,120</td><td><span class="badge-status"><i class="fas fa-circle text-[#16A34A] text-[8px] mr-1"></i>Active</span></td><td>⭐ 4.9</td></tr>
+                            <tr class="border-b border-[#f0f7f5] table-row-hover animate-fadeInUp delay-6">
+                                <td class="py-3 font-medium">Full Stack Development</td>
+                                <td>Arun</td>
+                                <td>1,245</td>
+                                <td><span class="badge-status badge-pulse"><i class="fas fa-circle text-[#16A34A] text-[8px] mr-1"></i>Active</span></td>
+                                <td>⭐ 4.8</td>
+                            </tr>
+                            <tr class="border-b border-[#f0f7f5] table-row-hover animate-fadeInUp delay-7">
+                                <td class="py-3 font-medium">Python Programming</td>
+                                <td>Anjali</td>
+                                <td>986</td>
+                                <td><span class="badge-status badge-pulse"><i class="fas fa-circle text-[#16A34A] text-[8px] mr-1"></i>Active</span></td>
+                                <td>⭐ 4.7</td>
+                            </tr>
+                            <tr class="border-b border-[#f0f7f5] table-row-hover animate-fadeInUp delay-8">
+                                <td class="py-3 font-medium">UI/UX Design</td>
+                                <td>Rahul</td>
+                                <td>742</td>
+                                <td><span class="badge-status badge-draft"><i class="fas fa-circle text-[#F59E0B] text-[8px] mr-1"></i>Draft</span></td>
+                                <td>⭐ 4.6</td>
+                            </tr>
+                            <tr class="table-row-hover animate-fadeInUp delay-9">
+                                <td class="py-3 font-medium">Data Science</td>
+                                <td>Meera</td>
+                                <td>1,120</td>
+                                <td><span class="badge-status badge-pulse"><i class="fas fa-circle text-[#16A34A] text-[8px] mr-1"></i>Active</span></td>
+                                <td>⭐ 4.9</td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
-                <div class="flex justify-between items-center mt-4 text-xs text-[#64748B]"><span>Showing 1-4 of 24</span><div class="flex gap-1"><button class="px-2 py-1 border rounded">Prev</button><button class="px-2 py-1 border rounded bg-[#0F766E] text-white">1</button><button class="px-2 py-1 border rounded">2</button><button class="px-2 py-1 border rounded">Next</button></div></div>
+                <div class="flex justify-between items-center mt-4 text-xs text-[#64748B]">
+                    <span>Showing 1-4 of 24</span>
+                    <div class="flex gap-1">
+                        <button class="px-2 py-1 border rounded hover:bg-[#0F766E] hover:text-white transition-all duration-300">Prev</button>
+                        <button class="px-2 py-1 border rounded bg-[#0F766E] text-white transition-all duration-300 hover:scale-105">1</button>
+                        <button class="px-2 py-1 border rounded hover:bg-[#0F766E] hover:text-white transition-all duration-300">2</button>
+                        <button class="px-2 py-1 border rounded hover:bg-[#0F766E] hover:text-white transition-all duration-300">Next</button>
+                    </div>
+                </div>
             </div>
 
+            <!-- QUICK LINKS -->
             <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-center text-sm">
-                <a href="#" class="bg-white p-3 rounded-xl card-shadow border border-[#e6f0ed] hover:border-[#14B8A6] transition"><i class="fas fa-user-plus text-[#0F766E] block text-xl mb-1"></i>Add Student</a>
-                <a href="#" class="bg-white p-3 rounded-xl card-shadow border border-[#e6f0ed] hover:border-[#14B8A6] transition"><i class="fas fa-plus-circle text-[#0F766E] block text-xl mb-1"></i>New Course</a>
-                <a href="#" class="bg-white p-3 rounded-xl card-shadow border border-[#e6f0ed] hover:border-[#14B8A6] transition"><i class="fas fa-user-cog text-[#0F766E] block text-xl mb-1"></i>Manage</a>
-                <a href="#" class="bg-white p-3 rounded-xl card-shadow border border-[#e6f0ed] hover:border-[#14B8A6] transition"><i class="fas fa-chart-line text-[#0F766E] block text-xl mb-1"></i>Analytics</a>
+                <a href="#" class="bg-white p-3 rounded-xl card-shadow border border-[#e6f0ed] quick-link animate-fadeInUp delay-6">
+                    <i class="fas fa-user-plus text-[#0F766E] block text-xl mb-1"></i>
+                    <span>Add Student</span>
+                </a>
+                <a href="#" class="bg-white p-3 rounded-xl card-shadow border border-[#e6f0ed] quick-link animate-fadeInUp delay-7">
+                    <i class="fas fa-plus-circle text-[#0F766E] block text-xl mb-1"></i>
+                    <span>New Course</span>
+                </a>
+                <a href="#" class="bg-white p-3 rounded-xl card-shadow border border-[#e6f0ed] quick-link animate-fadeInUp delay-8">
+                    <i class="fas fa-user-cog text-[#0F766E] block text-xl mb-1"></i>
+                    <span>Manage</span>
+                </a>
+                <a href="#" class="bg-white p-3 rounded-xl card-shadow border border-[#e6f0ed] quick-link animate-fadeInUp delay-9">
+                    <i class="fas fa-chart-line text-[#0F766E] block text-xl mb-1"></i>
+                    <span>Analytics</span>
+                </a>
             </div>
         </main>
     </div>
@@ -191,6 +440,20 @@
                     overlay.classList.add('hidden');
                     drawerOpen = false;
                 }
+            });
+
+            // Animate stat numbers on scroll
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            document.querySelectorAll('.animate-countUp').forEach(el => {
+                observer.observe(el);
             });
         })();
     </script>

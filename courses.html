@@ -1,492 +1,720 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>LearnDash · Courses</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
-  <style>
-    /* custom teal-navy palette & subtle touches matching index.html */
-    body {
-      background: #F0FDFA;
-      color: #0F172A;
-      font-family: 'Inter', system-ui, -apple-system, sans-serif;
-    }
-    .sidebar-bg {
-      background: #0F766E;
-    }
-    .sidebar-text {
-      color: #e2f0f0;
-    }
-    .sidebar-text:hover {
-      background: #0d6b63;
-      color: white;
-    }
-    .card-shadow {
-      box-shadow: 0 4px 12px rgba(15, 23, 42, 0.04), 0 1px 2px rgba(0,0,0,0.02);
-    }
-    .stat-icon {
-      background: #e6f7f5;
-      color: #0F766E;
-    }
-    .nav-search input {
-      background: white;
-      border: 1px solid #d1e0e0;
-      border-radius: 40px;
-      padding: 0.5rem 1rem 0.5rem 2.8rem;
-      width: 240px;
-      font-size: 0.9rem;
-    }
-    .nav-search i {
-      position: absolute;
-      left: 1rem;
-      top: 0.7rem;
-      color: #64748B;
-    }
-    .badge-status {
-      background: #e6f7f5;
-      color: #0F766E;
-      font-weight: 500;
-      padding: 0.2rem 0.8rem;
-      border-radius: 40px;
-      font-size: 0.7rem;
-    }
-    .badge-draft {
-      background: #fef3c7;
-      color: #b45309;
-    }
-    .table-wrap {
-      overflow-x: auto;
-    }
-    /* mobile drawer */
-    .drawer-overlay {
-      background: rgba(15, 23, 42, 0.4);
-    }
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
+    <title>EduNova · Courses</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <style>
+        /* ===== ROOT VARIABLES ===== */
+        :root {
+            --primary: #0F766E;
+            --primary-dark: #0d6b63;
+            --primary-light: #e6f7f5;
+            --secondary: #14B8A6;
+            --accent: #38BDF8;
+            --bg: #F0FDFA;
+            --card: #FFFFFF;
+            --text: #0F172A;
+            --muted: #64748B;
+            --border: #dce8e6;
+            --border-light: #e6f0ed;
+            --success: #16A34A;
+            --warning: #F59E0B;
+            --danger: #DC2626;
+            --shadow: 0 4px 12px rgba(15,23,42,0.04), 0 1px 2px rgba(0,0,0,0.02);
+            --radius: 16px;
+            --radius-sm: 8px;
+            --radius-full: 9999px;
+            --transition: 0.3s ease;
+        }
 
-    /* Course Modal Styles */
-    .course-modal {
-      position: fixed;
-      inset: 0;
-      background: rgba(15, 23, 42, 0.55);
-      display: none;
-      align-items: center;
-      justify-content: center;
-      padding: 1rem;
-      z-index: 100;
-    }
+        /* ===== BASE ===== */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
-    .course-modal:target {
-      display: flex;
-    }
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            overflow-x: hidden;
+        }
 
-    .course-modal-content {
-      background: white;
-      width: 100%;
-      max-width: 600px;
-      padding: 1.5rem;
-      border-radius: 1rem;
-      box-shadow: 0 10px 25px -5px rgba(0,0,0,0.1);
-    }
-  </style>
+        /* ===== ANIMATIONS ===== */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeInRight {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        @keyframes fadeInLeft {
+            from { opacity: 0; transform: translateX(20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        @keyframes scaleIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+
+        .animate-fadeInUp { animation: fadeInUp 0.6s ease forwards; }
+        .animate-fadeInRight { animation: fadeInRight 0.6s ease forwards; }
+        .animate-fadeInLeft { animation: fadeInLeft 0.6s ease forwards; }
+        .animate-scaleIn { animation: scaleIn 0.5s ease forwards; }
+        .animate-slideDown { animation: slideDown 0.4s ease forwards; }
+        .animate-pulse { animation: pulse 2s ease-in-out infinite; }
+
+        .delay-1 { animation-delay: 0.05s; }
+        .delay-2 { animation-delay: 0.1s; }
+        .delay-3 { animation-delay: 0.15s; }
+        .delay-4 { animation-delay: 0.2s; }
+        .delay-5 { animation-delay: 0.25s; }
+        .delay-6 { animation-delay: 0.3s; }
+        .delay-7 { animation-delay: 0.35s; }
+        .delay-8 { animation-delay: 0.4s; }
+        .delay-9 { animation-delay: 0.45s; }
+        .delay-10 { animation-delay: 0.5s; }
+
+        /* ===== SIDEBAR ===== */
+        .sidebar-bg { background: var(--primary); }
+        .sidebar-text { color: #e2f0f0; transition: all var(--transition); }
+        .sidebar-text:hover, .sidebar-text.active { background: var(--primary-dark); color: white; }
+
+        /* ===== CARDS ===== */
+        .card-shadow { box-shadow: var(--shadow); }
+        .stat-icon { background: var(--primary-light); color: var(--primary); flex-shrink: 0; transition: all var(--transition); }
+        .stat-icon:hover { transform: scale(1.1) rotate(5deg); background: #d4f0ed; }
+
+        /* ===== NAV SEARCH ===== */
+        .nav-search { position: relative; }
+        .nav-search input {
+            background: white; border: 1px solid #d1e0e0; border-radius: var(--radius-full);
+            padding: 0.5rem 1rem 0.5rem 2.8rem; width: 240px; font-size: 0.9rem;
+            transition: all var(--transition); outline: none;
+        }
+        .nav-search input:focus {
+            border-color: var(--secondary);
+            box-shadow: 0 0 0 3px rgba(20, 184, 166, 0.15);
+            transform: scale(1.02);
+        }
+        .nav-search i {
+            position: absolute; left: 1rem; top: 50%; transform: translateY(-50%);
+            color: var(--muted); pointer-events: none;
+        }
+
+        /* ===== BADGES ===== */
+        .badge-status {
+            background: var(--primary-light); color: var(--primary); font-weight: 500;
+            padding: 0.2rem 0.8rem; border-radius: var(--radius-full);
+            font-size: 0.7rem; display: inline-flex; align-items: center; gap: 0.25rem;
+            white-space: nowrap;
+        }
+        .badge-draft { background: #fef3c7; color: #b45309; }
+
+        /* ===== MOBILE DRAWER ===== */
+        .drawer-overlay {
+            background: rgba(15, 23, 42, 0.4);
+            backdrop-filter: blur(2px);
+            -webkit-backdrop-filter: blur(2px);
+            transition: opacity 0.25s ease;
+        }
+        .drawer-overlay.hidden { opacity: 0; pointer-events: none; }
+
+        /* ===== COURSE CARD ===== */
+        .course-card {
+            transition: all var(--transition);
+            background: white;
+            border-radius: var(--radius);
+            border: 1px solid var(--border-light);
+            padding: 1.25rem;
+            box-shadow: var(--shadow);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .course-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
+        }
+        .course-card .icon-wrapper {
+            transition: all var(--transition);
+        }
+        .course-card:hover .icon-wrapper {
+            transform: scale(1.1) rotate(5deg);
+        }
+
+        /* ===== BUTTONS ===== */
+        .btn {
+            display: inline-flex; align-items: center; gap: 0.4rem;
+            padding: 0.3rem 1rem; border-radius: var(--radius-full);
+            font-size: 0.8rem; font-weight: 500; border: none;
+            cursor: pointer; transition: all var(--transition);
+            font-family: inherit; text-decoration: none; touch-action: manipulation;
+        }
+        .btn-primary { background: var(--primary); color: white; }
+        .btn-primary:hover { background: var(--primary-dark); box-shadow: 0 2px 8px rgba(15,118,110,0.2); transform: scale(1.05); }
+        .btn-outline { background: transparent; color: var(--primary); border: 1px solid var(--primary); }
+        .btn-outline:hover { background: var(--primary-light); transform: scale(1.05); }
+        .btn-ghost { background: transparent; color: var(--muted); }
+        .btn-ghost:hover { background: #f5fafa; color: var(--text); transform: scale(1.05); }
+        .btn-sm { padding: 0.2rem 0.7rem; font-size: 0.7rem; }
+        .btn-danger { background: var(--danger); color: white; }
+        .btn-danger:hover { background: #b91c1c; transform: scale(1.05); }
+        .touch-target { min-height: 44px; min-width: 44px; }
+
+        /* ===== FILTER BAR ===== */
+        .filter-bar {
+            background: white; border-radius: var(--radius); border: 1px solid var(--border-light);
+            padding: 1rem 1.25rem; box-shadow: var(--shadow);
+            display: flex; flex-wrap: wrap; align-items: flex-end; gap: 0.75rem 1.5rem;
+        }
+        .filter-group { display: flex; flex-direction: column; gap: 0.15rem; flex: 1 0 140px; min-width: 120px; }
+        .filter-group label { font-size: 0.7rem; font-weight: 500; color: var(--muted); text-transform: uppercase; letter-spacing: 0.03em; }
+        .filter-group select, .filter-group input {
+            padding: 0.3rem 0.6rem; border: 1px solid var(--border); border-radius: var(--radius-sm);
+            font-size: 0.8rem; background: white; color: var(--text);
+            transition: all 0.15s; font-family: inherit; width: 100%;
+        }
+        .filter-group select:focus, .filter-group input:focus {
+            outline: none; border-color: var(--secondary);
+            box-shadow: 0 0 0 3px rgba(20, 184, 166, 0.12);
+            transform: scale(1.02);
+        }
+        .filter-actions { display: flex; gap: 0.4rem; flex-wrap: wrap; align-items: center; }
+
+        /* ===== MODAL ===== */
+        .course-modal {
+            position: fixed; inset: 0; background: rgba(15, 23, 42, 0.55);
+            display: none; align-items: center; justify-content: center;
+            padding: 1rem; z-index: 100; backdrop-filter: blur(4px);
+        }
+        .course-modal:target { display: flex; }
+        .course-modal-content {
+            background: white; width: 100%; max-width: 600px;
+            padding: 1.5rem; border-radius: 1rem;
+            box-shadow: 0 10px 25px -5px rgba(0,0,0,0.1);
+            animation: scaleIn 0.3s ease forwards;
+        }
+
+        /* ===== SIDEBAR SCROLL ===== */
+        .sidebar-scroll { overflow-y: auto; -webkit-overflow-scrolling: touch; }
+        .sidebar-scroll::-webkit-scrollbar { width: 4px; }
+        .sidebar-scroll::-webkit-scrollbar-track { background: transparent; }
+        .sidebar-scroll::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 4px; }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 1024px) { .nav-search input { width: 180px; } }
+        @media (max-width: 768px) {
+            .nav-search input { width: 140px; padding: 0.4rem 0.8rem 0.4rem 2.2rem; font-size: 0.8rem; }
+            .nav-search i { left: 0.7rem; font-size: 0.8rem; }
+            .filter-bar { flex-direction: column; align-items: stretch; padding: 0.75rem 1rem; }
+            .filter-actions { justify-content: flex-end; }
+            .course-card { padding: 1rem; }
+        }
+        @media (max-width: 480px) {
+            .nav-search input { width: 100px; padding: 0.3rem 0.6rem 0.3rem 1.8rem; font-size: 0.7rem; }
+            .nav-search i { left: 0.5rem; font-size: 0.7rem; }
+            .filter-group { flex: 1 0 100%; min-width: 0; }
+            .btn { font-size: 0.7rem; padding: 0.2rem 0.6rem; }
+            .btn-sm { font-size: 0.6rem; padding: 0.15rem 0.5rem; }
+            .course-card { padding: 0.75rem; }
+            .p-5 { padding: 0.75rem; }
+            .p-4 { padding: 0.5rem; }
+            .text-2xl { font-size: 1.15rem; }
+            .gap-4 { gap: 0.5rem; }
+            .space-y-6>*+* { margin-top: 0.75rem; }
+        }
+    </style>
 </head>
 <body>
 
-  <!-- mobile overlay -->
-  <div id="drawerOverlay" class="fixed inset-0 z-40 drawer-overlay hidden md:hidden"></div>
+    <!-- ===== MOBILE OVERLAY ===== -->
+    <div id="drawerOverlay" class="fixed inset-0 z-40 drawer-overlay hidden md:hidden" aria-hidden="true"></div>
 
-  <!-- SIDEBAR (desktop) + mobile drawer -->
-  <aside id="sidebar" class="fixed top-0 left-0 h-full w-64 sidebar-bg text-white z-50 flex flex-col transition-transform duration-300 -translate-x-full md:translate-x-0">
-    <div class="p-5 text-2xl font-bold tracking-tight flex items-center gap-2 border-b border-[#2a8a82]">
-      <i class="fas fa-graduation-cap text-[#38BDF8]"></i> LearnDash
+    <!-- ===== SIDEBAR ===== -->
+    <aside id="sidebar" class="fixed top-0 left-0 h-full w-64 sidebar-bg text-white z-50 flex flex-col transition-transform duration-300 ease-in-out -translate-x-full md:translate-x-0 shadow-xl" aria-label="Main navigation">
+        <div class="p-4 sm:p-5 text-xl sm:text-2xl font-bold tracking-tight flex items-center gap-2 border-b border-[#2a8a82] flex-shrink-0 animate-fadeInRight">
+            <i class="fas fa-graduation-cap text-[#38BDF8]"></i>
+            <span>EduNova</span>
+        </div>
+        <nav class="flex-1 px-2 sm:px-3 py-4 space-y-0.5 sidebar-scroll" role="navigation">
+            <a href="./index.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg sidebar-text touch-target animate-fadeInRight delay-1"><i class="fas fa-tachometer-alt w-5"></i> Dashboard</a>
+            <a href="./student.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg sidebar-text touch-target animate-fadeInRight delay-2"><i class="fas fa-user-graduate w-5"></i> Students</a>
+            <a href="./instructor.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg sidebar-text touch-target animate-fadeInRight delay-3"><i class="fas fa-chalkboard-teacher w-5"></i> Instructors</a>
+            <a href="./courses.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg sidebar-text active touch-target animate-fadeInRight delay-4"><i class="fas fa-book-open w-5"></i> Courses</a>
+            <a href="./assignments.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg sidebar-text touch-target animate-fadeInRight delay-5"><i class="fas fa-tasks w-5"></i> Assignments</a>
+            <a href="./analytics.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg sidebar-text touch-target animate-fadeInRight delay-6"><i class="fas fa-chart-line w-5"></i> Analytics</a>
+            <a href="./payment.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg sidebar-text touch-target animate-fadeInRight delay-7"><i class="fas fa-credit-card w-5"></i> Payments</a>
+            <a href="./reviews.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg sidebar-text touch-target animate-fadeInRight delay-8"><i class="fas fa-star w-5"></i> Reviews</a>
+            <a href="./notifications.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg sidebar-text touch-target animate-fadeInRight delay-9"><i class="fas fa-bell w-5"></i> Notifications</a>
+            <hr class="border-[#2a8a82] my-3" />
+            <a href="./settings.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg sidebar-text touch-target animate-fadeInRight delay-10"><i class="fas fa-cog w-5"></i> Settings</a>
+            <a href="./logout.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg sidebar-text touch-target animate-fadeInRight delay-10"><i class="fas fa-sign-out-alt w-5"></i> Logout</a>
+        </nav>
+        <div class="p-3 sm:p-4 text-xs text-[#b0d6d0] border-t border-[#2a8a82] flex-shrink-0 animate-fadeInRight delay-10">
+            v2.0 · EduNova
+        </div>
+    </aside>
+
+    <!-- ===== MAIN CONTENT ===== -->
+    <div class="md:ml-64 min-h-screen flex flex-col">
+
+        <!-- ===== TOP NAVBAR ===== -->
+        <header class="bg-white/80 backdrop-blur-sm border-b border-[#dce8e6] sticky top-0 z-30 px-3 sm:px-6 py-2 sm:py-3 flex items-center justify-between flex-wrap gap-1 sm:gap-2 animate-slideDown" role="banner">
+            <div class="flex items-center gap-2 sm:gap-3">
+                <button id="hamburgerBtn" class="md:hidden text-[#0F766E] text-xl touch-target flex items-center justify-center" aria-label="Toggle sidebar" aria-expanded="false">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <div class="nav-search relative hidden sm:block">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Search courses..." class="focus:outline-none focus:ring-2 focus:ring-[#14B8A6] transition" aria-label="Search" />
+                </div>
+            </div>
+            <div class="flex items-center gap-2 sm:gap-4">
+                <button class="sm:hidden text-[#64748B] touch-target flex items-center justify-center" aria-label="Search">
+                    <i class="fas fa-search"></i>
+                </button>
+                <button class="text-[#64748B] text-lg hover:text-[#0F766E] touch-target flex items-center justify-center relative animate-pulse" aria-label="Notifications">
+                    <i class="fas fa-bell"></i>
+                    <span class="absolute -top-0.5 -right-0.5 bg-[#DC2626] text-white text-[10px] rounded-full w-4 h-4 flex items-center justify-center">12</span>
+                </button>
+                <button class="text-[#64748B] text-lg hover:text-[#0F766E] touch-target hidden xs:flex items-center justify-center" aria-label="Messages">
+                    <i class="fas fa-envelope"></i>
+                </button>
+                <div class="flex items-center gap-1 sm:gap-2 border-l pl-2 sm:pl-3 border-[#dce8e6]">
+                    <img src="https://ui-avatars.com/api/?name=Admin&background=0F766E&color=fff&size=32" alt="Admin avatar" class="w-7 h-7 sm:w-8 sm:h-8 rounded-full hover:scale-110 transition-transform duration-300" />
+                    <span class="hidden sm:inline font-medium text-sm text-[#0F172A]">Admin <i class="fas fa-chevron-down ml-1 text-[#64748B] text-xs"></i></span>
+                </div>
+            </div>
+        </header>
+
+        <!-- ===== PAGE CONTENT ===== -->
+        <main class="flex-1 p-3 sm:p-6 space-y-4 sm:space-y-6" role="main">
+
+            <!-- ===== HEADER ===== -->
+            <div class="flex flex-wrap items-center justify-between gap-2 animate-fadeInUp">
+                <div>
+                    <h1 class="text-xl sm:text-2xl font-bold text-[#0F172A] flex items-center gap-2">
+                        <i class="fas fa-book-open text-[#0F766E]"></i> Courses
+                    </h1>
+                    <p class="text-sm sm:text-base text-[#64748B]">Manage all courses available on your learning platform.</p>
+                </div>
+                <a href="add-course.html" class="btn btn-primary btn-sm touch-target hover:scale-105 transition-transform duration-300">
+                    <i class="fas fa-plus"></i> Add Course
+                </a>
+            </div>
+
+            <!-- ===== FILTER BAR ===== -->
+            <div class="filter-bar animate-fadeInUp delay-2">
+                <div class="filter-group">
+                    <label><i class="fas fa-search"></i> Search</label>
+                    <input type="text" placeholder="Search by course name..." class="hover:border-[#14B8A6] transition-all duration-300" />
+                </div>
+                <div class="filter-group">
+                    <label><i class="fas fa-tag"></i> Category</label>
+                    <select class="hover:border-[#14B8A6] transition-all duration-300">
+                        <option>All Categories</option>
+                        <option>Web Development</option>
+                        <option>Programming</option>
+                        <option>Design</option>
+                        <option>Database</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label><i class="fas fa-flag"></i> Status</label>
+                    <select class="hover:border-[#14B8A6] transition-all duration-300">
+                        <option>All Status</option>
+                        <option>Active</option>
+                        <option>Draft</option>
+                    </select>
+                </div>
+                <div class="filter-group" style="flex:0 0 auto; min-width:auto;">
+                    <label>&nbsp;</label>
+                    <div class="filter-actions">
+                        <button class="btn btn-primary btn-sm touch-target hover:scale-105 transition-transform duration-300"><i class="fas fa-filter"></i> Apply</button>
+                        <button class="btn btn-ghost btn-sm touch-target hover:scale-105 transition-transform duration-300"><i class="fas fa-undo"></i> Reset</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ===== ALL COURSES SECTION ===== -->
+            <div class="animate-fadeInUp delay-3">
+                <h2 class="text-xl font-bold text-[#0F172A]">All Courses</h2>
+                <p class="text-[#64748B] text-xs">6 courses available</p>
+            </div>
+
+            <!-- ===== COURSES GRID ===== -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
+
+                <!-- MERN Card -->
+                <div class="course-card animate-fadeInUp delay-3">
+                    <div>
+                        <div class="flex justify-between items-center mb-2">
+                            <h3 class="font-bold text-[#0F172A] flex items-center gap-2">
+                                <i class="fas fa-code text-[#0F766E] icon-wrapper"></i> MERN Stack
+                            </h3>
+                            <span class="badge-status">Active</span>
+                        </div>
+                        <p class="text-xs text-[#64748B] mb-4">Learn MongoDB, Express, React and Node.js from beginner to advanced level.</p>
+                    </div>
+                    <div>
+                        <div class="flex justify-between text-xs text-[#64748B] mb-4">
+                            <span><i class="fas fa-users mr-1"></i> 245 Students</span>
+                            <span class="text-[#0F766E] font-medium">32 Lessons</span>
+                        </div>
+                        <div class="flex gap-2">
+                            <a href="#mern-modal" class="btn btn-primary btn-sm flex-1 text-center hover:scale-105 transition-transform duration-300">View Course</a>
+                            <button class="btn btn-outline btn-sm hover:scale-105 transition-transform duration-300">Edit</button>
+                            <button class="btn btn-danger btn-sm hover:scale-105 transition-transform duration-300">Delete</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Python Card -->
+                <div class="course-card animate-fadeInUp delay-4">
+                    <div>
+                        <div class="flex justify-between items-center mb-2">
+                            <h3 class="font-bold text-[#0F172A] flex items-center gap-2">
+                                <i class="fab fa-python text-[#0F766E] icon-wrapper"></i> Python
+                            </h3>
+                            <span class="badge-status">Active</span>
+                        </div>
+                        <p class="text-xs text-[#64748B] mb-4">Master Python programming, problem solving and real-world applications.</p>
+                    </div>
+                    <div>
+                        <div class="flex justify-between text-xs text-[#64748B] mb-4">
+                            <span><i class="fas fa-users mr-1"></i> 180 Students</span>
+                            <span class="text-[#0F766E] font-medium">28 Lessons</span>
+                        </div>
+                        <div class="flex gap-2">
+                            <a href="#python-modal" class="btn btn-primary btn-sm flex-1 text-center hover:scale-105 transition-transform duration-300">View Course</a>
+                            <button class="btn btn-outline btn-sm hover:scale-105 transition-transform duration-300">Edit</button>
+                            <button class="btn btn-danger btn-sm hover:scale-105 transition-transform duration-300">Delete</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SQL Card -->
+                <div class="course-card animate-fadeInUp delay-5">
+                    <div>
+                        <div class="flex justify-between items-center mb-2">
+                            <h3 class="font-bold text-[#0F172A] flex items-center gap-2">
+                                <i class="fas fa-database text-[#0F766E] icon-wrapper"></i> SQL & Database
+                            </h3>
+                            <span class="badge-status badge-draft">Draft</span>
+                        </div>
+                        <p class="text-xs text-[#64748B] mb-4">Understand SQL, relational databases, queries and database design.</p>
+                    </div>
+                    <div>
+                        <div class="flex justify-between text-xs text-[#64748B] mb-4">
+                            <span><i class="fas fa-users mr-1"></i> 95 Students</span>
+                            <span class="text-[#0F766E] font-medium">20 Lessons</span>
+                        </div>
+                        <div class="flex gap-2">
+                            <a href="#sql-modal" class="btn btn-primary btn-sm flex-1 text-center hover:scale-105 transition-transform duration-300">View Course</a>
+                            <button class="btn btn-outline btn-sm hover:scale-105 transition-transform duration-300">Edit</button>
+                            <button class="btn btn-danger btn-sm hover:scale-105 transition-transform duration-300">Delete</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- JavaScript Card -->
+                <div class="course-card animate-fadeInUp delay-6">
+                    <div>
+                        <div class="flex justify-between items-center mb-2">
+                            <h3 class="font-bold text-[#0F172A] flex items-center gap-2">
+                                <i class="fab fa-js text-[#0F766E] icon-wrapper"></i> JavaScript
+                            </h3>
+                            <span class="badge-status">Active</span>
+                        </div>
+                        <p class="text-xs text-[#64748B] mb-4">Learn modern JavaScript concepts, ES6+, DOM and asynchronous programming.</p>
+                    </div>
+                    <div>
+                        <div class="flex justify-between text-xs text-[#64748B] mb-4">
+                            <span><i class="fas fa-users mr-1"></i> 310 Students</span>
+                            <span class="text-[#0F766E] font-medium">35 Lessons</span>
+                        </div>
+                        <div class="flex gap-2">
+                            <a href="#javascript-modal" class="btn btn-primary btn-sm flex-1 text-center hover:scale-105 transition-transform duration-300">View Course</a>
+                            <button class="btn btn-outline btn-sm hover:scale-105 transition-transform duration-300">Edit</button>
+                            <button class="btn btn-danger btn-sm hover:scale-105 transition-transform duration-300">Delete</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- React Card -->
+                <div class="course-card animate-fadeInUp delay-7">
+                    <div>
+                        <div class="flex justify-between items-center mb-2">
+                            <h3 class="font-bold text-[#0F172A] flex items-center gap-2">
+                                <i class="fab fa-react text-[#0F766E] icon-wrapper"></i> React.js
+                            </h3>
+                            <span class="badge-status">Active</span>
+                        </div>
+                        <p class="text-xs text-[#64748B] mb-4">Build modern and responsive web applications using React.js.</p>
+                    </div>
+                    <div>
+                        <div class="flex justify-between text-xs text-[#64748B] mb-4">
+                            <span><i class="fas fa-users mr-1"></i> 215 Students</span>
+                            <span class="text-[#0F766E] font-medium">26 Lessons</span>
+                        </div>
+                        <div class="flex gap-2">
+                            <a href="#react-modal" class="btn btn-primary btn-sm flex-1 text-center hover:scale-105 transition-transform duration-300">View Course</a>
+                            <button class="btn btn-outline btn-sm hover:scale-105 transition-transform duration-300">Edit</button>
+                            <button class="btn btn-danger btn-sm hover:scale-105 transition-transform duration-300">Delete</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- UI/UX Card -->
+                <div class="course-card animate-fadeInUp delay-8">
+                    <div>
+                        <div class="flex justify-between items-center mb-2">
+                            <h3 class="font-bold text-[#0F172A] flex items-center gap-2">
+                                <i class="fas fa-palette text-[#0F766E] icon-wrapper"></i> UI/UX Design
+                            </h3>
+                            <span class="badge-status badge-draft">Draft</span>
+                        </div>
+                        <p class="text-xs text-[#64748B] mb-4">Learn user interface design, UX principles, wireframing and prototyping.</p>
+                    </div>
+                    <div>
+                        <div class="flex justify-between text-xs text-[#64748B] mb-4">
+                            <span><i class="fas fa-users mr-1"></i> 75 Students</span>
+                            <span class="text-[#0F766E] font-medium">18 Lessons</span>
+                        </div>
+                        <div class="flex gap-2">
+                            <a href="#uiux-modal" class="btn btn-primary btn-sm flex-1 text-center hover:scale-105 transition-transform duration-300">View Course</a>
+                            <button class="btn btn-outline btn-sm hover:scale-105 transition-transform duration-300">Edit</button>
+                            <button class="btn btn-danger btn-sm hover:scale-105 transition-transform duration-300">Delete</button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </main>
     </div>
-    <nav class="flex-1 px-3 py-6 space-y-1 overflow-y-auto">
-      <a href="index.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg sidebar-text hover:bg-[#0d6b63]"><i class="fas fa-tachometer-alt w-5"></i> Dashboard</a>
-      <a href="./student.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg sidebar-text hover:bg-[#0d6b63]"><i class="fas fa-user-graduate w-5"></i> Students</a>
-      <a href="./instructor.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg sidebar-text hover:bg-[#0d6b63]"><i class="fas fa-chalkboard-teacher w-5"></i> Instructors</a>
-      <a href="./courses.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg sidebar-text bg-[#0d6b63]"><i class="fas fa-book-open w-5"></i> Courses</a>
-      <a href="./assignments.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg sidebar-text hover:bg-[#0d6b63]"><i class="fas fa-tasks w-5"></i> Assignments</a>
-      <a href="./analytics.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg sidebar-text hover:bg-[#0d6b63]"><i class="fas fa-chart-line w-5"></i> Analytics</a>
-      <a href="./payment.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg sidebar-text hover:bg-[#0d6b63]"><i class="fas fa-credit-card w-5"></i> Payments</a>
-      <a href="./reviews.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg sidebar-text hover:bg-[#0d6b63]"><i class="fas fa-star w-5"></i> Reviews</a>
-      <a href="./notifications.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg sidebar-text hover:bg-[#0d6b63]"><i class="fas fa-bell w-5"></i> Notifications</a>
-      <a href="./settings.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg sidebar-text hover:bg-[#0d6b63]"><i class="fas fa-cog w-5"></i> Settings</a>
-      <hr class="border-[#2a8a82] my-4" />
-      <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg sidebar-text hover:bg-[#0d6b63]"><i class="fas fa-sign-out-alt w-5"></i> Logout</a>
-    </nav>
-    <div class="p-4 text-xs text-[#b0d6d0] border-t border-[#2a8a82]">v2.0 · edu admin</div>
-  </aside>
 
-  <!-- MAIN CONTENT -->
-  <div class="md:ml-64 min-h-screen flex flex-col">
+    <!-- ===== ALL 6 MODALS ===== -->
 
-    <!-- TOP NAVBAR -->
-    <header class="bg-white/80 backdrop-blur-sm border-b border-[#dce8e6] sticky top-0 z-30 px-4 sm:px-6 py-3 flex items-center justify-between flex-wrap gap-2">
-      <div class="flex items-center gap-3">
-        <button id="hamburgerBtn" class="md:hidden text-[#0F766E] text-xl"><i class="fas fa-bars"></i></button>
-        <div class="nav-search relative hidden sm:block">
-          <i class="fas fa-search"></i>
-          <input type="text" placeholder="Search students, courses..." class="focus:outline-none focus:ring-2 focus:ring-[#14B8A6] transition" />
+    <!-- 1. MERN Modal -->
+    <div id="mern-modal" class="course-modal">
+        <div class="course-modal-content">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="font-bold text-lg text-[#0F172A]"><i class="fas fa-code text-[#0F766E] mr-2"></i>MERN Stack</h3>
+                <a href="#" class="text-gray-400 hover:text-red-500 text-xl transition-colors duration-300"><i class="fas fa-times"></i></a>
+            </div>
+            <p class="text-sm text-[#64748B] mb-4">Learn MongoDB, Express, React and Node.js from beginner to advanced level.</p>
+            <div class="grid grid-cols-2 gap-3 mb-4">
+                <div class="bg-[#e6f7f5] p-3 rounded-lg"><span class="block font-bold text-xs">Students</span><span class="text-sm">245 Students</span></div>
+                <div class="bg-[#e6f7f5] p-3 rounded-lg"><span class="block font-bold text-xs">Lessons</span><span class="text-sm">32 Lessons</span></div>
+            </div>
+            <p class="text-sm mb-2"><strong>Category:</strong> Web Development</p>
+            <p class="text-sm mb-4"><strong>Status:</strong> <span class="badge-status">Active</span></p>
+            <div class="flex justify-end gap-2">
+                <button class="btn btn-outline btn-sm hover:scale-105 transition-transform duration-300">Edit Course</button>
+                <button class="btn btn-danger btn-sm hover:scale-105 transition-transform duration-300">Delete</button>
+            </div>
         </div>
-      </div>
-      <div class="flex items-center gap-3 sm:gap-4">
-        <i class="fas fa-search text-[#64748B] sm:hidden"></i>
-        <i class="fas fa-bell text-[#64748B] text-lg hover:text-[#0F766E] cursor-pointer"></i>
-        <i class="fas fa-envelope text-[#64748B] text-lg hover:text-[#0F766E] cursor-pointer"></i>
-        <div class="flex items-center gap-2 border-l pl-3 border-[#dce8e6]">
-          <img src="https://ui-avatars.com/api/?name=Admin&background=0F766E&color=fff&size=32" alt="admin" class="w-8 h-8 rounded-full" />
-          <span class="hidden sm:inline font-medium text-sm text-[#0F172A]">Admin <i class="fas fa-chevron-down ml-1 text-[#64748B] text-xs"></i></span>
-        </div>
-      </div>
-    </header>
-
-    <!-- COURSES BODY -->
-    <main class="flex-1 p-4 sm:p-6 space-y-6">
-
-      <!-- HEADER TITLE -->
-      <div class="flex flex-wrap items-center justify-between gap-4">
-        <div>
-          <h1 class="text-2xl font-bold text-[#0F172A]">Courses</h1>
-          <p class="text-[#64748B] text-sm">Manage all courses available on your learning platform.</p>
-        </div>
-        <a href="add-course.html" class="bg-[#0F766E] hover:bg-[#0d6b63] text-white px-4 py-2 rounded-full text-sm font-medium flex items-center gap-2 transition">
-          <i class="fas fa-plus"></i> Add Course
-        </a>
-      </div>
-
-      <!-- COURSE FILTERS CARD -->
-      <div class="bg-white p-5 rounded-2xl card-shadow border border-[#e6f0ed]">
-        <h3 class="text-sm font-semibold text-[#0F172A] mb-4 flex items-center gap-2">
-          <i class="fas fa-filter text-[#0F766E]"></i> Course Filters
-        </h3>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div>
-            <label class="block text-xs font-medium text-[#0F172A] mb-1">Search Courses</label>
-            <input type="text" placeholder="Search by course name..." class="w-full text-sm border border-[#d1e0e0] rounded-lg p-2.5 outline-none focus:border-[#14B8A6]" />
-          </div>
-          <div>
-            <label class="block text-xs font-medium text-[#0F172A] mb-1">Category</label>
-            <select class="w-full text-sm border border-[#d1e0e0] rounded-lg p-2.5 outline-none bg-white">
-              <option>All Categories</option>
-              <option>Web Development</option>
-              <option>Programming</option>
-              <option>Design</option>
-              <option>Database</option>
-            </select>
-          </div>
-          <div>
-            <label class="block text-xs font-medium text-[#0F172A] mb-1">Status</label>
-            <select class="w-full text-sm border border-[#d1e0e0] rounded-lg p-2.5 outline-none bg-white">
-              <option>All Status</option>
-              <option>Active</option>
-              <option>Draft</option>
-            </select>
-          </div>
-        </div>
-      </div>
-
-      <!-- ALL COURSES SECTION -->
-      <div>
-        <h2 class="text-xl font-bold text-[#0F172A]">All Courses</h2>
-        <p class="text-[#64748B] text-xs">6 courses available</p>
-      </div>
-
-      <!-- COURSES GRID -->
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-
-        <!-- MERN Card -->
-        <div class="bg-white p-5 rounded-2xl card-shadow border border-[#e6f0ed] flex flex-col justify-between">
-          <div>
-            <div class="flex justify-between items-center mb-2">
-              <h3 class="font-bold text-[#0F172A] flex items-center gap-2"><i class="fas fa-code text-[#0F766E]"></i> MERN Stack</h3>
-              <span class="badge-status">Active</span>
-            </div>
-            <p class="text-xs text-[#64748B] mb-4">Learn MongoDB, Express, React and Node.js from beginner to advanced level.</p>
-          </div>
-          <div>
-            <div class="flex justify-between text-xs text-[#64748B] mb-4">
-              <span><i class="fas fa-users mr-1"></i> 245 Students</span>
-              <span class="text-[#0F766E] font-medium">32 Lessons</span>
-            </div>
-            <div class="flex gap-2">
-              <a href="#mern-modal" class="text-xs bg-[#0F766E] text-white px-3 py-1.5 rounded-full flex-1 text-center font-medium hover:bg-[#0d6b63]">View Course</a>
-              <button class="text-xs border border-[#0F766E] text-[#0F766E] px-3 py-1.5 rounded-full font-medium hover:bg-[#e6f7f5]">Edit</button>
-              <button class="text-xs bg-red-50 text-red-600 px-3 py-1.5 rounded-full font-medium hover:bg-red-100">Delete</button>
-            </div>
-          </div>
-        </div>
-
-        <!-- Python Card -->
-        <div class="bg-white p-5 rounded-2xl card-shadow border border-[#e6f0ed] flex flex-col justify-between">
-          <div>
-            <div class="flex justify-between items-center mb-2">
-              <h3 class="font-bold text-[#0F172A] flex items-center gap-2"><i class="fab fa-python text-[#0F766E]"></i> Python</h3>
-              <span class="badge-status">Active</span>
-            </div>
-            <p class="text-xs text-[#64748B] mb-4">Master Python programming, problem solving and real-world applications.</p>
-          </div>
-          <div>
-            <div class="flex justify-between text-xs text-[#64748B] mb-4">
-              <span><i class="fas fa-users mr-1"></i> 180 Students</span>
-              <span class="text-[#0F766E] font-medium">28 Lessons</span>
-            </div>
-            <div class="flex gap-2">
-              <a href="#python-modal" class="text-xs bg-[#0F766E] text-white px-3 py-1.5 rounded-full flex-1 text-center font-medium hover:bg-[#0d6b63]">View Course</a>
-              <button class="text-xs border border-[#0F766E] text-[#0F766E] px-3 py-1.5 rounded-full font-medium hover:bg-[#e6f7f5]">Edit</button>
-              <button class="text-xs bg-red-50 text-red-600 px-3 py-1.5 rounded-full font-medium hover:bg-red-100">Delete</button>
-            </div>
-          </div>
-        </div>
-
-        <!-- SQL Card -->
-        <div class="bg-white p-5 rounded-2xl card-shadow border border-[#e6f0ed] flex flex-col justify-between">
-          <div>
-            <div class="flex justify-between items-center mb-2">
-              <h3 class="font-bold text-[#0F172A] flex items-center gap-2"><i class="fas fa-database text-[#0F766E]"></i> SQL & Database</h3>
-              <span class="badge-status badge-draft">Draft</span>
-            </div>
-            <p class="text-xs text-[#64748B] mb-4">Understand SQL, relational databases, queries and database design.</p>
-          </div>
-          <div>
-            <div class="flex justify-between text-xs text-[#64748B] mb-4">
-              <span><i class="fas fa-users mr-1"></i> 95 Students</span>
-              <span class="text-[#0F766E] font-medium">20 Lessons</span>
-            </div>
-            <div class="flex gap-2">
-              <a href="#sql-modal" class="text-xs bg-[#0F766E] text-white px-3 py-1.5 rounded-full flex-1 text-center font-medium hover:bg-[#0d6b63]">View Course</a>
-              <button class="text-xs border border-[#0F766E] text-[#0F766E] px-3 py-1.5 rounded-full font-medium hover:bg-[#e6f7f5]">Edit</button>
-              <button class="text-xs bg-red-50 text-red-600 px-3 py-1.5 rounded-full font-medium hover:bg-red-100">Delete</button>
-            </div>
-          </div>
-        </div>
-
-        <!-- JS Card -->
-        <div class="bg-white p-5 rounded-2xl card-shadow border border-[#e6f0ed] flex flex-col justify-between">
-          <div>
-            <div class="flex justify-between items-center mb-2">
-              <h3 class="font-bold text-[#0F172A] flex items-center gap-2"><i class="fab fa-js text-[#0F766E]"></i> JavaScript</h3>
-              <span class="badge-status">Active</span>
-            </div>
-            <p class="text-xs text-[#64748B] mb-4">Learn modern JavaScript concepts, ES6+, DOM and asynchronous programming.</p>
-          </div>
-          <div>
-            <div class="flex justify-between text-xs text-[#64748B] mb-4">
-              <span><i class="fas fa-users mr-1"></i> 310 Students</span>
-              <span class="text-[#0F766E] font-medium">35 Lessons</span>
-            </div>
-            <div class="flex gap-2">
-              <a href="#javascript-modal" class="text-xs bg-[#0F766E] text-white px-3 py-1.5 rounded-full flex-1 text-center font-medium hover:bg-[#0d6b63]">View Course</a>
-              <button class="text-xs border border-[#0F766E] text-[#0F766E] px-3 py-1.5 rounded-full font-medium hover:bg-[#e6f7f5]">Edit</button>
-              <button class="text-xs bg-red-50 text-red-600 px-3 py-1.5 rounded-full font-medium hover:bg-red-100">Delete</button>
-            </div>
-          </div>
-        </div>
-
-        <!-- React Card -->
-        <div class="bg-white p-5 rounded-2xl card-shadow border border-[#e6f0ed] flex flex-col justify-between">
-          <div>
-            <div class="flex justify-between items-center mb-2">
-              <h3 class="font-bold text-[#0F172A] flex items-center gap-2"><i class="fab fa-react text-[#0F766E]"></i> React.js</h3>
-              <span class="badge-status">Active</span>
-            </div>
-            <p class="text-xs text-[#64748B] mb-4">Build modern and responsive web applications using React.js.</p>
-          </div>
-          <div>
-            <div class="flex justify-between text-xs text-[#64748B] mb-4">
-              <span><i class="fas fa-users mr-1"></i> 215 Students</span>
-              <span class="text-[#0F766E] font-medium">26 Lessons</span>
-            </div>
-            <div class="flex gap-2">
-              <a href="#react-modal" class="text-xs bg-[#0F766E] text-white px-3 py-1.5 rounded-full flex-1 text-center font-medium hover:bg-[#0d6b63]">View Course</a>
-              <button class="text-xs border border-[#0F766E] text-[#0F766E] px-3 py-1.5 rounded-full font-medium hover:bg-[#e6f7f5]">Edit</button>
-              <button class="text-xs bg-red-50 text-red-600 px-3 py-1.5 rounded-full font-medium hover:bg-red-100">Delete</button>
-            </div>
-          </div>
-        </div>
-
-        <!-- UI/UX Card -->
-        <div class="bg-white p-5 rounded-2xl card-shadow border border-[#e6f0ed] flex flex-col justify-between">
-          <div>
-            <div class="flex justify-between items-center mb-2">
-              <h3 class="font-bold text-[#0F172A] flex items-center gap-2"><i class="fas fa-palette text-[#0F766E]"></i> UI/UX Design</h3>
-              <span class="badge-status badge-draft">Draft</span>
-            </div>
-            <p class="text-xs text-[#64748B] mb-4">Learn user interface design, UX principles, wireframing and prototyping.</p>
-          </div>
-          <div>
-            <div class="flex justify-between text-xs text-[#64748B] mb-4">
-              <span><i class="fas fa-users mr-1"></i> 75 Students</span>
-              <span class="text-[#0F766E] font-medium">18 Lessons</span>
-            </div>
-            <div class="flex gap-2">
-              <a href="#uiux-modal" class="text-xs bg-[#0F766E] text-white px-3 py-1.5 rounded-full flex-1 text-center font-medium hover:bg-[#0d6b63]">View Course</a>
-              <button class="text-xs border border-[#0F766E] text-[#0F766E] px-3 py-1.5 rounded-full font-medium hover:bg-[#e6f7f5]">Edit</button>
-              <button class="text-xs bg-red-50 text-red-600 px-3 py-1.5 rounded-full font-medium hover:bg-red-100">Delete</button>
-            </div>
-          </div>
-        </div>
-
-      </div>
-    </main>
-  </div>
-
-  <!-- ALL 6 MODALS -->
-
-  <!-- 1. MERN Modal -->
-  <div id="mern-modal" class="course-modal">
-    <div class="course-modal-content">
-      <div class="flex justify-between items-center mb-4">
-        <h3 class="font-bold text-lg text-[#0F172A]"><i class="fas fa-code text-[#0F766E] mr-2"></i>MERN Stack</h3>
-        <a href="#" class="text-gray-400 hover:text-red-500 text-xl"><i class="fas fa-times"></i></a>
-      </div>
-      <p class="text-sm text-[#64748B] mb-4">Learn MongoDB, Express, React and Node.js from beginner to advanced level.</p>
-      <div class="grid grid-cols-2 gap-3 mb-4">
-        <div class="bg-[#e6f7f5] p-3 rounded-lg"><span class="block font-bold text-xs">Students</span><span class="text-sm">245 Students</span></div>
-        <div class="bg-[#e6f7f5] p-3 rounded-lg"><span class="block font-bold text-xs">Lessons</span><span class="text-sm">32 Lessons</span></div>
-      </div>
-      <p class="text-sm mb-2"><strong>Category:</strong> Web Development</p>
-      <p class="text-sm mb-4"><strong>Status:</strong> <span class="badge-status">Active</span></p>
-      <div class="flex justify-end gap-2">
-        <button class="border border-[#0F766E] text-[#0F766E] px-4 py-2 rounded-full text-xs font-medium">Edit Course</button>
-        <button class="bg-red-600 text-white px-4 py-2 rounded-full text-xs font-medium">Delete</button>
-      </div>
     </div>
-  </div>
 
-  <!-- 2. Python Modal -->
-  <div id="python-modal" class="course-modal">
-    <div class="course-modal-content">
-      <div class="flex justify-between items-center mb-4">
-        <h3 class="font-bold text-lg text-[#0F172A]"><i class="fab fa-python text-[#0F766E] mr-2"></i>Python</h3>
-        <a href="#" class="text-gray-400 hover:text-red-500 text-xl"><i class="fas fa-times"></i></a>
-      </div>
-      <p class="text-sm text-[#64748B] mb-4">Master Python programming, problem solving and real-world applications.</p>
-      <div class="grid grid-cols-2 gap-3 mb-4">
-        <div class="bg-[#e6f7f5] p-3 rounded-lg"><span class="block font-bold text-xs">Students</span><span class="text-sm">180 Students</span></div>
-        <div class="bg-[#e6f7f5] p-3 rounded-lg"><span class="block font-bold text-xs">Lessons</span><span class="text-sm">28 Lessons</span></div>
-      </div>
-      <p class="text-sm mb-2"><strong>Category:</strong> Programming</p>
-      <p class="text-sm mb-4"><strong>Status:</strong> <span class="badge-status">Active</span></p>
-      <div class="flex justify-end gap-2">
-        <button class="border border-[#0F766E] text-[#0F766E] px-4 py-2 rounded-full text-xs font-medium">Edit Course</button>
-        <button class="bg-red-600 text-white px-4 py-2 rounded-full text-xs font-medium">Delete</button>
-      </div>
+    <!-- 2. Python Modal -->
+    <div id="python-modal" class="course-modal">
+        <div class="course-modal-content">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="font-bold text-lg text-[#0F172A]"><i class="fab fa-python text-[#0F766E] mr-2"></i>Python</h3>
+                <a href="#" class="text-gray-400 hover:text-red-500 text-xl transition-colors duration-300"><i class="fas fa-times"></i></a>
+            </div>
+            <p class="text-sm text-[#64748B] mb-4">Master Python programming, problem solving and real-world applications.</p>
+            <div class="grid grid-cols-2 gap-3 mb-4">
+                <div class="bg-[#e6f7f5] p-3 rounded-lg"><span class="block font-bold text-xs">Students</span><span class="text-sm">180 Students</span></div>
+                <div class="bg-[#e6f7f5] p-3 rounded-lg"><span class="block font-bold text-xs">Lessons</span><span class="text-sm">28 Lessons</span></div>
+            </div>
+            <p class="text-sm mb-2"><strong>Category:</strong> Programming</p>
+            <p class="text-sm mb-4"><strong>Status:</strong> <span class="badge-status">Active</span></p>
+            <div class="flex justify-end gap-2">
+                <button class="btn btn-outline btn-sm hover:scale-105 transition-transform duration-300">Edit Course</button>
+                <button class="btn btn-danger btn-sm hover:scale-105 transition-transform duration-300">Delete</button>
+            </div>
+        </div>
     </div>
-  </div>
 
-  <!-- 3. SQL Modal -->
-  <div id="sql-modal" class="course-modal">
-    <div class="course-modal-content">
-      <div class="flex justify-between items-center mb-4">
-        <h3 class="font-bold text-lg text-[#0F172A]"><i class="fas fa-database text-[#0F766E] mr-2"></i>SQL & Database</h3>
-        <a href="#" class="text-gray-400 hover:text-red-500 text-xl"><i class="fas fa-times"></i></a>
-      </div>
-      <p class="text-sm text-[#64748B] mb-4">Understand SQL, relational databases, queries and database design.</p>
-      <div class="grid grid-cols-2 gap-3 mb-4">
-        <div class="bg-[#e6f7f5] p-3 rounded-lg"><span class="block font-bold text-xs">Students</span><span class="text-sm">95 Students</span></div>
-        <div class="bg-[#e6f7f5] p-3 rounded-lg"><span class="block font-bold text-xs">Lessons</span><span class="text-sm">20 Lessons</span></div>
-      </div>
-      <p class="text-sm mb-2"><strong>Category:</strong> Database</p>
-      <p class="text-sm mb-4"><strong>Status:</strong> <span class="badge-status badge-draft">Draft</span></p>
-      <div class="flex justify-end gap-2">
-        <button class="border border-[#0F766E] text-[#0F766E] px-4 py-2 rounded-full text-xs font-medium">Edit Course</button>
-        <button class="bg-red-600 text-white px-4 py-2 rounded-full text-xs font-medium">Delete</button>
-      </div>
+    <!-- 3. SQL Modal -->
+    <div id="sql-modal" class="course-modal">
+        <div class="course-modal-content">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="font-bold text-lg text-[#0F172A]"><i class="fas fa-database text-[#0F766E] mr-2"></i>SQL & Database</h3>
+                <a href="#" class="text-gray-400 hover:text-red-500 text-xl transition-colors duration-300"><i class="fas fa-times"></i></a>
+            </div>
+            <p class="text-sm text-[#64748B] mb-4">Understand SQL, relational databases, queries and database design.</p>
+            <div class="grid grid-cols-2 gap-3 mb-4">
+                <div class="bg-[#e6f7f5] p-3 rounded-lg"><span class="block font-bold text-xs">Students</span><span class="text-sm">95 Students</span></div>
+                <div class="bg-[#e6f7f5] p-3 rounded-lg"><span class="block font-bold text-xs">Lessons</span><span class="text-sm">20 Lessons</span></div>
+            </div>
+            <p class="text-sm mb-2"><strong>Category:</strong> Database</p>
+            <p class="text-sm mb-4"><strong>Status:</strong> <span class="badge-status badge-draft">Draft</span></p>
+            <div class="flex justify-end gap-2">
+                <button class="btn btn-outline btn-sm hover:scale-105 transition-transform duration-300">Edit Course</button>
+                <button class="btn btn-danger btn-sm hover:scale-105 transition-transform duration-300">Delete</button>
+            </div>
+        </div>
     </div>
-  </div>
 
-  <!-- 4. JavaScript Modal -->
-  <div id="javascript-modal" class="course-modal">
-    <div class="course-modal-content">
-      <div class="flex justify-between items-center mb-4">
-        <h3 class="font-bold text-lg text-[#0F172A]"><i class="fab fa-js text-[#0F766E] mr-2"></i>JavaScript</h3>
-        <a href="#" class="text-gray-400 hover:text-red-500 text-xl"><i class="fas fa-times"></i></a>
-      </div>
-      <p class="text-sm text-[#64748B] mb-4">Learn modern JavaScript concepts, ES6+, DOM and asynchronous programming.</p>
-      <div class="grid grid-cols-2 gap-3 mb-4">
-        <div class="bg-[#e6f7f5] p-3 rounded-lg"><span class="block font-bold text-xs">Students</span><span class="text-sm">310 Students</span></div>
-        <div class="bg-[#e6f7f5] p-3 rounded-lg"><span class="block font-bold text-xs">Lessons</span><span class="text-sm">35 Lessons</span></div>
-      </div>
-      <p class="text-sm mb-2"><strong>Category:</strong> Programming</p>
-      <p class="text-sm mb-4"><strong>Status:</strong> <span class="badge-status">Active</span></p>
-      <div class="flex justify-end gap-2">
-        <button class="border border-[#0F766E] text-[#0F766E] px-4 py-2 rounded-full text-xs font-medium">Edit Course</button>
-        <button class="bg-red-600 text-white px-4 py-2 rounded-full text-xs font-medium">Delete</button>
-      </div>
+    <!-- 4. JavaScript Modal -->
+    <div id="javascript-modal" class="course-modal">
+        <div class="course-modal-content">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="font-bold text-lg text-[#0F172A]"><i class="fab fa-js text-[#0F766E] mr-2"></i>JavaScript</h3>
+                <a href="#" class="text-gray-400 hover:text-red-500 text-xl transition-colors duration-300"><i class="fas fa-times"></i></a>
+            </div>
+            <p class="text-sm text-[#64748B] mb-4">Learn modern JavaScript concepts, ES6+, DOM and asynchronous programming.</p>
+            <div class="grid grid-cols-2 gap-3 mb-4">
+                <div class="bg-[#e6f7f5] p-3 rounded-lg"><span class="block font-bold text-xs">Students</span><span class="text-sm">310 Students</span></div>
+                <div class="bg-[#e6f7f5] p-3 rounded-lg"><span class="block font-bold text-xs">Lessons</span><span class="text-sm">35 Lessons</span></div>
+            </div>
+            <p class="text-sm mb-2"><strong>Category:</strong> Programming</p>
+            <p class="text-sm mb-4"><strong>Status:</strong> <span class="badge-status">Active</span></p>
+            <div class="flex justify-end gap-2">
+                <button class="btn btn-outline btn-sm hover:scale-105 transition-transform duration-300">Edit Course</button>
+                <button class="btn btn-danger btn-sm hover:scale-105 transition-transform duration-300">Delete</button>
+            </div>
+        </div>
     </div>
-  </div>
 
-  <!-- 5. React Modal -->
-  <div id="react-modal" class="course-modal">
-    <div class="course-modal-content">
-      <div class="flex justify-between items-center mb-4">
-        <h3 class="font-bold text-lg text-[#0F172A]"><i class="fab fa-react text-[#0F766E] mr-2"></i>React.js</h3>
-        <a href="#" class="text-gray-400 hover:text-red-500 text-xl"><i class="fas fa-times"></i></a>
-      </div>
-      <p class="text-sm text-[#64748B] mb-4">Build modern and responsive web applications using React.js.</p>
-      <div class="grid grid-cols-2 gap-3 mb-4">
-        <div class="bg-[#e6f7f5] p-3 rounded-lg"><span class="block font-bold text-xs">Students</span><span class="text-sm">215 Students</span></div>
-        <div class="bg-[#e6f7f5] p-3 rounded-lg"><span class="block font-bold text-xs">Lessons</span><span class="text-sm">26 Lessons</span></div>
-      </div>
-      <p class="text-sm mb-2"><strong>Category:</strong> Web Development</p>
-      <p class="text-sm mb-4"><strong>Status:</strong> <span class="badge-status">Active</span></p>
-      <div class="flex justify-end gap-2">
-        <button class="border border-[#0F766E] text-[#0F766E] px-4 py-2 rounded-full text-xs font-medium">Edit Course</button>
-        <button class="bg-red-600 text-white px-4 py-2 rounded-full text-xs font-medium">Delete</button>
-      </div>
+    <!-- 5. React Modal -->
+    <div id="react-modal" class="course-modal">
+        <div class="course-modal-content">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="font-bold text-lg text-[#0F172A]"><i class="fab fa-react text-[#0F766E] mr-2"></i>React.js</h3>
+                <a href="#" class="text-gray-400 hover:text-red-500 text-xl transition-colors duration-300"><i class="fas fa-times"></i></a>
+            </div>
+            <p class="text-sm text-[#64748B] mb-4">Build modern and responsive web applications using React.js.</p>
+            <div class="grid grid-cols-2 gap-3 mb-4">
+                <div class="bg-[#e6f7f5] p-3 rounded-lg"><span class="block font-bold text-xs">Students</span><span class="text-sm">215 Students</span></div>
+                <div class="bg-[#e6f7f5] p-3 rounded-lg"><span class="block font-bold text-xs">Lessons</span><span class="text-sm">26 Lessons</span></div>
+            </div>
+            <p class="text-sm mb-2"><strong>Category:</strong> Web Development</p>
+            <p class="text-sm mb-4"><strong>Status:</strong> <span class="badge-status">Active</span></p>
+            <div class="flex justify-end gap-2">
+                <button class="btn btn-outline btn-sm hover:scale-105 transition-transform duration-300">Edit Course</button>
+                <button class="btn btn-danger btn-sm hover:scale-105 transition-transform duration-300">Delete</button>
+            </div>
+        </div>
     </div>
-  </div>
 
-  <!-- 6. UI/UX Modal -->
-  <div id="uiux-modal" class="course-modal">
-    <div class="course-modal-content">
-      <div class="flex justify-between items-center mb-4">
-        <h3 class="font-bold text-lg text-[#0F172A]"><i class="fas fa-palette text-[#0F766E] mr-2"></i>UI/UX Design</h3>
-        <a href="#" class="text-gray-400 hover:text-red-500 text-xl"><i class="fas fa-times"></i></a>
-      </div>
-      <p class="text-sm text-[#64748B] mb-4">Learn user interface design, UX principles, wireframing and prototyping.</p>
-      <div class="grid grid-cols-2 gap-3 mb-4">
-        <div class="bg-[#e6f7f5] p-3 rounded-lg"><span class="block font-bold text-xs">Students</span><span class="text-sm">75 Students</span></div>
-        <div class="bg-[#e6f7f5] p-3 rounded-lg"><span class="block font-bold text-xs">Lessons</span><span class="text-sm">18 Lessons</span></div>
-      </div>
-      <p class="text-sm mb-2"><strong>Category:</strong> Design</p>
-      <p class="text-sm mb-4"><strong>Status:</strong> <span class="badge-status badge-draft">Draft</span></p>
-      <div class="flex justify-end gap-2">
-        <button class="border border-[#0F766E] text-[#0F766E] px-4 py-2 rounded-full text-xs font-medium">Edit Course</button>
-        <button class="bg-red-600 text-white px-4 py-2 rounded-full text-xs font-medium">Delete</button>
-      </div>
+    <!-- 6. UI/UX Modal -->
+    <div id="uiux-modal" class="course-modal">
+        <div class="course-modal-content">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="font-bold text-lg text-[#0F172A]"><i class="fas fa-palette text-[#0F766E] mr-2"></i>UI/UX Design</h3>
+                <a href="#" class="text-gray-400 hover:text-red-500 text-xl transition-colors duration-300"><i class="fas fa-times"></i></a>
+            </div>
+            <p class="text-sm text-[#64748B] mb-4">Learn user interface design, UX principles, wireframing and prototyping.</p>
+            <div class="grid grid-cols-2 gap-3 mb-4">
+                <div class="bg-[#e6f7f5] p-3 rounded-lg"><span class="block font-bold text-xs">Students</span><span class="text-sm">75 Students</span></div>
+                <div class="bg-[#e6f7f5] p-3 rounded-lg"><span class="block font-bold text-xs">Lessons</span><span class="text-sm">18 Lessons</span></div>
+            </div>
+            <p class="text-sm mb-2"><strong>Category:</strong> Design</p>
+            <p class="text-sm mb-4"><strong>Status:</strong> <span class="badge-status badge-draft">Draft</span></p>
+            <div class="flex justify-end gap-2">
+                <button class="btn btn-outline btn-sm hover:scale-105 transition-transform duration-300">Edit Course</button>
+                <button class="btn btn-danger btn-sm hover:scale-105 transition-transform duration-300">Delete</button>
+            </div>
+        </div>
     </div>
-  </div>
 
-  <!-- JavaScript for Drawer -->
-  <script>
-    (function() {
-      const sidebar = document.getElementById('sidebar');
-      const overlay = document.getElementById('drawerOverlay');
-      const hamBtn = document.getElementById('hamburgerBtn');
-      let drawerOpen = false;
+    <!-- ===== SCRIPTS ===== -->
+    <script>
+        (function() {
+            'use strict';
 
-      function toggleDrawer() {
-        drawerOpen = !drawerOpen;
-        if (drawerOpen) {
-          sidebar.classList.remove('-translate-x-full');
-          overlay.classList.remove('hidden');
-        } else {
-          sidebar.classList.add('-translate-x-full');
-          overlay.classList.add('hidden');
-        }
-      }
-      hamBtn.addEventListener('click', toggleDrawer);
-      overlay.addEventListener('click', toggleDrawer);
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('drawerOverlay');
+            const hamBtn = document.getElementById('hamburgerBtn');
+            let drawerOpen = false;
 
-      window.addEventListener('resize', function() {
-        if (window.innerWidth >= 768 && drawerOpen) {
-          sidebar.classList.remove('-translate-x-full');
-          overlay.classList.add('hidden');
-          drawerOpen = false;
-        }
-      });
-    })();
-  </script>
+            function toggleDrawer() {
+                drawerOpen = !drawerOpen;
+                if (drawerOpen) {
+                    sidebar.classList.remove('-translate-x-full');
+                    overlay.classList.remove('hidden');
+                    hamBtn.setAttribute('aria-expanded', 'true');
+                    document.body.style.overflow = 'hidden';
+                } else {
+                    sidebar.classList.add('-translate-x-full');
+                    overlay.classList.add('hidden');
+                    hamBtn.setAttribute('aria-expanded', 'false');
+                    document.body.style.overflow = '';
+                }
+            }
+
+            if (hamBtn) {
+                hamBtn.addEventListener('click', toggleDrawer);
+            }
+
+            if (overlay) {
+                overlay.addEventListener('click', toggleDrawer);
+            }
+
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && drawerOpen) {
+                    toggleDrawer();
+                }
+            });
+
+            window.addEventListener('resize', function() {
+                if (window.innerWidth >= 768 && drawerOpen) {
+                    sidebar.classList.remove('-translate-x-full');
+                    overlay.classList.add('hidden');
+                    hamBtn.setAttribute('aria-expanded', 'false');
+                    document.body.style.overflow = '';
+                    drawerOpen = false;
+                }
+            });
+
+            let touchStartX = 0;
+            let touchEndX = 0;
+
+            document.addEventListener('touchstart', function(e) {
+                touchStartX = e.changedTouches[0].screenX;
+            }, { passive: true });
+
+            document.addEventListener('touchend', function(e) {
+                touchEndX = e.changedTouches[0].screenX;
+                const diff = touchStartX - touchEndX;
+                if (diff > 50 && drawerOpen) {
+                    toggleDrawer();
+                }
+            }, { passive: true });
+
+            // Close modals with Escape key
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    document.querySelectorAll('.course-modal:target').forEach(modal => {
+                        modal.style.display = 'none';
+                        window.location.hash = '';
+                    });
+                }
+            });
+
+        })();
+    </script>
+
 </body>
 </html>
